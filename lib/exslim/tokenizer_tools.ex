@@ -44,6 +44,21 @@ defmodule Exslim.TokenizerTools do
   end
 
   @doc """
+  Checks many of a certain token
+  """
+  def many_of(state = {_, str, pos}, head, tail) do
+    if String.slice(str, pos..-1) == "" do
+      state
+    else
+      try do
+        state |> head.() |> many_of(head, tail)
+      catch {:parse_error, _, _} ->
+        state |> tail.()
+      end
+    end
+  end
+
+  @doc """
   Eats a token.
 
   * `state` - assumed to be `{doc, str, pos}` (given by `run_tokenizer/2`).
@@ -68,14 +83,18 @@ defmodule Exslim.TokenizerTools do
     eat(state, expr, token_name, &(&1 ++ [{&3, token_name, &2}]))
   end
 
+  def eat(state, expr, token_name, nil) do
+    eat state, expr, token_name, fn state, _, _ -> state end
+  end
+
   def eat({doc, str, pos}, expr, token_name, fun) do
     remainder = String.slice(str, pos..-1)
-    try do
-      [term] = Regex.run(expr, remainder)
-      length = String.length(term)
-      { fun.(doc, term, pos), str, pos + length }
-    rescue
-      MatchError -> throw {:parse_error, pos, [token_name]}
+    case Regex.run(expr, remainder) do
+      [term] ->
+        length = String.length(term)
+        { fun.(doc, term, pos), str, pos + length }
+      nil ->
+        throw {:parse_error, pos, [token_name]}
     end
   end
 

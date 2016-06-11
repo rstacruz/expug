@@ -30,6 +30,14 @@ defmodule ExslimTest do
     ]
   end
 
+  test "multiline" do
+    {:ok, output} = Exslim.to_eex("head\nbody\n")
+    assert output == [
+      {0, :element_name, "head"},
+      {5, :element_name, "body"},
+    ]
+  end
+
   test "parse error" do
     {:error, output} = Exslim.to_eex("huh?")
     assert output == {:parse_error, 3, [:eof]}

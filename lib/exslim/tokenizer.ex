@@ -22,7 +22,13 @@ defmodule Exslim.Tokenizer do
 
   def elements(state) do
     state
-    |> element()
+    |> many_of(
+      &(&1 |> element() |> newline()),
+      &(&1 |> element()))
+  end
+
+  def newline(state) do
+    eat state, ~r/^\n/, :newline, nil
   end
 
   def element(state) do
@@ -39,7 +45,7 @@ defmodule Exslim.Tokenizer do
 
   @doc "Matches whitespace; no tokens emitted"
   def whitespace(state) do
-    eat state, ~r/^[\s\t]+/
+    eat state, ~r/^[ \t]+/, :whitespace, nil
   end
 
   @doc "Matches `=`"
