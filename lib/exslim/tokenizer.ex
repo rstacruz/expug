@@ -31,21 +31,103 @@ defmodule Exslim.Tokenizer do
     eat state, ~r/^\n/, :newline, nil
   end
 
+  def indent(state) do
+    eat state, ~r/^\s*/, :indent
+  end
+
   def element(state) do
     state
+    |> indent()
     |> element_name()
+    |> optional(&attributes_block/1)
+
+    # Text
     |> optional(fn s -> s
-      |> optional(fn t -> t
-        |> buffered_text()
-      end)
+      |> optional(&buffered_text/1)
       |> whitespace()
       |> text()
     end)
   end
 
+  def attributes_block(state) do
+    state
+    |> optional_whitespace()
+    |> one_of([
+      &attribute_bracket/1,
+      &attribute_paren/1,
+      &attribute_curly/1
+    ])
+  end
+
+  def attribute_bracket(state) do
+    state
+    |> eat(~r/^\[/, :attribute_open)
+    |> attribute_contents()
+    |> eat(~r/^\]/, :attribute_close)
+  end
+
+  def attribute_paren(state) do
+    state
+    |> eat(~r/^\(/, :attribute_open)
+    |> attribute_contents()
+    |> eat(~r/^\)/, :attribute_close)
+  end
+
+  def attribute_curly(state) do
+    state
+    |> eat(~r/^\{/, :attribute_open)
+    |> attribute_contents()
+    |> eat(~r/^\}/, :attribute_close)
+  end
+
+  @doc "Matches `foo='val' bar='val'`"
+  def attribute_contents(state) do
+    state
+    |> optional(&attribute_list/1)
+  end
+
+  def attribute_list(state) do
+    state
+    |> many_of(
+      &(&1 |> attribute() |> whitespace()),
+      &(&1 |> attribute()))
+  end
+
+  @doc "Matches `foo='val'`"
+  def attribute(state) do
+    state
+    |> attribute_key()
+    |> optional_whitespace()
+    |> attribute_separator()
+    |> optional_whitespace()
+    |> attribute_value()
+  end
+
+  def attribute_key(state) do
+    state
+    |> eat(~r/^[A-Za-z][A-Za-z\-0-9]*/, :attribute_key)
+  end
+
+  def attribute_value(state) do
+    state
+    |> eat(~r/^"[^"]*"/, :attribute_value)
+  end
+
+  def attribute_separator(state) do
+    state
+    |> one_of([
+      &(&1 |> eat(~r/=/, :attribute_separator_eq, nil)),
+      &(&1 |> eat(~r/:/, :attribute_separator_colon, nil))
+    ])
+  end
+
   @doc "Matches whitespace; no tokens emitted"
   def whitespace(state) do
     eat state, ~r/^[ \t]+/, :whitespace, nil
+  end
+
+  def optional_whitespace(state) do
+    eat state, ~r/^[ \t]*/, :optional_whitespace, nil
   end
 
   @doc "Matches `=`"

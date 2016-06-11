@@ -23,18 +23,29 @@ defmodule Exslim.TokenizerTools do
     end
   end
 
-  def one_of(state, funs) do
-    { _, _, pos } = state
-    die = fn _ -> throw {:parse_error, pos} end
-    Enum.reduce funs ++ [die], state, fn fun, acc ->
-      try do
-        acc || fun.(state)
-      catch
-        {:parse_error, _, _} -> state
-      end
+  @doc """
+  Tries one of the following.
+
+      state |> one_of([ &brackets/1, &braces/1, &parens/1 ])
+  """
+  def one_of(state, funs, expected \\ [])
+  def one_of(state, [fun | rest], expected) do
+    try do
+      fun.(state)
+    catch {:parse_error, _, expected_} ->
+      one_of(state, rest, expected ++ expected_)
     end
   end
 
+  def one_of(state = {_, pos, _}, [], expected) do
+    throw {:parse_error, pos, expected}
+  end
+
+  @doc """
+  An optional argument.
+
+      state |> optional(&text/1)
+  """
   def optional(state, fun) do
     try do
       fun.(state)
@@ -44,7 +55,7 @@ defmodule Exslim.TokenizerTools do
   end
 
   @doc """
-  Checks many of a certain token
+  Checks many of a certain token.
   """
   def many_of(state = {_, str, pos}, head, tail) do
     if String.slice(str, pos..-1) == "" do
@@ -69,6 +80,7 @@ defmodule Exslim.TokenizerTools do
   Returns `{ doc, str, pos }` too, where `doc` is transformed via `fun`.
 
       eat state, ~r/.../, :document
+      eat state, ~r/.../, :document, nil  # discard it
       eat state, ~r/.../, :document, &(&1 ++ [{&3, :document, &2}])
 
       # &1 == current state
@@ -89,13 +101,17 @@ defmodule Exslim.TokenizerTools do
 
   def eat({doc, str, pos}, expr, token_name, fun) do
     remainder = String.slice(str, pos..-1)
-    case Regex.run(expr, remainder) do
+    case match(expr, remainder) do
       [term] ->
         length = String.length(term)
         { fun.(doc, term, pos), str, pos + length }
       nil ->
         throw {:parse_error, pos, [token_name]}
     end
+  end
+
+  def match(expr, remainder) do
+    Regex.run(expr, remainder)
   end
 
   defmacro __using__(_ \\ []) do
