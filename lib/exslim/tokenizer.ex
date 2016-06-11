@@ -3,9 +3,6 @@ defmodule Exslim.Tokenizer do
   ...
   """
 
-  import Regex, only: [run: 3]
-  import String, only: [slice: 2]
-
   @doc """
   Tokenizes a string
   """
@@ -13,16 +10,22 @@ defmodule Exslim.Tokenizer do
     doc = []
     result = element({doc, str})
     {doc, str} = result
+    if str != "" do
+      raise ParseError, message: "Premature end of file: '#{str}'"
+    end
     doc
   end
 
   def element(state) do
     state
     |> element_name()
-    |> optional fn state -> state
+    |> optional(fn s -> s
+      |> optional(fn t -> t
+        |> buffered_text()
+      end)
       |> whitespace()
       |> text()
-    end
+    end)
   end
 
   def optional(state, fun) do
@@ -43,27 +46,27 @@ defmodule Exslim.Tokenizer do
   end
 
   def whitespace(state) do
-    eat(state, ~r/[\s\t]+/)
+    eat(state, ~r/^[\s\t]+/)
   end
 
   def buffered_text(state) do
-    eat(state, ~r/=/, fn _ -> {:buffered_text} end)
+    eat state, ~r/^=/, fn state, _ -> state ++ [{:buffered_text}] end
   end
 
   def text(state) do
-    eat(state, ~r/[^\n$]+/, &[{:text, &1}])
+    eat state, ~r/^[^\n$]+/, &(&1 ++ [{:text, &2}])
   end
 
   def element_name(state) do
-    eat(state, ~r/[a-z]+/, &[{:element_name, &1}])
+    eat state, ~r/^[a-z]+/, &(&1 ++ [{:element_name, &2}])
   end
 
-  def eat({doc, str}, expr, fun \\ fn _ -> [] end) do
+  def eat({doc, str}, expr, fun \\ fn s, _ -> s end) do
     try do
       [term] = Regex.run(expr, str)
-      { doc ++ fun.(term), slice(str, String.length(term)..-1) }
+      { fun.(doc, term), String.slice(str, String.length(term)..-1) }
     rescue
-      MatchError -> raise ParseError, message: "parse error"
+      MatchError -> raise ParseError, message: "parse error", remaining: str
     end
   end
 

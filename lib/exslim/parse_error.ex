@@ -3,5 +3,5 @@ defmodule ParseError do
   A parse error
   """
 
-  defexception [:message]
+  defexception [:message, :remaining]
 end

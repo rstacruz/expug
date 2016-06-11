@@ -19,12 +19,12 @@ defmodule ExslimTest do
     ]
   end
 
-  test "eex" do
-    input = """
-    head Hello world
-    """
-
-    output = Exslim.to_eex(input)
-    IO.puts(inspect(output))
+  test "title= name" do
+    output = Exslim.to_eex("title= name")
+    assert output == [
+      {:element_name, "title"},
+      {:buffered_text},
+      {:text, "name"}
+    ]
   end
 end
