@@ -19,8 +19,7 @@ defmodule Exslim.Tokenizer do
   def element(state) do
     state
     |> element_name()
-    |> optional fn state ->
-      state
+    |> optional fn state -> state
       |> whitespace()
       |> text()
     end
