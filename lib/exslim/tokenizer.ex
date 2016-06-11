@@ -38,7 +38,7 @@ defmodule Exslim.Tokenizer do
   def element(state) do
     state
     |> indent()
-    |> element_name()
+    |> element_descriptor()
     |> optional(&attributes_block/1)
 
     # Text
@@ -47,6 +47,56 @@ defmodule Exslim.Tokenizer do
       |> whitespace()
       |> text()
     end)
+  end
+
+  @doc """
+  Matches `div`, `div.foo` `div.foo.bar#baz`, etc
+  """
+  def element_descriptor(state) do
+    state
+    |> one_of([
+      &element_descriptor_full/1,
+      &element_descriptor_name/1,
+      &element_descriptor_class/1
+    ])
+  end
+
+  def element_descriptor_name(state) do
+    state
+    |> element_name()
+  end
+
+  def element_descriptor_class(state) do
+    state
+    |> element_class_or_id_list()
+  end
+
+  def element_descriptor_full(state) do
+    state
+    |> element_name()
+    |> element_class_or_id_list()
+  end
+
+  def element_class_or_id_list(state) do
+    state
+    |> many_of(&element_class_or_id/1)
+  end
+
+  def element_class_or_id(state) do
+    state
+    |> one_of([ &element_class/1, &element_id/1 ])
+  end
+
+  def element_class(state) do
+    state
+    |> eat(~r/^\./, :dot, nil)
+    |> eat(~r/^[A-Za-z0-9_\-]+/, :element_class)
+  end
+
+  def element_id(state) do
+    state
+    |> eat(~r/^#/, :hash, nil)
+    |> eat(~r/^[A-Za-z0-9_\-]+/, :element_id)
   end
 
   def attributes_block(state) do

@@ -57,6 +57,10 @@ defmodule Exslim.TokenizerTools do
   @doc """
   Checks many of a certain token.
   """
+  def many_of(state, head) do
+    many_of(state, head, head)
+  end
+
   def many_of(state = {_, str, pos}, head, tail) do
     if String.slice(str, pos..-1) == "" do
       state

@@ -75,10 +75,57 @@ defmodule ExslimTest do
     ]
   end
 
+  test "div(id=\"hi\" class=\"foo\")" do
+    {:ok, output} = Exslim.to_eex("div(id=\"hi\" class=\"foo\")")
+    assert output == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {3, :attribute_open, "("},
+      {4, :attribute_key, "id"},
+      {7, :attribute_value, "\"hi\""},
+      {12, :attribute_key, "class"},
+      {18, :attribute_value, "\"foo\""},
+      {23, :attribute_close, ")"}
+    ]
+  end
+
+  test "class" do
+    {:ok, output} = Exslim.to_eex("div.blue")
+    assert output == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {4, :element_class, "blue"}
+    ]
+  end
+
+  test "classes" do
+    {:ok, output} = Exslim.to_eex("div.blue.sm")
+    assert output == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {4, :element_class, "blue"},
+      {9, :element_class, "sm"}
+    ]
+  end
+
+  test "classes and ID" do
+    {:ok, output} = Exslim.to_eex("div.blue.sm#box")
+    assert output == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {4, :element_class, "blue"},
+      {9, :element_class, "sm"},
+      {12, :element_id, "box"}
+    ]
+  end
+
   test "parse error" do
     {:error, output} = Exslim.to_eex("huh?")
     assert output == {:parse_error, 3, [:eof]}
   end
 
-  # test "link[rel='stylesheet']"
+  # test "doctype"
+  # test "class"
+  # test "id"
+  # test "true values [foo=(a + b)]"
 end
