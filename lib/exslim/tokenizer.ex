@@ -4,7 +4,6 @@ defmodule Exslim.Tokenizer do
   """
 
   import Exslim.TokenizerTools
-  alias Exslim.ParseError
 
   @doc """
   Tokenizes a string.
@@ -18,16 +17,7 @@ defmodule Exslim.Tokenizer do
       ]
   """
   def tokenize(str) do
-    doc = []
-    result = elements({doc, str, 0})
-    {doc, str, position} = result
-
-    if position != String.length(str) do
-      raise ParseError,
-        message: "Premature end of file: '#{String.slice(str, position..-1)}'",
-        position: position
-    end
-    doc
+    run_tokenizer str, &(elements(&1))
   end
 
   def elements(state) do

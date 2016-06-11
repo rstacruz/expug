@@ -7,14 +7,14 @@ defmodule ExslimTest do
   end
 
   test "basic" do
-    output = Exslim.to_eex("head")
+    {:ok, output} = Exslim.to_eex("head")
     assert output == [
       {0, :element_name, "head"}
     ]
   end
 
   test "basic with text" do
-    output = Exslim.to_eex("title Hello world")
+    {:ok, output} = Exslim.to_eex("title Hello world")
     assert output == [
       {0, :element_name, "title"},
       {6, :text, "Hello world"}
@@ -22,7 +22,7 @@ defmodule ExslimTest do
   end
 
   test "title= name" do
-    output = Exslim.to_eex("title= name")
+    {:ok, output} = Exslim.to_eex("title= name")
     assert output == [
       {0, :element_name, "title"},
       {5, :buffered_text, nil},
@@ -30,7 +30,7 @@ defmodule ExslimTest do
     ]
   end
 
-  test "parse error" do
-    output = Exslim.to_eex("! name")
-  end
+  # test "parse error" do
+  #   output = Exslim.to_eex("! name")
+  # end
 end
