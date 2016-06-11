@@ -1,7 +1,7 @@
-defmodule ParseError do
+defmodule Exslim.ParseError do
   @moduledoc """
   A parse error
   """
 
-  defexception [:message, :remaining]
+  defexception [:message, :position]
 end

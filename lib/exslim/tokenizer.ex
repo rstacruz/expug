@@ -1,19 +1,38 @@
 defmodule Exslim.Tokenizer do
   @moduledoc """
-  ...
+  Tokenizer
   """
 
+  import Exslim.TokenizerTools
+  alias Exslim.ParseError
+
   @doc """
-  Tokenizes a string
+  Tokenizes a string.
+  Returns a list of tokens. Each token is in the format `{position, token, value}`.
+
+      tokenize("title= name")
+      => [
+        {0, :element_name, "title"},
+        {5, :buffered_text},
+        {7, :text, "name"}
+      ]
   """
   def tokenize(str) do
     doc = []
-    result = element({doc, str})
-    {doc, str} = result
-    if str != "" do
-      raise ParseError, message: "Premature end of file: '#{str}'"
+    result = elements({doc, str, 0})
+    {doc, str, position} = result
+
+    if position != String.length(str) do
+      raise ParseError,
+        message: "Premature end of file: '#{String.slice(str, position..-1)}'",
+        position: position
     end
     doc
+  end
+
+  def elements(state) do
+    state
+    |> element()
   end
 
   def element(state) do
@@ -28,59 +47,25 @@ defmodule Exslim.Tokenizer do
     end)
   end
 
-  def optional(state, fun) do
-    try do
-      fun.(state)
-    rescue ParseError -> state
-    end
-  end
-
-  def one_of(state, funs) do
-    die = fn _ -> raise ParseError end
-    Enum.reduce funs ++ [die], state, fn fun, acc ->
-      try do
-        acc || fun.(state)
-      rescue ParseError -> nil
-      end
-    end
-  end
-
+  @doc "Matches whitespace; no tokens emitted"
   def whitespace(state) do
     eat(state, ~r/^[\s\t]+/)
   end
 
+  @doc "Matches `=`"
   def buffered_text(state) do
-    eat state, ~r/^=/, fn state, _ -> state ++ [{:buffered_text}] end
-  end
-
-  def text(state) do
-    eat state, ~r/^[^\n$]+/, &(&1 ++ [{:text, &2}])
-  end
-
-  def element_name(state) do
-    eat state, ~r/^[a-z]+/, &(&1 ++ [{:element_name, &2}])
-  end
-
-  def eat({doc, str}, expr, fun \\ fn s, _ -> s end) do
-    try do
-      [term] = Regex.run(expr, str)
-      { fun.(doc, term), String.slice(str, String.length(term)..-1) }
-    rescue
-      MatchError -> raise ParseError, message: "parse error", remaining: str
+    eat state, ~r/^=/, fn state, _, pos ->
+      state ++ [{pos, :buffered_text, nil}]
     end
   end
 
-  defp lol do
-    [
-      {:element, "head"},
-      {:indent},
-      {:element, "title"},
-      {:attributes_open},
-      {:attribute_key, "lang"},
-      {:attribute_value, "en"},
-      {:attributes_close},
-      {:text, "Hello world"},
-      {:outdent}
-    ]
+  @doc "Matches text"
+  def text(state) do
+    eat state, ~r/^[^\n$]+/, &(&1 ++ [{&3, :text, &2}])
+  end
+
+  @doc "Matches `title` in `title= hello`"
+  def element_name(state) do
+    eat state, ~r/^[a-z]+/, &(&1 ++ [{&3, :element_name, &2}])
   end
 end
