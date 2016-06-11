@@ -1,8 +1,10 @@
 defmodule ExslimTokenizerTest do
   use ExUnit.Case
 
+  import Exslim.Tokenizer, only: [tokenize: 1]
+
   test "basic" do
-    {:ok, output} = Exslim.to_eex("head")
+    {:ok, output} = tokenize("head")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "head"}
@@ -10,7 +12,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "basic with text" do
-    {:ok, output} = Exslim.to_eex("title Hello world")
+    {:ok, output} = tokenize("title Hello world")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "title"},
@@ -19,7 +21,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "title= name" do
-    {:ok, output} = Exslim.to_eex("title= name")
+    {:ok, output} = tokenize("title= name")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "title"},
@@ -28,7 +30,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "multiline" do
-    {:ok, output} = Exslim.to_eex("head\nbody\n")
+    {:ok, output} = tokenize("head\nbody\n")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "head"},
@@ -38,7 +40,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "div[]" do
-    {:ok, output} = Exslim.to_eex("div[]")
+    {:ok, output} = tokenize("div[]")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "div"},
@@ -48,7 +50,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "div()" do
-    {:ok, output} = Exslim.to_eex("div()")
+    {:ok, output} = tokenize("div()")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "div"},
@@ -58,7 +60,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "div(id=\"hi\")" do
-    {:ok, output} = Exslim.to_eex("div(id=\"hi\")")
+    {:ok, output} = tokenize("div(id=\"hi\")")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "div"},
@@ -70,7 +72,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "div(id=\"hi\" class=\"foo\")" do
-    {:ok, output} = Exslim.to_eex("div(id=\"hi\" class=\"foo\")")
+    {:ok, output} = tokenize("div(id=\"hi\" class=\"foo\")")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "div"},
@@ -84,7 +86,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "class" do
-    {:ok, output} = Exslim.to_eex("div.blue")
+    {:ok, output} = tokenize("div.blue")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "div"},
@@ -93,7 +95,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "classes" do
-    {:ok, output} = Exslim.to_eex("div.blue.sm")
+    {:ok, output} = tokenize("div.blue.sm")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "div"},
@@ -103,7 +105,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "classes and ID" do
-    {:ok, output} = Exslim.to_eex("div.blue.sm#box")
+    {:ok, output} = tokenize("div.blue.sm#box")
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "div"},
@@ -114,12 +116,12 @@ defmodule ExslimTokenizerTest do
   end
 
   test "parse error" do
-    {:error, output} = Exslim.to_eex("huh?")
+    {:error, output} = tokenize("huh?")
     assert output == {:parse_error, 3, [:eof]}
   end
 
   test "| raw text" do
-    {:ok, output} = Exslim.to_eex("| text")
+    {:ok, output} = tokenize("| text")
     assert output == [
       {0, :indent, ""},
       {2, :raw_text, "text"}
@@ -127,7 +129,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "= buffered text" do
-    {:ok, output} = Exslim.to_eex("= text")
+    {:ok, output} = tokenize("= text")
     assert output == [
       {0, :indent, ""},
       {2, :buffered_text, "text"}
@@ -135,7 +137,7 @@ defmodule ExslimTokenizerTest do
   end
 
   test "- statement" do
-    {:ok, output} = Exslim.to_eex("- text")
+    {:ok, output} = tokenize("- text")
     assert output == [
       {0, :indent, ""},
       {2, :statement, "text"}
