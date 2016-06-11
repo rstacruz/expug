@@ -44,7 +44,7 @@ defmodule Exslim.Tokenizer do
     - `:doctype` - `html5`
   """
 
-  use Exslim.TokenizerTools
+  import Exslim.TokenizerTools
 
   @doc """
   Tokenizes a string.
@@ -232,7 +232,7 @@ defmodule Exslim.Tokenizer do
 
   def attribute_value(state) do
     state
-    |> eat(~r/^"[^"]*"/, :attribute_value)
+    |> Exslim.ExpressionTokenizer.expression(:attribute_value)
   end
 
   def attribute_separator(state) do

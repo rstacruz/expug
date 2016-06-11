@@ -88,7 +88,7 @@ defmodule Exslim.TokenizerTools do
       eat state, ~r/.../, :document, &(&1 ++ [{&3, :document, &2}])
 
       # &1 == current state
-      # &2 == match data
+      # &2 == matched string
       # &3 == position
   """
   def eat(state, expr) do
@@ -116,11 +116,5 @@ defmodule Exslim.TokenizerTools do
 
   def match(expr, remainder) do
     Regex.run(expr, remainder)
-  end
-
-  defmacro __using__(_ \\ []) do
-    quote do
-      import Exslim.TokenizerTools
-    end
   end
 end
