@@ -25,12 +25,13 @@ defmodule ExslimTest do
     {:ok, output} = Exslim.to_eex("title= name")
     assert output == [
       {0, :element_name, "title"},
-      {5, :buffered_text, nil},
+      {5, :buffered_text, "="},
       {7, :text, "name"}
     ]
   end
 
-  # test "parse error" do
-  #   output = Exslim.to_eex("! name")
-  # end
+  test "parse error" do
+    {:error, output} = Exslim.to_eex("huh?")
+    assert output == {:parse_error, 3, [:eof]}
+  end
 end

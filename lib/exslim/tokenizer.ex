@@ -3,7 +3,7 @@ defmodule Exslim.Tokenizer do
   Tokenizer
   """
 
-  import Exslim.TokenizerTools
+  use Exslim.TokenizerTools
 
   @doc """
   Tokenizes a string.
@@ -39,23 +39,21 @@ defmodule Exslim.Tokenizer do
 
   @doc "Matches whitespace; no tokens emitted"
   def whitespace(state) do
-    eat(state, ~r/^[\s\t]+/)
+    eat state, ~r/^[\s\t]+/
   end
 
   @doc "Matches `=`"
   def buffered_text(state) do
-    eat state, ~r/^=/, fn state, _, pos ->
-      state ++ [{pos, :buffered_text, nil}]
-    end
+    eat state, ~r/^=/, :buffered_text
   end
 
   @doc "Matches text"
   def text(state) do
-    eat state, ~r/^[^\n$]+/, &(&1 ++ [{&3, :text, &2}])
+    eat state, ~r/^[^\n$]+/, :text
   end
 
   @doc "Matches `title` in `title= hello`"
   def element_name(state) do
-    eat state, ~r/^[a-z]+/, &(&1 ++ [{&3, :element_name, &2}])
+    eat state, ~r/^[a-z]+/, :element_name
   end
 end
