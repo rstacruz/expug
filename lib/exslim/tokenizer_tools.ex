@@ -96,7 +96,7 @@ defmodule Exslim.TokenizerTools do
   end
 
   def eat(state, expr, token_name) do
-    eat(state, expr, token_name, &(&1 ++ [{&3, token_name, &2}]))
+    eat(state, expr, token_name, &([{&3, token_name, &2} | &1]))
   end
 
   def eat(state, expr, token_name, nil) do

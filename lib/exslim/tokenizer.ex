@@ -57,7 +57,7 @@ defmodule Exslim.Tokenizer do
       ]
   """
   def tokenize(str) do
-    run_tokenizer str, &document/1
+    run_tokenizer(str, &document/1)
   end
 
   def document(state) do

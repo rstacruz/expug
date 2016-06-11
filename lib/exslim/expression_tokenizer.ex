@@ -23,7 +23,7 @@ defmodule Exslim.ExpressionTokenizer do
   def eat_into(state = {doc, str, pos}, token_name, fun) do
     { newdoc, _, new_pos } =
     { "", str, pos } |> fun.()
-    { doc ++ [{pos, token_name, newdoc}], str, new_pos }
+    { [{pos, token_name, newdoc} | doc], str, new_pos }
   end
 
   def eat_string(state, expr) do
