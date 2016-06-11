@@ -1,6 +1,47 @@
 defmodule Exslim.Tokenizer do
   @moduledoc """
-  Tokenizer
+  Tokenizes a Slim template into a list of tokens. The main entry point is
+  `tokenize/1`.
+
+  ## Token types
+
+  `div.blue#box`
+
+    - `:indent` - (empty string)
+    - `:element_name` - `div`
+    - `:element_class` - `blue`
+    - `:element_id - `box`
+
+  `div(name="en")`
+
+    - :attribute_open` - `(`
+    - :attribute_key` - `name`
+    - :attribute_value` - `"en"`
+    - :attribute_close` - `)`
+
+  `div= hello`
+
+    - `:sole_buffered_text` - `hello`
+
+  `div hello`
+
+    - `:sole_raw_text` - `hello`
+
+  `| Hello there`
+
+    - `:raw_text` - `Hello there`
+
+  `= Hello there`
+
+    - `:buffered_text` - `Hello there`
+
+  `- foo = bar`
+
+    - `:statement` - `foo = bar`
+
+  `doctype html5`
+
+    - `:doctype` - `html5`
   """
 
   use Exslim.TokenizerTools
@@ -14,49 +55,30 @@ defmodule Exslim.Tokenizer do
         {0, :element_name, "title"},
         {7, :sole_buffered_text, "name"},
       ]
-
-  ## Token types
-
-  `div.blue#box`
-  - `:indent` - (empty string)
-  - `:element_name` - `div`
-  - `:element_class` - `blue`
-  - `:element_id - `box`
-
-  `div(name="en")`
-  - :attribute_open` - `(`
-  - :attribute_key` - `name`
-  - :attribute_value` - `"en"`
-  - :attribute_close` - `)`
-
-  `div= hello`
-  - `:sole_buffered_text` - `hello`
-
-  `div hello`
-  - `:sole_raw_text` - `hello`
-
-  `| Hello there`
-  - `:raw_text` - `Hello there`
-
-  `= Hello there`
-  - `:buffered_text` - `Hello there`
-
-  `- foo = bar`
-  - `:statement` - `foo = bar`
   """
   def tokenize(str) do
-    run_tokenizer str, &(elements(&1))
+    run_tokenizer str, &document/1
   end
 
-  def elements(state) do
+  def document(state) do
     state
+    |> optional(&newlines/1)
+    |> optional(&doctype/1)
     |> many_of(
-      &(&1 |> element_or_text() |> newline()),
+      &(&1 |> element_or_text() |> newlines()),
       &(&1 |> element_or_text()))
   end
 
-  def newline(state) do
-    eat state, ~r/^\n/, :newline, nil
+  def doctype(state) do
+    state
+    |> eat(~r/^doctype/, :doctype, nil)
+    |> whitespace()
+    |> eat(~r/^[^\n]+/, :doctype)
+    |> newlines()
+  end
+
+  def newlines(state) do
+    eat state, ~r/^\n(?:[ \t]*\n)*/, :newlines, nil
   end
 
   def indent(state) do
@@ -163,32 +185,27 @@ defmodule Exslim.Tokenizer do
   def attribute_bracket(state) do
     state
     |> eat(~r/^\[/, :attribute_open)
-    |> attribute_contents()
+    |> optional(&attribute_list/1)
     |> eat(~r/^\]/, :attribute_close)
   end
 
   def attribute_paren(state) do
     state
     |> eat(~r/^\(/, :attribute_open)
-    |> attribute_contents()
+    |> optional(&attribute_list/1)
     |> eat(~r/^\)/, :attribute_close)
   end
 
   def attribute_curly(state) do
     state
     |> eat(~r/^\{/, :attribute_open)
-    |> attribute_contents()
+    |> optional(&attribute_list/1)
     |> eat(~r/^\}/, :attribute_close)
   end
 
   @doc """
   Matches `foo='val' bar='val'`
   """
-  def attribute_contents(state) do
-    state
-    |> optional(&attribute_list/1)
-  end
-
   def attribute_list(state) do
     state
     |> many_of(

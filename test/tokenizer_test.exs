@@ -39,6 +39,16 @@ defmodule ExslimTokenizerTest do
     ]
   end
 
+  test "multiline with blank lines" do
+    {:ok, output} = tokenize("head\n   \n  \nbody\n")
+    assert output == [
+      {0, :indent, ""},
+      {0, :element_name, "head"},
+      {12, :indent, ""},
+      {12, :element_name, "body"},
+    ]
+  end
+
   test "div[]" do
     {:ok, output} = tokenize("div[]")
     assert output == [
@@ -141,6 +151,15 @@ defmodule ExslimTokenizerTest do
     assert output == [
       {0, :indent, ""},
       {2, :statement, "text"}
+    ]
+  end
+
+  test "doctype" do
+    {:ok, output} = tokenize("doctype html5\nhtml")
+    assert output == [
+      {8, :doctype, "html5"},
+      {14, :indent, ""},
+      {14, :element_name, "html"}
     ]
   end
 
