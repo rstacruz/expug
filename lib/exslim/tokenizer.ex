@@ -12,9 +12,37 @@ defmodule Exslim.Tokenizer do
       tokenize("title= name")
       => [
         {0, :element_name, "title"},
-        {5, :buffered_text},
-        {7, :text, "name"}
+        {7, :sole_buffered_text, "name"},
       ]
+
+  ## Token types
+
+  `div.blue#box`
+  - `:indent` - (empty string)
+  - `:element_name` - `div`
+  - `:element_class` - `blue`
+  - `:element_id - `box`
+
+  `div(name="en")`
+  - :attribute_open` - `(`
+  - :attribute_key` - `name`
+  - :attribute_value` - `"en"`
+  - :attribute_close` - `)`
+
+  `div= hello`
+  - `:sole_buffered_text` - `hello`
+
+  `div hello`
+  - `:sole_raw_text` - `hello`
+
+  `| Hello there`
+  - `:raw_text` - `Hello there`
+
+  `= Hello there`
+  - `:buffered_text` - `Hello there`
+
+  `- foo = bar`
+  - `:statement` - `foo = bar`
   """
   def tokenize(str) do
     run_tokenizer str, &(elements(&1))
@@ -23,8 +51,8 @@ defmodule Exslim.Tokenizer do
   def elements(state) do
     state
     |> many_of(
-      &(&1 |> element() |> newline()),
-      &(&1 |> element()))
+      &(&1 |> element_or_text() |> newline()),
+      &(&1 |> element_or_text()))
   end
 
   def newline(state) do
@@ -35,17 +63,31 @@ defmodule Exslim.Tokenizer do
     eat state, ~r/^\s*/, :indent
   end
 
-  def element(state) do
+  def element_or_text(state) do
     state
     |> indent()
+    |> one_of([
+      &buffered_text/1,
+      &raw_text/1,
+      &statement/1,
+      &element/1
+    ])
+  end
+
+  @doc """
+  Matches `div.foo[id="name"]= Hello world`
+  """
+  def element(state) do
+    state
     |> element_descriptor()
     |> optional(&attributes_block/1)
 
     # Text
     |> optional(fn s -> s
-      |> optional(&buffered_text/1)
-      |> whitespace()
-      |> text()
+      |> one_of([
+        &sole_buffered_text/1,
+        &sole_raw_text/1
+      ])
     end)
   end
 
@@ -56,49 +98,58 @@ defmodule Exslim.Tokenizer do
     state
     |> one_of([
       &element_descriptor_full/1,
-      &element_descriptor_name/1,
-      &element_descriptor_class/1
+      &element_name/1,
+      &element_class_or_id_list/1
     ])
   end
 
-  def element_descriptor_name(state) do
-    state
-    |> element_name()
-  end
-
-  def element_descriptor_class(state) do
-    state
-    |> element_class_or_id_list()
-  end
-
+  @doc """
+  Matches `div.foo.bar#baz`
+  """
   def element_descriptor_full(state) do
     state
     |> element_name()
     |> element_class_or_id_list()
   end
 
+  @doc """
+  Matches `.foo.bar#baz`
+  """
   def element_class_or_id_list(state) do
     state
     |> many_of(&element_class_or_id/1)
   end
 
+
+  @doc """
+  Matches `.foo` or `#id` (just one)
+  """
   def element_class_or_id(state) do
     state
     |> one_of([ &element_class/1, &element_id/1 ])
   end
 
+  @doc """
+  Matches `.foo`
+  """
   def element_class(state) do
     state
     |> eat(~r/^\./, :dot, nil)
     |> eat(~r/^[A-Za-z0-9_\-]+/, :element_class)
   end
 
+  @doc """
+  Matches `#id`
+  """
   def element_id(state) do
     state
     |> eat(~r/^#/, :hash, nil)
     |> eat(~r/^[A-Za-z0-9_\-]+/, :element_id)
   end
 
+  @doc """
+  Matches `[name='foo' ...]`
+  """
   def attributes_block(state) do
     state
     |> optional_whitespace()
@@ -130,7 +181,9 @@ defmodule Exslim.Tokenizer do
     |> eat(~r/^\}/, :attribute_close)
   end
 
-  @doc "Matches `foo='val' bar='val'`"
+  @doc """
+  Matches `foo='val' bar='val'`
+  """
   def attribute_contents(state) do
     state
     |> optional(&attribute_list/1)
@@ -143,7 +196,9 @@ defmodule Exslim.Tokenizer do
       &(&1 |> attribute()))
   end
 
-  @doc "Matches `foo='val'`"
+  @doc """
+  Matches `foo='val'`
+  """
   def attribute(state) do
     state
     |> attribute_key()
@@ -181,17 +236,44 @@ defmodule Exslim.Tokenizer do
   end
 
   @doc "Matches `=`"
-  def buffered_text(state) do
-    eat state, ~r/^=/, :buffered_text
+  def sole_buffered_text(state) do
+    state
+    |> optional_whitespace()
+    |> eat(~r/^=/, :eq, nil)
+    |> optional_whitespace()
+    |> eat(~r/^[^\n$]+/, :sole_buffered_text)
   end
 
   @doc "Matches text"
-  def text(state) do
-    eat state, ~r/^[^\n$]+/, :text
+  def sole_raw_text(state) do
+    state
+    |> whitespace()
+    |> eat(~r/^[^\n$]+/, :sole_raw_text)
   end
 
   @doc "Matches `title` in `title= hello`"
   def element_name(state) do
     eat state, ~r/^[a-z]+/, :element_name
+  end
+
+  def buffered_text(state) do
+    state
+    |> eat(~r/^=/, :eq, nil)
+    |> optional_whitespace()
+    |> eat(~r/^[^\n$]+/, :buffered_text)
+  end
+
+  def raw_text(state) do
+    state
+    |> eat(~r/^\|/, :pipe, nil)
+    |> optional_whitespace()
+    |> eat(~r/^[^\n$]+/, :raw_text)
+  end
+
+  def statement(state) do
+    state
+    |> eat(~r/^\-/, :pipe, nil)
+    |> optional_whitespace()
+    |> eat(~r/^[^\n$]+/, :statement)
   end
 end

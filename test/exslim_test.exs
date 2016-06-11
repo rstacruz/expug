@@ -19,7 +19,7 @@ defmodule ExslimTest do
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "title"},
-      {6, :text, "Hello world"}
+      {6, :sole_raw_text, "Hello world"}
     ]
   end
 
@@ -28,8 +28,7 @@ defmodule ExslimTest do
     assert output == [
       {0, :indent, ""},
       {0, :element_name, "title"},
-      {5, :buffered_text, "="},
-      {7, :text, "name"}
+      {7, :sole_buffered_text, "name"}
     ]
   end
 
@@ -124,8 +123,32 @@ defmodule ExslimTest do
     assert output == {:parse_error, 3, [:eof]}
   end
 
+  test "| raw text" do
+    {:ok, output} = Exslim.to_eex("| text")
+    assert output == [
+      {0, :indent, ""},
+      {2, :raw_text, "text"}
+    ]
+  end
+
+  test "= buffered text" do
+    {:ok, output} = Exslim.to_eex("= text")
+    assert output == [
+      {0, :indent, ""},
+      {2, :buffered_text, "text"}
+    ]
+  end
+
+  test "- statement" do
+    {:ok, output} = Exslim.to_eex("- text")
+    assert output == [
+      {0, :indent, ""},
+      {2, :statement, "text"}
+    ]
+  end
+
   # test "doctype"
-  # test "class"
-  # test "id"
-  # test "true values [foo=(a + b)]"
+  # test "true expressions [foo=(a + b)]"
+  # test "comma delimited attributes"
+  # test "script."
 end
