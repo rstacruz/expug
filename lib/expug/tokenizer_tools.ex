@@ -3,7 +3,9 @@ defmodule Expug.TokenizerTools do
   For tokenizers.
 
       def tokenizer(source)
-        run_tokenizer(source, &(document(&1))
+        {[], source, 0}
+        |> document()
+        |> finalize()
       end
 
       def document(state)
@@ -12,12 +14,13 @@ defmodule Expug.TokenizerTools do
         |> eat(~r/.../, &([{&3, :document, &2} | &1]))  # create it yourself
       end
   """
-  def run_tokenizer(source, fun) do
-    state = {[], source, 0}
-    state = fun.(state)
-    {doc, _, position} = state
 
-    # Guard against unexpected end-of-file
+  @doc """
+  Turns a state tuple (`{doc, source, position}`) into a final result.
+  Returns either `{:ok, doc}` or `{:error, [source: _, position: _, expected: _]}`.
+  Guards against unexpected end-of-file.
+  """
+  def finalize({doc, source, position}) do
     if String.slice(source, position..-1) != "" do
       expected = Enum.uniq_by(get_parse_errors(doc), &(&1))
       {:error, [source: source, position: position, expected: expected]}

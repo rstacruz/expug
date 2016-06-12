@@ -59,8 +59,10 @@ defmodule Expug.Tokenizer do
         {7, :sole_buffered_text, "name"},
       ]
   """
-  def tokenize(str) do
-    run_tokenizer(str, &document/1)
+  def tokenize(source) do
+    {[], source, 0}
+    |> document()
+    |> finalize()
   end
 
   @doc """
