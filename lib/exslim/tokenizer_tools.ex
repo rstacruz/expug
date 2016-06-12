@@ -104,7 +104,7 @@ defmodule Exslim.TokenizerTools do
 
       eat state, ~r/.../, :document
       eat state, ~r/.../, :document, nil  # discard it
-      eat state, ~r/.../, :document, &(&1 ++ [{&3, :document, &2}])
+      eat state, ~r/.../, :document, &[{&3, :document, &2} | &1]
 
       # &1 == current state
       # &2 == matched String

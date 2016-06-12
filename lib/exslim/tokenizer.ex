@@ -90,7 +90,7 @@ defmodule Exslim.Tokenizer do
 
   def indent(state) do
     state
-    |> eat(~r/^\s*/, :indent)
+    |> eat(~r/^\s*/, :indent, &[{&3, :indent, String.length(&2)} | &1])
   end
 
   def element_or_text(state) do

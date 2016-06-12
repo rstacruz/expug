@@ -7,7 +7,7 @@ defmodule ExslimTokenizerTest do
   test "basic" do
     {:ok, output} = tokenize("head")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "head"}
     ]
   end
@@ -15,7 +15,7 @@ defmodule ExslimTokenizerTest do
   test "basic with text" do
     {:ok, output} = tokenize("title Hello world")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "title"},
       {6, :sole_raw_text, "Hello world"}
     ]
@@ -24,7 +24,7 @@ defmodule ExslimTokenizerTest do
   test "title= name" do
     {:ok, output} = tokenize("title= name")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "title"},
       {7, :sole_buffered_text, "name"}
     ]
@@ -33,9 +33,9 @@ defmodule ExslimTokenizerTest do
   test "multiline" do
     {:ok, output} = tokenize("head\nbody\n")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "head"},
-      {5, :indent, ""},
+      {5, :indent, 0},
       {5, :element_name, "body"},
     ]
   end
@@ -43,9 +43,9 @@ defmodule ExslimTokenizerTest do
   test "multiline with blank lines" do
     {:ok, output} = tokenize("head\n   \n  \nbody\n")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "head"},
-      {12, :indent, ""},
+      {12, :indent, 0},
       {12, :element_name, "body"},
     ]
   end
@@ -53,7 +53,7 @@ defmodule ExslimTokenizerTest do
   test "div[]" do
     {:ok, output} = tokenize("div[]")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "["},
       {4, :attribute_close, "]"}
@@ -63,7 +63,7 @@ defmodule ExslimTokenizerTest do
   test "div()" do
     {:ok, output} = tokenize("div()")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_close, ")"}
@@ -73,7 +73,7 @@ defmodule ExslimTokenizerTest do
   test "div(id=\"hi\")" do
     {:ok, output} = tokenize("div(id=\"hi\")")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_key, "id"},
@@ -85,7 +85,7 @@ defmodule ExslimTokenizerTest do
   test "div(id='hi')" do
     {:ok, output} = tokenize("div(id='hi')")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_key, "id"},
@@ -97,7 +97,7 @@ defmodule ExslimTokenizerTest do
   test ~S[div(id='\'')] do
     {:ok, output} = tokenize(~S[div(id='\'')])
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_key, "id"},
@@ -109,7 +109,7 @@ defmodule ExslimTokenizerTest do
   test ~S[div(id='hi\'')] do
     {:ok, output} = tokenize(~S[div(id='hi\'')])
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_key, "id"},
@@ -121,7 +121,7 @@ defmodule ExslimTokenizerTest do
   test "div(id=\"hi\" class=\"foo\")" do
     {:ok, output} = tokenize("div(id=\"hi\" class=\"foo\")")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_key, "id"},
@@ -135,7 +135,7 @@ defmodule ExslimTokenizerTest do
   test "class" do
     {:ok, output} = tokenize("div.blue")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {4, :element_class, "blue"}
     ]
@@ -144,7 +144,7 @@ defmodule ExslimTokenizerTest do
   test "classes" do
     {:ok, output} = tokenize("div.blue.sm")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {4, :element_class, "blue"},
       {9, :element_class, "sm"}
@@ -154,7 +154,7 @@ defmodule ExslimTokenizerTest do
   test "classes and ID" do
     {:ok, output} = tokenize("div.blue.sm#box")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {4, :element_class, "blue"},
       {9, :element_class, "sm"},
@@ -174,7 +174,7 @@ defmodule ExslimTokenizerTest do
   test "| raw text" do
     {:ok, output} = tokenize("| text")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {2, :raw_text, "text"}
     ]
   end
@@ -182,7 +182,7 @@ defmodule ExslimTokenizerTest do
   test "= buffered text" do
     {:ok, output} = tokenize("= text")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {2, :buffered_text, "text"}
     ]
   end
@@ -190,7 +190,7 @@ defmodule ExslimTokenizerTest do
   test "- statement" do
     {:ok, output} = tokenize("- text")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {2, :statement, "text"}
     ]
   end
@@ -206,7 +206,7 @@ defmodule ExslimTokenizerTest do
     {:ok, output} = tokenize("doctype html5\nhtml")
     assert reverse(output) == [
       {8, :doctype, "html5"},
-      {14, :indent, ""},
+      {14, :indent, 0},
       {14, :element_name, "html"}
     ]
   end
@@ -214,7 +214,7 @@ defmodule ExslimTokenizerTest do
   test "div(id=(hello))" do
     {:ok, output} = tokenize("div(id=(hello))")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_key, "id"},
@@ -226,7 +226,7 @@ defmodule ExslimTokenizerTest do
   test "div(id=(hello(world)))" do
     {:ok, output} = tokenize("div(id=(hello(world)))")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_key, "id"},
@@ -238,7 +238,7 @@ defmodule ExslimTokenizerTest do
   test "div(id=(hello(worl[]d)))" do
     {:ok, output} = tokenize("div(id=(hello(worl[]d)))")
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_key, "id"},
@@ -250,7 +250,7 @@ defmodule ExslimTokenizerTest do
   test ~S[div(id="hello #{world}")] do
     {:ok, output} = tokenize(~S[div(id="hello #{world}")])
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_key, "id"},
@@ -262,12 +262,22 @@ defmodule ExslimTokenizerTest do
   test ~S[div(id=hello)] do
     {:ok, output} = tokenize(~S[div(id=hello)])
     assert reverse(output) == [
-      {0, :indent, ""},
+      {0, :indent, 0},
       {0, :element_name, "div"},
       {3, :attribute_open, "("},
       {4, :attribute_key, "id"},
       {7, :attribute_value, "hello"},
       {12, :attribute_close, ")"}
+    ]
+  end
+
+  test "with indent" do
+    {:ok, output} = tokenize("head\n  title")
+    assert reverse(output) == [
+      {0, :indent, 0},
+      {0, :element_name, "head"},
+      {5, :indent, 2},
+      {7, :element_name, "title"}
     ]
   end
 
