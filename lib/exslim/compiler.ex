@@ -33,8 +33,8 @@ defmodule Exslim.Compiler do
     # [:attribute_open [...] :attribute_close]
     # [:solo_buffered_text | :solo_raw_text]
     case tokens do
-      [{_, :indent, ^indent} | _] ->
-        {node, []} # siblings, stop processing
+      [{_, :indent, ^indent} | _] = tokens ->
+        {node, tokens} # siblings, stop processing
 
       [{_, :indent, subindent} | tokens = [{_, :element_name, _} | _]] ->
         {child, rest} = element({[type: :element], tokens}, subindent)

@@ -84,16 +84,44 @@ defmodule ExslimCompilerTest do
   test "nesting" do
     {:ok, tokens} = tokenize("head\n  title")
     {:ok, ast} = compile(tokens)
-    assert ast == [
-      type: :document,
-      children: [
-        [ name: "head",
-          type: :element,
-          children: [
-            [ name: "title", type: :element ]
-          ]
-        ],
-      ]
-    ]
+    assert ast ==
+      [ type: :document,
+        children:
+          [ [ name: "head",
+              type: :element,
+              children:
+                [ [ name: "title", type: :element ] ] ] ] ]
+  end
+
+  test "nesting deeper" do
+    {:ok, tokens} = tokenize("head\n  title\n    span")
+    {:ok, ast} = compile(tokens)
+    assert ast ==
+      [ type: :document,
+        children:
+          [ [ name: "head",
+              type: :element,
+              children:
+                [ [ name: "title",
+                    type: :element,
+                    children:
+                      [ [ name: "span", type: :element ] ] ] ] ] ] ]
+  end
+
+  test "zigzag nesting" do
+    {:ok, tokens} = tokenize("head\n  title\n    span\n  meta")
+    {:ok, ast} = compile(tokens)
+    assert ast ==
+      [ type: :document,
+        children:
+          [ [ name: "head",
+              type: :element,
+              children:
+                [ [ name: "title",
+                    type: :element,
+                    children:
+                      [ [ name: "span", type: :element ] ] ],
+                  [ name: "meta",
+                    type: :element ] ] ] ] ]
   end
 end
