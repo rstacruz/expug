@@ -28,4 +28,11 @@ defmodule Exslim do
       ]
     ]
   """
+
+  def to_eex(source) do
+    {:ok, tokens} = Exslim.Tokenizer.tokenize(source)
+    {:ok, ast} = Exslim.Compiler.compile(tokens)
+    {:ok, template} = Exslim.Builder.build(ast)
+    {:ok, template}
+  end
 end

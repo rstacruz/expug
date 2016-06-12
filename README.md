@@ -23,5 +23,5 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 This is a work in progress.
 
 - [ ] String -> Tokens (`Exslim.Tokenizer.tokenize(str)`) - *getting there!*
-- [ ] Tokens -> AST (`Exslim.Compiler.compile(tokens)`)
+- [ ] Tokens -> AST (`Exslim.Compiler.compile(tokens)`) - *getting there!*
 - [ ] AST -> EEx (`Exslim.Builder.build(tokens)`)
