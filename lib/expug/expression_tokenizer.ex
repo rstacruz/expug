@@ -37,11 +37,20 @@ defmodule Expug.ExpressionTokenizer do
   end
 
   @doc """
+  Matches simple expressions like `xyz`, but only for inside parentheses.
+  These can have spaces.
+  """
+  def expression_term_inside(state) do
+    state
+    |> eat_string(~r/^[^\(\)\[\]\{\}"']+/)
+  end
+
+  @doc """
   Matches balanced `(...)` fragments
   """
   def balanced_parentheses(state) do
     state
-    |> balanced_pairs(~r/^\(/, ~r/^\)/, ~r/^[^\(\)\[\]\{\}"']+/)
+    |> balanced_pairs(~r/^\(/, ~r/^\)/)
   end
 
   @doc """
@@ -49,7 +58,7 @@ defmodule Expug.ExpressionTokenizer do
   """
   def balanced_braces(state) do
     state
-    |> balanced_pairs(~r/^\{/, ~r/^\}/, ~r/^[^\(\)\[\]\{\}"']+/)
+    |> balanced_pairs(~r/^\{/, ~r/^\}/)
   end
 
   @doc """
@@ -57,20 +66,20 @@ defmodule Expug.ExpressionTokenizer do
   """
   def balanced_brackets(state) do
     state
-    |> balanced_pairs(~r/^\[/, ~r/^\]/, ~r/^[^\(\)\[\]\{\}"']+/)
+    |> balanced_pairs(~r/^\[/, ~r/^\]/)
   end
 
   @doc """
   Underlying implementation for `balanced_*` functions
   """
-  def balanced_pairs(state, left, right, exclusion) do
+  def balanced_pairs(state, left, right) do
     state
     |> eat_string(left)
     |> optional(fn s -> s
       |> many_of(fn s -> s
         |> one_of([
           &expression_fragment/1,
-          &(&1 |> eat_string(exclusion))
+          &expression_term_inside/1
         ])
       end)
     end)
