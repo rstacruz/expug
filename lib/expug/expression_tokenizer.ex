@@ -7,13 +7,8 @@ defmodule Expug.ExpressionTokenizer do
 
   def expression(state, token_name) do
     state
-    |> put_token(token_name)
+    |> start_empty(token_name)
     |> many_of(&expression_fragment/1)
-  end
-
-  def put_token(state = {doc, str, pos}, token_name) do
-    token = {pos, token_name, ""}
-    {[token | doc], str, pos}
   end
 
   def expression_fragment(state) do
@@ -109,16 +104,5 @@ defmodule Expug.ExpressionTokenizer do
     |> eat_string(~r/^'/)
     |> many_of(&(&1 |> eat_string(~r/^(?:(?:\\')|[^'])/)))
     |> eat_string(~r/^'/)
-  end
-
-  @doc """
-  Like eat(), but instead of creating a token, it appends to the last token.
-  """
-  def eat_string(state, expr) do
-    # parse_error is trippin' here
-    state
-    |> eat(expr, nil, fn [ {pos, token_name, left} | rest ], right, _pos ->
-      [ {pos, token_name, left <> right} | rest ]
-    end)
   end
 end

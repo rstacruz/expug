@@ -141,4 +141,39 @@ defmodule Expug.TokenizerTools do
   def match(expr, remainder) do
     Regex.run(expr, remainder)
   end
+
+  @doc """
+  Creates an token with a given `token_name`.
+  This is functionally the same as `|> eat(~r//, :token_name)`, but using
+  `start_empty()` can make your code more readable.
+
+      state
+      |> start_empty(:quoted_string)
+      |> eat_string(~r/^"/)
+      |> eat_string(~r/[^"]+/)
+      |> eat_string(~r/^"/)
+  """
+  def start_empty(state = {doc, str, pos}, token_name) do
+    token = {pos, token_name, ""}
+    {[token | doc], str, pos}
+  end
+
+  @doc """
+  Like eat(), but instead of creating a token, it appends to the last token.
+  Useful alongside `start_empty()`.
+
+      state
+      |> start_empty(:quoted_string)
+      |> eat_string(~r/^"/)
+      |> eat_string(~r/[^"]+/)
+      |> eat_string(~r/^"/)
+  """
+  def eat_string(state, expr) do
+    # parse_error will trip here; the `nil` token name ensures parse errors
+    # will not make it to the document.
+    state
+    |> eat(expr, nil, fn [ {pos, token_name, left} | rest ], right, _pos ->
+      [ {pos, token_name, left <> right} | rest ]
+    end)
+  end
 end
