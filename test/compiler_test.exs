@@ -146,17 +146,37 @@ defmodule ExpugCompilerTest do
             type: :element ] ] ]
   end
 
-  # test "dupe attributes" do
-  #   {:ok, tokens} = tokenize("div(src=1 href=2)")
-  #   {:ok, ast} = compile(tokens)
-  #   assert ast ==
-  #     [ type: :document,
-  #       children:
-  #       [ [ attributes:
-  #           [ [ type: :attribute,
-  #               key: "src",
-  #               val: "1" ] ],
-  #           name: "div",
-  #           type: :element ] ] ]
-  # end
+  test "2 attributes" do
+    {:ok, tokens} = tokenize("div(id: 'box' style: 'color: blue')")
+    {:ok, ast} = compile(tokens)
+    assert ast ==
+      [ type: :document,
+        children:
+        [ [ attributes:
+            [ [ type: :attribute,
+                key: "id",
+                val: "'box'" ],
+              [ type: :attribute,
+                key: "style",
+                val: "'color: blue'" ] ],
+            name: "div",
+            type: :element ] ] ]
+  end
+
+  test "dupe attributes" do
+    {:ok, tokens} = tokenize("div(src=1 src=2)")
+    {:ok, ast} = compile(tokens)
+    assert ast ==
+      [ type: :document,
+        children:
+        [ [ attributes:
+            [ [ type: :attribute,
+                key: "src",
+                val: "1" ],
+              [ type: :attribute,
+                key: "src",
+                val: "2" ] ],
+            name: "div",
+            type: :element ] ] ]
+  end
 end
