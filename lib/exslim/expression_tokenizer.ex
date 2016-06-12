@@ -8,7 +8,10 @@ defmodule Exslim.ExpressionTokenizer do
   def expression(state, token_name) do
     state
     |> put_token(token_name)
-    |> expression_fragment()
+    |> one_of([
+      &expression_fragment/1,
+      &expression_term/1
+    ])
   end
 
   def put_token(state = {doc, str, pos}, token_name) do
@@ -28,6 +31,21 @@ defmodule Exslim.ExpressionTokenizer do
   end
 
   @doc """
+  Matches simple expressions like `xyz` or even `a+b`.
+  The magic of `one_of` here is that so it can eat `a(b + c)d(e + f)`, because the
+  balanced parentheses keep the continuity.
+  """
+  def expression_term(state) do
+    state
+    |> many_of(fn s -> s
+      |> one_of([
+        &(&1 |> eat_string(~r/[^\(\)\[\]\{\} ]+/)),
+        &expression_fragment/1
+      ])
+    end)
+  end
+
+  @doc """
   Matches balanced `(...)` fragments
   """
   def balanced_parentheses(state) do
@@ -35,16 +53,25 @@ defmodule Exslim.ExpressionTokenizer do
     |> balanced_pairs(~r/^\(/, ~r/^\)/, ~r/^[^\(\)]+/)
   end
 
+  @doc """
+  Matches balanced `{...}` fragments
+  """
   def balanced_braces(state) do
     state
     |> balanced_pairs(~r/^\{/, ~r/^\}/, ~r/^[^\{\}]+/)
   end
 
+  @doc """
+  Matches balanced `[...]` fragments
+  """
   def balanced_brackets(state) do
     state
     |> balanced_pairs(~r/^\[/, ~r/^\]/, ~r/^[^\[\]]+/)
   end
 
+  @doc """
+  Underlying implementation for `balanced_*` functions
+  """
   def balanced_pairs(state, left, right, exclusion) do
     state
     |> eat_string(left)
@@ -85,11 +112,11 @@ defmodule Exslim.ExpressionTokenizer do
   end
 
   @doc """
-  Like eat(), but instead of creating a token, it appends it to the last token.
+  Like eat(), but instead of creating a token, it appends to the last token.
   """
   def eat_string(state, expr) do
     state
-    |> eat(expr, :_, fn x= [ {pos, token_name, left} | rest ], right, _pos ->
+    |> eat(expr, :_, fn [ {pos, token_name, left} | rest ], right, _pos ->
       [ {pos, token_name, left <> right} | rest ]
     end)
   end

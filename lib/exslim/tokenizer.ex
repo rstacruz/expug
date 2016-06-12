@@ -178,7 +178,7 @@ defmodule Exslim.Tokenizer do
     |> one_of([
       &attribute_bracket/1,
       &attribute_paren/1,
-      &attribute_curly/1
+      &attribute_brace/1
     ])
   end
 
@@ -196,7 +196,7 @@ defmodule Exslim.Tokenizer do
     |> eat(~r/^\)/, :attribute_close)
   end
 
-  def attribute_curly(state) do
+  def attribute_brace(state) do
     state
     |> eat(~r/^\{/, :attribute_open)
     |> optional(&attribute_list/1)

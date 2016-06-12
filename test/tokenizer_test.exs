@@ -247,6 +247,18 @@ defmodule ExslimTokenizerTest do
       {23, :attribute_close, ")"}
     ]
   end
+
+  test ~S[div(id=hello)] do
+    {:ok, output} = tokenize(~S[div(id=hello)])
+    assert reverse(output) == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {3, :attribute_open, "("},
+      {4, :attribute_key, "id"},
+      {7, :attribute_value, "hello"},
+      {12, :attribute_close, ")"}
+    ]
+  end
   # test "doctype"
   # test "true expressions [foo=(a + b)]"
   # test "comma delimited attributes"
