@@ -1,4 +1,4 @@
-defmodule Exslim.Builder do
+defmodule Expug.Builder do
   def build(ast) do
     {:ok, document(ast)}
   end

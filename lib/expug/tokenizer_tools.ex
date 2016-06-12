@@ -1,4 +1,4 @@
-defmodule Exslim.TokenizerTools do
+defmodule Expug.TokenizerTools do
   @moduledoc """
   For tokenizers.
 

@@ -1,6 +1,6 @@
-defmodule Exslim do
+defmodule Expug do
   @doc """
-  Exslim.
+  Expug.
 
   ## AST
 
@@ -30,9 +30,9 @@ defmodule Exslim do
   """
 
   def to_eex(source) do
-    {:ok, tokens} = Exslim.Tokenizer.tokenize(source)
-    {:ok, ast} = Exslim.Compiler.compile(tokens)
-    {:ok, template} = Exslim.Builder.build(ast)
+    {:ok, tokens} = Expug.Tokenizer.tokenize(source)
+    {:ok, ast} = Expug.Compiler.compile(tokens)
+    {:ok, template} = Expug.Builder.build(ast)
     {:ok, template}
   end
 end

@@ -1,8 +1,8 @@
-defmodule ExslimCompilerTest do
+defmodule ExpugCompilerTest do
   use ExUnit.Case
 
-  import Exslim.Tokenizer, only: [tokenize: 1]
-  import Exslim.Compiler, only: [compile: 1]
+  import Expug.Tokenizer, only: [tokenize: 1]
+  import Expug.Compiler, only: [compile: 1]
 
   test "doctype only" do
     {:ok, tokens} = tokenize("doctype html5")

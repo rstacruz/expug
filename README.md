@@ -1,27 +1,38 @@
-# Exslim
+# Expug
 
-> Slim templates for Elixir
+> Pug templates for Elixir
 
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
-  1. Add exslim to your list of dependencies in `mix.exs`:
+  1. Add expug to your list of dependencies in `mix.exs`:
 
         def deps do
-          [{:exslim, "~> 0.0.1"}]
+          [{:expug, "~> 0.0.1"}]
         end
 
-  2. Ensure exslim is started before your application:
+  2. Ensure expug is started before your application:
 
         def application do
-          [applications: [:exslim]]
+          [applications: [:expug]]
         end
 
 ## To Do
 
 This is a work in progress.
 
-- [ ] String -> Tokens (`Exslim.Tokenizer.tokenize(str)`) - *getting there!*
-- [ ] Tokens -> AST (`Exslim.Compiler.compile(tokens)`) - *getting there!*
-- [ ] AST -> EEx (`Exslim.Builder.build(tokens)`)
+- [95%] String -> Tokens (`tokens = Expug.Tokenizer.tokenize(str)`)
+- [40%] Tokens -> AST (`ast = Expug.Compiler.compile(tokens)`) - *getting there!*
+- [1%] AST -> EEx templates (`eex = Expug.Builder.build(ast)`)
+
+Supported:
+
+- [x] Most everything
+- [ ] `!=` unescaped code
+- [ ] HTML escaping
+- [ ] `/` comments
+- [ ] `,` comma-delimited attributes
+- [ ] Multiline expressions
+- [ ] `.` raw text (like `script.`)
+- [ ] Bracket-less attributes

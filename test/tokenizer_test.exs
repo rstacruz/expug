@@ -1,7 +1,7 @@
-defmodule ExslimTokenizerTest do
+defmodule ExpugTokenizerTest do
   use ExUnit.Case
 
-  import Exslim.Tokenizer, only: [tokenize: 1]
+  import Expug.Tokenizer, only: [tokenize: 1]
   import Enum, only: [reverse: 1]
 
   test "basic" do
@@ -283,4 +283,6 @@ defmodule ExslimTokenizerTest do
 
   # test "comma delimited attributes"
   # test "script."
+  # test "comments"
+  # test "!="
 end

@@ -1,9 +1,9 @@
-defmodule Exslim.ExpressionTokenizer do
+defmodule Expug.ExpressionTokenizer do
   @moduledoc """
   Tokenizes an expression.
   """
 
-  import Exslim.TokenizerTools
+  import Expug.TokenizerTools
 
   def expression(state, token_name) do
     state

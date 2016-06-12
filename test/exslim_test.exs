@@ -1,14 +1,14 @@
-defmodule ExslimTest do
+defmodule ExpugTest do
   use ExUnit.Case
-  doctest Exslim
+  doctest Expug
 
   test "build" do
-    {:ok, eex} = Exslim.to_eex("doctype html\ndiv Hello")
+    {:ok, eex} = Expug.to_eex("doctype html\ndiv Hello")
     assert eex == "<!doctype html><div>Hello</div>"
   end
 
   test "with buffered text" do
-    {:ok, eex} = Exslim.to_eex("div= hola()")
+    {:ok, eex} = Expug.to_eex("div= hola()")
     assert eex == "<div><%= hola() %></div>"
   end
 end

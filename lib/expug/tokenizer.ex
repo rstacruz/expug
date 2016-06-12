@@ -1,4 +1,4 @@
-defmodule Exslim.Tokenizer do
+defmodule Expug.Tokenizer do
   @moduledoc """
   Tokenizes a Slim template into a list of tokens. The main entry point is
   `tokenize/1`.
@@ -47,7 +47,7 @@ defmodule Exslim.Tokenizer do
     - `:doctype` - `html5`
   """
 
-  import Exslim.TokenizerTools
+  import Expug.TokenizerTools
 
   @doc """
   Tokenizes a string.
@@ -63,6 +63,9 @@ defmodule Exslim.Tokenizer do
     run_tokenizer(str, &document/1)
   end
 
+  @doc """
+  Matches an entire document.
+  """
   def document(state) do
     state
     |> optional(&newlines/1)
@@ -72,6 +75,9 @@ defmodule Exslim.Tokenizer do
       &(&1 |> element_or_text()))
   end
 
+  @doc """
+  Matches `doctype html`.
+  """
   def doctype(state) do
     state
     |> eat(~r/^doctype/, :doctype, nil)
@@ -81,27 +87,38 @@ defmodule Exslim.Tokenizer do
   end
 
   @doc """
-  Consumes any number of blank newlines. Whitespaces are accounted for.
+  Matches an HTML element, text node, or, you know... the basic statements.
+  I don't know what to call this.
+  """
+  def element_or_text(state) do
+    state
+    |> indent()
+    |> one_of([
+      &buffered_text/1,  # `= hello`
+      &raw_text/1,       # `| hello`
+      &statement/1,      # `- hello`
+      &element/1         # `div.blue hello`
+    ])
+  end
+
+  @doc """
+  Matches any number of blank newlines. Whitespaces are accounted for.
   """
   def newlines(state) do
     state
     |> eat(~r/^\n(?:[ \t]*\n)*/, :newlines, nil)
   end
 
+  @doc """
+  Matches an indentation. Gives a token that looks like `{_, :indent, 2}`
+  where the last number is the number of spaces/tabs.
+
+  Doesn't really care if you use spaces or tabs; a tab is treated like a single
+  space.
+  """
   def indent(state) do
     state
     |> eat(~r/^\s*/, :indent, &[{&3, :indent, String.length(&2)} | &1])
-  end
-
-  def element_or_text(state) do
-    state
-    |> indent()
-    |> one_of([
-      &buffered_text/1,
-      &raw_text/1,
-      &statement/1,
-      &element/1
-    ])
   end
 
   @doc """
@@ -237,7 +254,7 @@ defmodule Exslim.Tokenizer do
 
   def attribute_value(state) do
     state
-    |> Exslim.ExpressionTokenizer.expression(:attribute_value)
+    |> Expug.ExpressionTokenizer.expression(:attribute_value)
   end
 
   def attribute_separator(state) do
@@ -297,7 +314,7 @@ defmodule Exslim.Tokenizer do
 
   def statement(state) do
     state
-    |> eat(~r/^\-/, :pipe, nil)
+    |> eat(~r/^\-/, :dash, nil)
     |> optional_whitespace()
     |> eat(~r/^[^\n$]+/, :statement)
   end

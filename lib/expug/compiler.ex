@@ -1,4 +1,4 @@
-defmodule Exslim.Compiler do
+defmodule Expug.Compiler do
   @moduledoc """
   Compiles tokens into an AST.
   """
