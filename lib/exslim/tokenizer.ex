@@ -80,12 +80,17 @@ defmodule Exslim.Tokenizer do
     |> optional(&newlines/1)
   end
 
+  @doc """
+  Consumes any number of blank newlines. Whitespaces are accounted for.
+  """
   def newlines(state) do
-    eat state, ~r/^\n(?:[ \t]*\n)*/, :newlines, nil
+    state
+    |> eat(~r/^\n(?:[ \t]*\n)*/, :newlines, nil)
   end
 
   def indent(state) do
-    eat state, ~r/^\s*/, :indent
+    state
+    |> eat(~r/^\s*/, :indent)
   end
 
   def element_or_text(state) do
@@ -142,7 +147,6 @@ defmodule Exslim.Tokenizer do
     state
     |> many_of(&element_class_or_id/1)
   end
-
 
   @doc """
   Matches `.foo` or `#id` (just one)
@@ -246,11 +250,13 @@ defmodule Exslim.Tokenizer do
 
   @doc "Matches whitespace; no tokens emitted"
   def whitespace(state) do
-    eat state, ~r/^[ \t]+/, :whitespace, nil
+    state
+    |> eat(~r/^[ \t]+/, :whitespace, nil)
   end
 
   def optional_whitespace(state) do
-    eat state, ~r/^[ \t]*/, :optional_whitespace, nil
+    state
+    |> eat(~r/^[ \t]*/, :optional_whitespace, nil)
   end
 
   @doc "Matches `=`"
@@ -271,7 +277,8 @@ defmodule Exslim.Tokenizer do
 
   @doc "Matches `title` in `title= hello`"
   def element_name(state) do
-    eat state, ~r/^[a-z]+/, :element_name
+    state
+    |> eat(~r/^[a-z]+/, :element_name)
   end
 
   def buffered_text(state) do
