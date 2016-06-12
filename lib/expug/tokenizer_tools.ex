@@ -65,11 +65,16 @@ defmodule Expug.TokenizerTools do
   def optional(state, fun) do
     try do
       fun.(state)
-    catch {:parse_error, err_pos, expected} ->
-      # Add a parse error pseudo-token to the document. They will be scrubbed
-      # later on, but it will be inspected in case of a parse error.
-      {doc, source, pos} = state
-      {[{err_pos, :parse_error, expected} | doc], source, pos}
+    catch
+      {:parse_error, _, [nil | _]} ->
+        # These are eat_string errors, don't bother with it
+        state
+
+      {:parse_error, err_pos, expected} ->
+        # Add a parse error pseudo-token to the document. They will be scrubbed
+        # later on, but it will be inspected in case of a parse error.
+        {doc, source, pos} = state
+        {[{err_pos, :parse_error, expected} | doc], source, pos}
     end
   end
 
