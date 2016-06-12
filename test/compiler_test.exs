@@ -3,27 +3,28 @@ defmodule ExpugCompilerTest do
 
   import Expug.Tokenizer, only: [tokenize: 1]
   import Expug.Compiler, only: [compile: 1]
+  import TestUtils, only: [sort: 1]
 
   test "doctype only" do
     {:ok, tokens} = tokenize("doctype html5")
     {:ok, ast} = compile(tokens)
-    assert ast ==
+    assert sort(ast) ==
       [ doctype:
-        [ type: :doctype,
-          value: "html5",
-          token: {8, :doctype, "html5"} ],
+        [ token: {8, :doctype, "html5"},
+          type: :doctype,
+          value: "html5" ],
         type: :document ]
   end
 
   test "tag only" do
     {:ok, tokens} = tokenize("div")
     {:ok, ast} = compile(tokens)
-    assert ast == [
+    assert sort(ast) == sort([
       type: :document,
       children: [
         [name: "div", type: :element]
       ]
-    ]
+    ])
   end
 
   test "doctype and tag" do
