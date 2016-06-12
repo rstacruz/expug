@@ -16,10 +16,26 @@ defmodule Exslim.TokenizerTools do
     {doc, _, position} = state
 
     # Guard against unexpected end-of-file
-    if position != String.length(str) do
-      {:error, {:parse_error, position, [:eof]}}
+    if String.slice(str, position..-1) != "" do
+      expected = Enum.uniq_by(get_parse_errors(doc), &(&1))
+      {:error, [str: str, position: position, expected: expected]}
     else
+      doc = scrub_parse_errors(doc)
       {:ok, doc}
+    end
+  end
+
+  def get_parse_errors([{_, :parse_error, expected} | rest]) do
+    expected ++ get_parse_errors(rest)
+  end
+
+  def get_parse_errors(_) do
+    []
+  end
+
+  def scrub_parse_errors(doc) do
+    Enum.reject doc, fn {_, type, _} ->
+      type == :parse_error
     end
   end
 
@@ -37,7 +53,7 @@ defmodule Exslim.TokenizerTools do
     end
   end
 
-  def one_of(state = {_, pos, _}, [], expected) do
+  def one_of({_, pos, _}, [], expected) do
     throw {:parse_error, pos, expected}
   end
 
@@ -49,8 +65,11 @@ defmodule Exslim.TokenizerTools do
   def optional(state, fun) do
     try do
       fun.(state)
-    catch
-      {:parse_error, _, _} -> state
+    catch {:parse_error, err_pos, expected} ->
+      # Add a parse error pseudo-token to the document. They will be scrubbed
+      # later on, but it will be inspected in case of a parse error.
+      {doc, str, pos} = state
+      {[{err_pos, :parse_error, expected} | doc], str, pos}
     end
   end
 
@@ -61,7 +80,7 @@ defmodule Exslim.TokenizerTools do
     many_of(state, head, head)
   end
 
-  def many_of(state = {_, str, pos}, head, tail) do
+  def many_of(state = {_doc, str, pos}, head, tail) do
     if String.slice(str, pos..-1) == "" do
       state
     else

@@ -3,5 +3,5 @@ defmodule Exslim.ParseError do
   A parse error
   """
 
-  defexception [:message, :position]
+  defexception [:position, :expected, :str]
 end
