@@ -3,6 +3,9 @@ defmodule Exslim.Tokenizer do
   Tokenizes a Slim template into a list of tokens. The main entry point is
   `tokenize/1`.
 
+  Note that the tokens are reversed! It's easier to append to the top of a list
+  rather than to the end, making it more efficient.
+
   ## Token types
 
   `div.blue#box`
@@ -74,7 +77,7 @@ defmodule Exslim.Tokenizer do
     |> eat(~r/^doctype/, :doctype, nil)
     |> whitespace()
     |> eat(~r/^[^\n]+/, :doctype)
-    |> newlines()
+    |> optional(&newlines/1)
   end
 
   def newlines(state) do
@@ -103,8 +106,6 @@ defmodule Exslim.Tokenizer do
     state
     |> element_descriptor()
     |> optional(&attributes_block/1)
-
-    # Text
     |> optional(fn s -> s
       |> one_of([
         &sole_buffered_text/1,

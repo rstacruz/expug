@@ -192,6 +192,13 @@ defmodule ExslimTokenizerTest do
   end
 
   test "doctype" do
+    {:ok, output} = tokenize("doctype html5")
+    assert reverse(output) == [
+      {8, :doctype, "html5"}
+    ]
+  end
+
+  test "doctype + html" do
     {:ok, output} = tokenize("doctype html5\nhtml")
     assert reverse(output) == [
       {8, :doctype, "html5"},
@@ -259,8 +266,7 @@ defmodule ExslimTokenizerTest do
       {12, :attribute_close, ")"}
     ]
   end
-  # test "doctype"
-  # test "true expressions [foo=(a + b)]"
+
   # test "comma delimited attributes"
   # test "script."
 end
