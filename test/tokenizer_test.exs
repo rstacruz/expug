@@ -82,6 +82,42 @@ defmodule ExslimTokenizerTest do
     ]
   end
 
+  test "div(id='hi')" do
+    {:ok, output} = tokenize("div(id='hi')")
+    assert reverse(output) == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {3, :attribute_open, "("},
+      {4, :attribute_key, "id"},
+      {7, :attribute_value, "'hi'"},
+      {11, :attribute_close, ")"}
+    ]
+  end
+
+  test ~S[div(id='\'')] do
+    {:ok, output} = tokenize(~S[div(id='\'')])
+    assert reverse(output) == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {3, :attribute_open, "("},
+      {4, :attribute_key, "id"},
+      {7, :attribute_value, ~S['\'']},
+      {11, :attribute_close, ")"}
+    ]
+  end
+
+  test ~S[div(id='hi\'')] do
+    {:ok, output} = tokenize(~S[div(id='hi\'')])
+    assert reverse(output) == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {3, :attribute_open, "("},
+      {4, :attribute_key, "id"},
+      {7, :attribute_value, ~S['hi\'']},
+      {13, :attribute_close, ")"}
+    ]
+  end
+
   test "div(id=\"hi\" class=\"foo\")" do
     {:ok, output} = tokenize("div(id=\"hi\" class=\"foo\")")
     assert reverse(output) == [
@@ -164,6 +200,53 @@ defmodule ExslimTokenizerTest do
     ]
   end
 
+  test "div(id=(hello))" do
+    {:ok, output} = tokenize("div(id=(hello))")
+    assert reverse(output) == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {3, :attribute_open, "("},
+      {4, :attribute_key, "id"},
+      {7, :attribute_value, "(hello)"},
+      {14, :attribute_close, ")"}
+    ]
+  end
+
+  test "div(id=(hello(world)))" do
+    {:ok, output} = tokenize("div(id=(hello(world)))")
+    assert reverse(output) == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {3, :attribute_open, "("},
+      {4, :attribute_key, "id"},
+      {7, :attribute_value, "(hello(world))"},
+      {21, :attribute_close, ")"}
+    ]
+  end
+
+  test "div(id=(hello(worl[]d)))" do
+    {:ok, output} = tokenize("div(id=(hello(worl[]d)))")
+    assert reverse(output) == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {3, :attribute_open, "("},
+      {4, :attribute_key, "id"},
+      {7, :attribute_value, "(hello(worl[]d))"},
+      {23, :attribute_close, ")"}
+    ]
+  end
+
+  test ~S[div(id="hello #{world}")] do
+    {:ok, output} = tokenize(~S[div(id="hello #{world}")])
+    assert reverse(output) == [
+      {0, :indent, ""},
+      {0, :element_name, "div"},
+      {3, :attribute_open, "("},
+      {4, :attribute_key, "id"},
+      {7, :attribute_value, ~S["hello #{world}"]},
+      {23, :attribute_close, ")"}
+    ]
+  end
   # test "doctype"
   # test "true expressions [foo=(a + b)]"
   # test "comma delimited attributes"
