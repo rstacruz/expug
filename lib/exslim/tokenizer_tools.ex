@@ -2,23 +2,23 @@ defmodule Exslim.TokenizerTools do
   @moduledoc """
   For tokenizers.
 
-      def tokenizer(str)
-        run_tokenizer(str, &(document(&1))
+      def tokenizer(source)
+        run_tokenizer(source, &(document(&1))
       end
 
       def document(state)
         eat state, ~r/.../, &(&1 ++ [{&3, :document, &2}])
       end
   """
-  def run_tokenizer(str, fun) do
-    state = {[], str, 0}
+  def run_tokenizer(source, fun) do
+    state = {[], source, 0}
     state = fun.(state)
     {doc, _, position} = state
 
     # Guard against unexpected end-of-file
-    if String.slice(str, position..-1) != "" do
+    if String.slice(source, position..-1) != "" do
       expected = Enum.uniq_by(get_parse_errors(doc), &(&1))
-      {:error, [str: str, position: position, expected: expected]}
+      {:error, [source: source, position: position, expected: expected]}
     else
       doc = scrub_parse_errors(doc)
       {:ok, doc}
@@ -68,8 +68,8 @@ defmodule Exslim.TokenizerTools do
     catch {:parse_error, err_pos, expected} ->
       # Add a parse error pseudo-token to the document. They will be scrubbed
       # later on, but it will be inspected in case of a parse error.
-      {doc, str, pos} = state
-      {[{err_pos, :parse_error, expected} | doc], str, pos}
+      {doc, source, pos} = state
+      {[{err_pos, :parse_error, expected} | doc], source, pos}
     end
   end
 
@@ -80,8 +80,8 @@ defmodule Exslim.TokenizerTools do
     many_of(state, head, head)
   end
 
-  def many_of(state = {_doc, str, pos}, head, tail) do
-    if String.slice(str, pos..-1) == "" do
+  def many_of(state = {_doc, source, pos}, head, tail) do
+    if String.slice(source, pos..-1) == "" do
       state
     else
       try do
@@ -95,19 +95,19 @@ defmodule Exslim.TokenizerTools do
   @doc """
   Eats a token.
 
-  * `state` - assumed to be `{doc, str, pos}` (given by `run_tokenizer/2`).
+  * `state` - assumed to be `{doc, source, pos}` (given by `run_tokenizer/2`).
   * `expr` - regexp expression.
   * `token_name` (atom, optional) - token name.
   * `reducer` (function, optional) - a function.
 
-  Returns `{ doc, str, pos }` too, where `doc` is transformed via `fun`.
+  Returns `{ doc, source, pos }` too, where `doc` is transformed via `fun`.
 
       eat state, ~r/.../, :document
       eat state, ~r/.../, :document, nil  # discard it
       eat state, ~r/.../, :document, &(&1 ++ [{&3, :document, &2}])
 
       # &1 == current state
-      # &2 == matched string
+      # &2 == matched String
       # &3 == position
   """
   def eat(state, expr) do
@@ -122,12 +122,12 @@ defmodule Exslim.TokenizerTools do
     eat state, expr, token_name, fn state, _, _ -> state end
   end
 
-  def eat({doc, str, pos}, expr, token_name, fun) do
-    remainder = String.slice(str, pos..-1)
+  def eat({doc, source, pos}, expr, token_name, fun) do
+    remainder = String.slice(source, pos..-1)
     case match(expr, remainder) do
       [term] ->
         length = String.length(term)
-        { fun.(doc, term, pos), str, pos + length }
+        { fun.(doc, term, pos), source, pos + length }
       nil ->
         throw {:parse_error, pos, [token_name]}
     end

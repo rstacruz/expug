@@ -165,7 +165,7 @@ defmodule ExslimTokenizerTest do
   test "parse error" do
     {:error, output} = tokenize("hello\nhuh?")
     assert output == [
-      str: "hello\nhuh?",
+      source: "hello\nhuh?",
       position: 9,
       expected: [:eq, :whitespace, :attribute_open]
     ]
