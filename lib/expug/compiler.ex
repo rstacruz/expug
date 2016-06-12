@@ -20,8 +20,13 @@ defmodule Expug.Compiler do
 
   def doctype({node, tokens}) do
     case tokens do
-      [{_, :doctype, type} | rest] ->
-        node = K.put(node, :doctype, type)
+      [{_, :doctype, type} = token | rest] ->
+        doctype = [
+          type: :doctype,
+          value: type,
+          token: token
+        ]
+        node = K.put(node, :doctype, doctype)
         statements({node, rest}, -1)
 
       _ ->

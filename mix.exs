@@ -17,7 +17,9 @@ defmodule Expug.Mixfile do
   end
 
   defp deps do
-    []
+    [
+      {:calliope, "~> 0.4.0", only: :test}
+    ]
   end
 
   def package do

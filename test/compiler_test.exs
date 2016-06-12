@@ -7,7 +7,12 @@ defmodule ExpugCompilerTest do
   test "doctype only" do
     {:ok, tokens} = tokenize("doctype html5")
     {:ok, ast} = compile(tokens)
-    assert ast == [doctype: "html5", type: :document]
+    assert ast ==
+      [ doctype:
+        [ type: :doctype,
+          value: "html5",
+          token: {8, :doctype, "html5"} ],
+        type: :document ]
   end
 
   test "tag only" do
@@ -24,25 +29,29 @@ defmodule ExpugCompilerTest do
   test "doctype and tag" do
     {:ok, tokens} = tokenize("doctype html5\ndiv")
     {:ok, ast} = compile(tokens)
-    assert ast == [
-      doctype: "html5",
-      type: :document,
-      children: [
-        [name: "div", type: :element]
-      ]
-    ]
+    assert ast ==
+      [ doctype:
+        [ type: :doctype,
+          value: "html5",
+          token: {8, :doctype, "html5"} ],
+        type: :document,
+        children:
+          [ [ name: "div", type: :element ] ] ]
   end
 
   test "doctype and tag and id" do
     {:ok, tokens} = tokenize("doctype html5\ndiv#box")
     {:ok, ast} = compile(tokens)
-    assert ast == [
-      doctype: "html5",
-      type: :document,
-      children: [
-        [id: "box", name: "div", type: :element]
-      ]
-    ]
+    assert ast ==
+      [ doctype:
+        [ type: :doctype,
+          value: "html5",
+          token: {8, :doctype, "html5"} ],
+        type: :document,
+        children:
+          [ [ id: "box",
+              name: "div",
+              type: :element ] ] ]
   end
 
   test "tag and classes" do
@@ -71,14 +80,15 @@ defmodule ExpugCompilerTest do
   test "doctype and tags" do
     {:ok, tokens} = tokenize("doctype html5\ndiv\nspan")
     {:ok, ast} = compile(tokens)
-    assert ast == [
-      doctype: "html5",
+    assert ast ==
+      [ doctype:
+        [ type: :doctype,
+          value: "html5",
+          token: {8, :doctype, "html5"} ],
       type: :document,
-      children: [
-        [name: "div", type: :element],
-        [name: "span", type: :element]
-      ]
-    ]
+      children:
+        [ [name: "div", type: :element],
+          [name: "span", type: :element] ] ]
   end
 
   test "nesting" do
