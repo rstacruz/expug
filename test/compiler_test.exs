@@ -99,13 +99,13 @@ defmodule ExslimCompilerTest do
     assert ast ==
       [ type: :document,
         children:
-          [ [ name: "head",
-              type: :element,
-              children:
-                [ [ name: "title",
-                    type: :element,
-                    children:
-                      [ [ name: "span", type: :element ] ] ] ] ] ] ]
+        [ [ name: "head",
+            type: :element,
+            children:
+            [ [ name: "title",
+                type: :element,
+                children:
+                [ [ name: "span", type: :element ] ] ] ] ] ] ]
   end
 
   test "zigzag nesting" do
@@ -114,14 +114,35 @@ defmodule ExslimCompilerTest do
     assert ast ==
       [ type: :document,
         children:
-          [ [ name: "head",
-              type: :element,
-              children:
-                [ [ name: "title",
-                    type: :element,
-                    children:
-                      [ [ name: "span", type: :element ] ] ],
-                  [ name: "meta",
-                    type: :element ] ] ] ] ]
+        [ [ name: "head",
+            type: :element,
+            children:
+            [ [ name: "title",
+                type: :element,
+                children:
+                [ [ name: "span", type: :element ] ] ],
+              [ name: "meta",
+                type: :element ] ] ] ] ]
+  end
+
+  test "zigzag nesting error" do
+    {:ok, tokens} = tokenize("head\n  title\n    span\n meta")
+    {:error, type, token} = compile(tokens)
+    assert type == :ambiguous_indentation
+    assert token == {23, :element_name, "meta"}
+  end
+
+  test "attributes" do
+    {:ok, tokens} = tokenize("div(style: 'color: blue')")
+    {:ok, ast} = compile(tokens)
+    assert ast ==
+      [ type: :document,
+        children:
+        [ [ attributes:
+            [ [ type: :attribute,
+                key: "style",
+                val: "'color: blue'" ] ],
+            name: "div",
+            type: :element ] ] ]
   end
 end
