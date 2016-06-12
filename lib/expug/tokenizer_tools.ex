@@ -13,6 +13,39 @@ defmodule Expug.TokenizerTools do
         |> eat(~r/^doctype /, :doctype)  # create a token
         |> eat(~r/.../, &([{&3, :document, &2} | &1]))  # create it yourself
       end
+
+  ## The state
+
+  The state begins as a tuple of `{[], source, 0}`. This is the list of tokens,
+  the source text, and the cursor position (aka, `{doc, source, pos}`).
+
+      eat(state, ~r/^"/, :open_quote)
+
+  The `eat()` function tries to find the given regexp from the `source` at
+  position `pos`. If it matches, it returns a new state: a new token is added
+  (`:open_quote` in this case), and the position `pos` is advanced.
+
+  If it fails to match, it'll throw a `{:parse_error, pos, [:open_quote]}`.
+  Roughly this translates to "parse error in position *pos*, expected to find
+  *:open_quote*".
+
+  ## Mixing and matching
+
+  Normally you'd make functions for most token types:
+
+      def doctype(state)
+        state
+        |> eat(%r/^doctype/, :doctype, nil)
+        |> whitespace()
+        |> eat(%r/^[a-z0-9]+/, :doctype_value)
+      end
+
+  You can then compose these functions using:
+
+      state
+      |> one_of([ &doctype/1, &foobar/1 ])
+      |> optional(&doctype/1)
+      |> many_of(&doctype/1)
   """
 
   @doc """
