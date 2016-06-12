@@ -7,7 +7,9 @@ defmodule Expug.TokenizerTools do
       end
 
       def document(state)
-        eat state, ~r/.../, &(&1 ++ [{&3, :document, &2}])
+        state
+        |> eat(~r/^doctype /, :doctype)  # create a token
+        |> eat(~r/.../, &([{&3, :document, &2} | &1]))  # create it yourself
       end
   """
   def run_tokenizer(source, fun) do
@@ -25,6 +27,12 @@ defmodule Expug.TokenizerTools do
     end
   end
 
+  @doc """
+  Extracts the last parse errors that happened.
+
+  In case of failure, `run_tokenizer()` will check the last parse errors
+  that happened. Returns a list of atoms of the expected tokens.
+  """
   def get_parse_errors([{_, :parse_error, expected} | rest]) do
     expected ++ get_parse_errors(rest)
   end
@@ -33,6 +41,9 @@ defmodule Expug.TokenizerTools do
     []
   end
 
+  @doc """
+  Gets rid of the `:parse_error` hints in the document.
+  """
   def scrub_parse_errors(doc) do
     Enum.reject doc, fn {_, type, _} ->
       type == :parse_error
@@ -40,7 +51,7 @@ defmodule Expug.TokenizerTools do
   end
 
   @doc """
-  Tries one of the following.
+  Finds any one of the given token-eater functions.
 
       state |> one_of([ &brackets/1, &braces/1, &parens/1 ])
   """
@@ -153,7 +164,7 @@ defmodule Expug.TokenizerTools do
       |> eat_string(~r/[^"]+/)
       |> eat_string(~r/^"/)
   """
-  def start_empty(state = {doc, str, pos}, token_name) do
+  def start_empty({doc, str, pos}, token_name) do
     token = {pos, token_name, ""}
     {[token | doc], str, pos}
   end
