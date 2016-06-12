@@ -35,4 +35,3 @@ Supported:
 - [ ] `,` comma-delimited attributes
 - [ ] Multiline expressions
 - [ ] `.` raw text (like `script.`)
-- [ ] Bracket-less attributes
