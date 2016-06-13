@@ -19,4 +19,13 @@ defmodule Expug do
        Expug.Stringifier.stringify(lines)
     end
   end
+
+  def to_eex!(source) do
+    case to_eex(source) do
+      {:ok, eex} ->
+        eex
+      {:error, err} ->
+        raise Expug.Error.exception(err)
+    end
+  end
 end
