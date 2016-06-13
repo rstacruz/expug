@@ -55,10 +55,13 @@ defmodule Expug.TokenizerTools do
   def finalize({doc, source, position}) do
     if String.slice(source, position..-1) != "" do
       expected = Enum.uniq_by(get_parse_errors(doc), &(&1))
+      position = convert_positions(position, source)
       {:parse_error, [source: source, position: position, expected: expected]}
     else
-      doc = scrub_parse_errors(doc)
-      {:ok, convert_positions(doc, source)}
+      doc = doc
+      |> scrub_parse_errors()
+      |> convert_positions(source)
+      {:ok, doc}
     end
   end
 
@@ -250,11 +253,23 @@ defmodule Expug.TokenizerTools do
     convert_position(doc, offsets)
   end
 
-  def convert_position([ {pos, a, b} | rest ], offsets) do
+  @doc """
+  Converts a position number `n` to a tuple `{line, col}`.
+  """
+
+  def convert_position(pos, offsets) when is_number(pos) do
     line = Enum.find_index(offsets, &(pos < &1))
     offset = Enum.at(offsets, line - 1)
     col = pos - offset
-    [ {{line, col + 1}, a, b} | convert_position(rest, offsets) ]
+    {line, col + 1}
+  end
+
+  def convert_position({pos, a, b}, offsets) do
+    {convert_position(pos, offsets), a, b}
+  end
+
+  def convert_position([ token | rest ], offsets) do
+    [ convert_position(token, offsets) | convert_position(rest, offsets) ]
   end
 
   def convert_position([], _offsets) do
