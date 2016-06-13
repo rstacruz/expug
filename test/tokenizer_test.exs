@@ -297,6 +297,20 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test ~S[div( src=a id=b )] do
+    {:ok, output} = tokenize(~S[div( src=a id=b )])
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{1, 4}, :attribute_open, "("},
+      {{1, 6}, :attribute_key, "src"},
+      {{1, 10}, :attribute_value, "a"},
+      {{1, 12}, :attribute_key, "id"},
+      {{1, 15}, :attribute_value, "b"},
+      {{1, 17}, :attribute_close, ")"}
+    ]
+  end
+
   test ~S[div(src=a, id=b)] do
     {:ok, output} = tokenize(~S[div(src=a, id=b)])
     assert reverse(output) == [
@@ -311,6 +325,43 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "newline between attributes" do
+    {:ok, output} = tokenize("div(src=a,\n  id=b)")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{1, 4}, :attribute_open, "("},
+      {{1, 5}, :attribute_key, "src"},
+      {{1, 9}, :attribute_value, "a"},
+      {{2, 3}, :attribute_key, "id"},
+      {{2, 6}, :attribute_value, "b"},
+      {{2, 7}, :attribute_close, ")"}
+    ]
+  end
+
+  test "multiline attribute contents" do
+    {:ok, output} = tokenize("div(\n  src=a\n  )")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{1, 4}, :attribute_open, "("},
+      {{2, 3}, :attribute_key, "src"},
+      {{2, 7}, :attribute_value, "a\n"},
+      {{3, 3}, :attribute_close, ")"}
+    ]
+  end
+
+  test "multiline expressions" do
+    {:ok, output} = tokenize("div(src=(a\n  b))")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{1, 4}, :attribute_open, "("},
+      {{1, 5}, :attribute_key, "src"},
+      {{1, 9}, :attribute_value, "(a\n  b)"},
+      {{2, 5}, :attribute_close, ")"}
+    ]
+  end
 
   # test "comma delimited attributes"
   # test "script."

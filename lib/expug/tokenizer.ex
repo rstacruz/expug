@@ -234,9 +234,11 @@ defmodule Expug.Tokenizer do
   """
   def attribute_list(state) do
     state
+    |> optional_whitespace_or_newline()
     |> many_of(
-      &(&1 |> attribute() |> attribute_separator() |> whitespace()),
+      &(&1 |> attribute() |> attribute_separator() |> whitespace_or_newline()),
       &(&1 |> attribute()))
+    |> optional_whitespace_or_newline()
   end
 
   @doc """
@@ -286,9 +288,20 @@ defmodule Expug.Tokenizer do
     |> eat(~r/^[ \t]+/, :whitespace, nil)
   end
 
+  @doc "Matches whitespace or newline; no tokens emitted"
+  def whitespace_or_newline(state) do
+    state
+    |> eat(~r/^[ \t\n]+/, :whitespace_or_newline, nil)
+  end
+
   def optional_whitespace(state) do
     state
-    |> eat(~r/^[ \t]*/, :optional_whitespace, nil)
+    |> eat(~r/^[ \t]*/, :whitespace, nil)
+  end
+
+  def optional_whitespace_or_newline(state) do
+    state
+    |> eat(~r/^[ \t\n]*/, :whitespace_or_newline, nil)
   end
 
   @doc "Matches `=`"
