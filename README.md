@@ -23,7 +23,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 This is a work in progress.
 
 - [95%] String -> Tokens (`tokens = Expug.Tokenizer.tokenize(str)`)
-- [40%] Tokens -> AST (`ast = Expug.Compiler.compile(tokens)`) - *getting there!*
+- [80%] Tokens -> AST (`ast = Expug.Compiler.compile(tokens)`) - *getting there!*
 - [1%] AST -> EEx templates (`eex = Expug.Builder.build(ast)`)
 
 Supported:
