@@ -41,21 +41,16 @@ defmodule ExpugTest do
   end
 
   test "bang, parse error" do
-    try do
+    msg = "parse error, expected one of: eq, whitespace, attribute_open on line 2 col 4"
+    assert_raise Expug.Error, msg, fn ->
       Expug.to_eex!("hello\nhuh?")
-    rescue err in Expug.Error ->
-      %{message: msg} = err
-      assert msg == "parse error, expected one of: eq, whitespace, attribute_open on line 2 col 4"
     end
   end
 
   test "bang, compile error" do
-    try do
-      i = Expug.to_eex!("h1\n  h2\n    h3\n h4")
-      IO.puts("-> i: " <> inspect(i))
-    rescue err in Expug.Error ->
-      %{message: msg} = err
-      assert msg == "ambiguous indentation on line 4 col 2"
+    msg = "ambiguous indentation on line 4 col 2"
+    assert_raise Expug.Error, msg, fn ->
+      Expug.to_eex!("h1\n  h2\n    h3\n h4")
     end
   end
 end

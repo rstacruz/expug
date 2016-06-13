@@ -62,22 +62,21 @@ defmodule Expug.Compiler do
   @doc """
   Indentation. Called with `depth` which is the current level its at.
   """
-  def indent({_node, [{_, :indent, subdepth}, token | _]}, depth)
-  when subdepth < depth do
-    throw {:compile_error, :ambiguous_indentation, token}
+  def indent({node, [{_, :indent, subdepth} | tokens]}, depth)
+  when subdepth > depth do
+    # Found children, start a new subtree
+    statement({node, tokens}, subdepth)
+    |> indent(depth)
   end
 
-  # Siblings; stop processing.
   def indent({node, [{_, :indent, subdepth} | _] = tokens}, depth)
   when subdepth == depth do
+    # Siblings; stop processing.
     {node, tokens}
   end
 
-  # Found children, start a new subtree
-  def indent({node, [{_, :indent, subdepth} | tokens]}, depth)
-  when subdepth > depth do
-    statement({node, tokens}, subdepth)
-    |> indent(depth)
+  def indent({_node, [{_, :indent, _}, token | _]}, _depth) do
+    throw {:compile_error, :ambiguous_indentation, token}
   end
 
   # End of file, no tokens left.
