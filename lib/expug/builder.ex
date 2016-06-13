@@ -22,10 +22,9 @@ defmodule Expug.Builder do
     {:ok, %{lines: 0} |> make(ast)}
   end
 
-  def make(doc, nil) do
-    doc
-  end
-
+  @doc """
+  Builds elements.
+  """
   def make(doc, %{type: :document} = node) do
     doc
     |> make(node[:doctype])
@@ -48,7 +47,7 @@ defmodule Expug.Builder do
   end
 
   @doc """
-  Builds elements
+  Builds elements.
   """
   def make(doc, %{type: :element} = node) do
     doc
@@ -59,7 +58,7 @@ defmodule Expug.Builder do
   end
 
   @doc """
-  Builds text
+  Builds text.
   """
   def make(doc, %{type: :raw_text, value: value} = node) do
     doc
@@ -73,9 +72,16 @@ defmodule Expug.Builder do
 
   def make(doc, %{type: :unescaped_text, value: value} = node) do
     doc
-    |> put(node, "<%= #{value} %>")
+    |> put(node, "<%= raw(#{value}) %>")
   end
 
+  def make(doc, nil) do
+    doc
+  end
+
+  @doc """
+  Builds a list of nodes.
+  """
   def children(doc, nil) do
     doc
   end
