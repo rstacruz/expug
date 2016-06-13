@@ -80,6 +80,7 @@ defmodule Expug.Compiler do
         element({node, rest}, indent)
 
       [{_, :sole_raw_text, value} | rest] ->
+        # should be in children
         node = K.put(node, :text, [type: :raw_text, value: value])
         element({node, rest}, indent)
 

@@ -53,10 +53,12 @@ defmodule Expug.Tokenizer do
   Tokenizes a string.
   Returns a list of tokens. Each token is in the format `{position, token, value}`.
 
-      tokenize("title= name")
-      => [
-        {0, :element_name, "title"},
+      iex> {:ok, res} = Expug.Tokenizer.tokenize("title= name")
+      iex> res
+      [
         {7, :sole_buffered_text, "name"},
+        {0, :element_name, "title"},
+        {0, :indent, 0}
       ]
   """
   def tokenize(source) do

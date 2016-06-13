@@ -29,8 +29,11 @@ defmodule TestUtils do
 
       iex> TestUtils.is_keyword_list([a: 2])
       true
+
+      iex> TestUtils.is_keyword_list([:a, :b])
+      false
   """
-  def is_keyword_list([{key, _val} | rest]) when is_atom(key) do
+  def is_keyword_list([{key, _val} | _]) when is_atom(key) do
     true
   end
 

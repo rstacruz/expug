@@ -29,10 +29,16 @@ defmodule Expug do
     ]
   """
 
+  @doc ~S"""
+  Compiles an Expug template to an Eex template.
+
+      iex> source = "div Hello"
+      iex> Expug.to_eex(source)
+      {:ok, "<div>\nHello\n</div>\n"}
+  """
   def to_eex(source) do
-    {:ok, tokens} = Expug.Tokenizer.tokenize(source)
-    {:ok, ast} = Expug.Compiler.compile(tokens)
-    {:ok, template} = Expug.Builder.build(ast)
-    {:ok, template}
+    with {:ok, tokens} <- Expug.Tokenizer.tokenize(source),
+         {:ok, ast} <- Expug.Compiler.compile(tokens),
+         do: Expug.Builder.build(ast)
   end
 end

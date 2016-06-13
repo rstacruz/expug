@@ -4,6 +4,8 @@ defmodule ExpugTokenizerTest do
   import Expug.Tokenizer, only: [tokenize: 1]
   import Enum, only: [reverse: 1]
 
+  doctest Expug.Tokenizer
+
   test "basic" do
     {:ok, output} = tokenize("head")
     assert reverse(output) == [
