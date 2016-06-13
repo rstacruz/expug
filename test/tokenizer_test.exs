@@ -398,6 +398,46 @@ defmodule ExpugTokenizerTest do
       {{1, 11}, :attribute_close, ")"}
     ]
   end
+
+  test "-# comments" do
+    {:ok, output} = tokenize("div\n-# ...")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{2, 1}, :indent, 0},
+      {{2, 4}, :line_comment, "..."}
+    ]
+  end
+
+  test "-# comments, blank" do
+    {:ok, output} = tokenize("div\n-#")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{2, 1}, :indent, 0},
+      {{2, 3}, :line_comment, ""}
+    ]
+  end
+
+  test "-# comments, space" do
+    {:ok, output} = tokenize("div\n-# ")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{2, 1}, :indent, 0},
+      {{2, 4}, :line_comment, ""}
+    ]
+  end
+
+  test "// comments" do
+    {:ok, output} = tokenize("div\n// ...")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{2, 1}, :indent, 0},
+      {{2, 4}, :html_comment, "..."}
+    ]
+  end
   # test "comma delimited attributes"
   # test "script."
   # test "comments"

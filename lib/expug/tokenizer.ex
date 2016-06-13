@@ -98,6 +98,8 @@ defmodule Expug.Tokenizer do
     state
     |> indent()
     |> one_of([
+      &line_comment/1,   # `-# hello`
+      &html_comment/1,   # `// hello`
       &buffered_text/1,  # `= hello`
       &raw_text/1,       # `| hello`
       &statement/1,      # `- hello`
@@ -324,6 +326,20 @@ defmodule Expug.Tokenizer do
   def element_name(state) do
     state
     |> eat(~r/^[A-Za-z_][A-Za-z0-9:_\-]*/, :element_name)
+  end
+
+  def line_comment(state) do
+    state
+    |> eat(~r/^-\s*#/, :line_comment, nil)
+    |> optional_whitespace()
+    |> eat(~r/^[^\n$]*/, :line_comment)
+  end
+
+  def html_comment(state) do
+    state
+    |> eat(~r[^//], :html_comment, nil)
+    |> optional_whitespace()
+    |> eat(~r/^[^\n$]*/, :html_comment)
   end
 
   def buffered_text(state) do

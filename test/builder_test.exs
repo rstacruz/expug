@@ -54,4 +54,43 @@ defmodule BuilderTest do
       3 =>["<span>", "<%= @hello %>", "</span>", "</div>"]
     }
   end
+
+  test "line comments" do
+    {:ok, eex} = build("""
+    div
+    -# hi
+    div
+    """)
+    assert eex == %{
+      :lines => 3,
+      1 => ["<div>", "</div>"],
+      3 => ["<div>", "</div>"]
+    }
+  end
+
+  test "line comments, capturing" do
+    {:ok, eex} = build("""
+    div
+    -# hi
+      h1
+    """)
+    assert eex == %{
+      :lines => 1,
+      1 => ["<div>", "</div>"]
+    }
+  end
+
+  test "line comments, capturing 2" do
+    {:ok, eex} = build("""
+    div
+    -# hi
+      h1
+    span
+    """)
+    assert eex == %{
+      :lines => 4,
+      1 => ["<div>", "</div>"],
+      4 => ["<span>", "</span>"]
+    }
+  end
 end

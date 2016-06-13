@@ -98,6 +98,17 @@ defmodule Expug.Compiler do
       [:attribute_open [...] :attribute_close]
       [:solo_buffered_text | :solo_raw_text]
   """
+  def statement({node, [{_, :line_comment, _} | tokens]}, depth) do
+    {_, tokens} = indent({node, tokens}, depth)
+    {node, tokens}
+  end
+
+  def statement({node, [{_, :html_comment, _} | tokens]}, depth) do
+    # TODO: render
+    {_, tokens} = indent({node, tokens}, depth)
+    {node, tokens}
+  end
+
   def statement({node, [{_, :element_name, _} = t | _] = tokens}, depth) do
     create_element(node, t, tokens, depth)
   end
