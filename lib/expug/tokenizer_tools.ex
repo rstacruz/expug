@@ -11,7 +11,6 @@ defmodule Expug.TokenizerTools do
       def document(state)
         state
         |> eat(~r/^doctype /, :doctype)  # create a token
-        |> eat(~r/.../, &([{&3, :document, &2} | &1]))  # create it yourself
       end
 
   ## The state
