@@ -87,7 +87,7 @@ defmodule Expug.ExpressionTokenizer do
   def double_quote_string(state) do
     state
     |> eat_string(~r/^"/)
-    |> many_of(fn s -> s
+    |> optional_many_of(fn s -> s
       |> one_of([
         &(&1 |> eat_string(~r/^#/) |> balanced_braces()),
         &(&1 |> eat_string(~r/^(?:(?:\\")|[^"])/))
@@ -102,7 +102,7 @@ defmodule Expug.ExpressionTokenizer do
   def single_quote_string(state) do
     state
     |> eat_string(~r/^'/)
-    |> many_of(&(&1 |> eat_string(~r/^(?:(?:\\')|[^'])/)))
+    |> optional_many_of(&(&1 |> eat_string(~r/^(?:(?:\\')|[^'])/)))
     |> eat_string(~r/^'/)
   end
 end

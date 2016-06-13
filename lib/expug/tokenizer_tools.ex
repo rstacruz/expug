@@ -146,6 +146,11 @@ defmodule Expug.TokenizerTools do
     end
   end
 
+  def optional_many_of(state, head) do
+    state
+    |> optional(&(&1 |> many_of(head)))
+  end
+
   @doc """
   Eats a token.
 

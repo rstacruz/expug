@@ -387,6 +387,17 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "empty attributes" do
+    {:ok, output} = tokenize("div(src=\"\")")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{1, 4}, :attribute_open, "("},
+      {{1, 5}, :attribute_key, "src"},
+      {{1, 9}, :attribute_value, "\"\""},
+      {{1, 11}, :attribute_close, ")"}
+    ]
+  end
   # test "comma delimited attributes"
   # test "script."
   # test "comments"

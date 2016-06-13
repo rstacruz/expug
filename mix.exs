@@ -18,9 +18,7 @@ defmodule Expug.Mixfile do
   end
 
   defp deps do
-    [
-      {:phoenix_html, "~> 2.3", only: :test}
-    ]
+    []
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
