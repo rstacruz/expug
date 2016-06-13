@@ -31,8 +31,8 @@ Supported:
 - [x] Most everything
 - [x] track line/column in tokens
 - [x] `,` comma-delimited attributes
+- [x] Multiline expressions
 - [ ] `!=` unescaped code
 - [ ] HTML escaping
 - [ ] `/` comments
-- [ ] Multiline expressions
 - [ ] `.` raw text (like `script.`)
