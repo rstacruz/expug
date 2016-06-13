@@ -68,10 +68,11 @@ defmodule ExpugCompilerTest do
     {:ok, ast} = compile(tokens)
     assert ast ==
       %{ type: :document,
-      children: [
-        %{ text: %{type: :buffered_text, value: "hello"},
-          name: "div", type: :element}
-      ] }
+        children: [
+          %{ name: "div",
+            type: :element,
+            children: [
+              %{ type: :buffered_text, value: "hello" } ] } ] }
   end
 
   test "doctype and tags" do

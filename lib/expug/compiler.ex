@@ -3,7 +3,6 @@ defmodule Expug.Compiler do
   Compiles tokens into an AST.
   """
 
-  alias Keyword, as: K
   import List, only: [first: 1]
 
   def compile(tokens) do
@@ -48,7 +47,7 @@ defmodule Expug.Compiler do
           throw {:compile_error, :ambiguous_indentation, first(tokens)}
         end
         {child, rest} = element({%{type: :element}, tokens}, subindent)
-        node = Map.update(node, :children, [child], &(&1 ++ [child]))
+        node = add_child(node, child)
         statements({node, rest}, indent)
 
       [] ->
@@ -80,11 +79,11 @@ defmodule Expug.Compiler do
 
       [{_, :sole_raw_text, value} | rest] ->
         # should be in children
-        node = Map.put(node, :text, %{type: :raw_text, value: value})
+        node = add_child(node, %{type: :raw_text, value: value})
         element({node, rest}, indent)
 
       [{_, :sole_buffered_text, value} | rest] ->
-        node = Map.put(node, :text, %{type: :buffered_text, value: value})
+        node = add_child(node, %{type: :buffered_text, value: value})
         element({node, rest}, indent)
 
       [{_, :attribute_open, _} | rest] ->
@@ -120,4 +119,9 @@ defmodule Expug.Compiler do
         throw {:compile_error, :unexpected_token, first(rest)}
     end
   end
+
+  def add_child(node, child) do
+    Map.update(node, :children, [child], &(&1 ++ [child]))
+  end
+
 end
