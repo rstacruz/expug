@@ -323,7 +323,7 @@ defmodule Expug.Tokenizer do
   @doc "Matches `title` in `title= hello`"
   def element_name(state) do
     state
-    |> eat(~r/^[a-z]+/, :element_name)
+    |> eat(~r/^[A-Za-z_][A-Za-z0-9:_\-]*/, :element_name)
   end
 
   def buffered_text(state) do

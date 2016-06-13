@@ -14,6 +14,30 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "h1" do
+    {:ok, output} = tokenize("h1")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "h1"}
+    ]
+  end
+
+  test "xml namespace" do
+    {:ok, output} = tokenize("html:h1")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "html:h1"}
+    ]
+  end
+
+  test "dashes" do # but why?
+    {:ok, output} = tokenize("Todo-app")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "Todo-app"}
+    ]
+  end
+
   test "basic with text" do
     {:ok, output} = tokenize("title Hello world")
     assert reverse(output) == [
