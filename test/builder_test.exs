@@ -29,7 +29,7 @@ defmodule BuilderTest do
     {:ok, eex} = build("div(id=foo)")
     assert eex == %{
       :lines => 1,
-      1 => ["<div id=<%= Expug.Runtime.attr_value(foo) %>>", "</div>"]
+      1 => ["<div id=<%= raw(Expug.Runtime.attr_value(foo)) %>>", "</div>"]
     }
   end
 

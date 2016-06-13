@@ -110,10 +110,10 @@ defmodule Expug.Builder do
       #" class=\"a b\""
 
       iex> Expug.Builder.attributes(%{ "src" => [{:eval, "@image"}] })
-      " src=<%= Expug.Runtime.attr_value(@image) %>"
+      " src=<%= raw(Expug.Runtime.attr_value(@image)) %>"
 
       iex> Expug.Builder.attributes(%{ "class" => [{:eval, "@a"}, {:eval, "@b"}] })
-      " class=<%= Expug.Runtime.attr_value(Enum.join([@a, @b], \" \")) %>"
+      " class=<%= raw(Expug.Runtime.attr_value(Enum.join([@a, @b], \" \"))) %>"
   """
   def attributes(nil), do: ""
 
@@ -124,7 +124,7 @@ defmodule Expug.Builder do
   end
 
   def valueify([{:eval, value}]) do
-    "<%= Expug.Runtime.attr_value(#{value}) %>"
+    "<%= raw(Expug.Runtime.attr_value(#{value})) %>"
   end
 
   def valueify([{:text, value}]) do
@@ -139,7 +139,7 @@ defmodule Expug.Builder do
         acc |> str_join(Expug.Runtime.attr_value(value), ", ")
     end
 
-    "<%= Expug.Runtime.attr_value(Enum.join([#{inside}], \" \")) %>"
+    "<%= raw(Expug.Runtime.attr_value(Enum.join([#{inside}], \" \"))) %>"
   end
 
   def str_join(left, str, sep \\ " ")

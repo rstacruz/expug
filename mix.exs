@@ -19,7 +19,7 @@ defmodule Expug.Mixfile do
 
   defp deps do
     [
-      {:calliope, "~> 0.4.0", only: :test}
+      {:phoenix_html, "~> 2.3", only: :test}
     ]
   end
 

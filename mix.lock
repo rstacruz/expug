@@ -1,1 +1,3 @@
-%{"calliope": {:hex, :calliope, "0.4.0", "cdba8ae42b225de1c906bcb511b1fa3a8dd601bda3b2005743111f7ec92cd809", [:mix], []}}
+%{"calliope": {:hex, :calliope, "0.4.0", "cdba8ae42b225de1c906bcb511b1fa3a8dd601bda3b2005743111f7ec92cd809", [:mix], []},
+  "phoenix_html": {:hex, :phoenix_html, "2.5.1", "631053f9e345fecb5c87d9e0ccd807f7266d27e2ee4269817067af425fd81ba8", [:mix], [{:plug, "~> 0.13 or ~> 1.0", [hex: :plug, optional: false]}]},
+  "plug": {:hex, :plug, "1.1.5", "de5645c18170415a72b18cc3d215c05321ddecac27a15acb923742156e98278b", [:mix], [{:cowboy, "~> 1.0", [hex: :cowboy, optional: true]}]}}

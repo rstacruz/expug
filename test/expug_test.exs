@@ -9,25 +9,25 @@ defmodule ExpugTest do
 
   test "with class" do
     {:ok, eex} = Expug.to_eex("div.hello")
-    output = EEx.eval_string(eex)
+    output = run_eex(eex)
     assert output == "<div class=\"hello\">\n</div>\n"
   end
 
   test "with buffered text" do
     {:ok, eex} = Expug.to_eex("div.hello.world")
-    output = EEx.eval_string(eex)
+    output = run_eex(eex)
     assert output == "<div class=\"hello world\">\n</div>\n"
   end
 
   test "with assigns in attribute" do
     {:ok, eex} = Expug.to_eex("div(class=@klass)")
-    output = EEx.eval_string(eex, assigns: [klass: "hello"])
+    output = run_eex(eex, assigns: [klass: "hello"])
     assert output == "<div class=\"hello\">\n</div>\n"
   end
 
   test "with assigns in text" do
     {:ok, eex} = Expug.to_eex("div\n  = @msg")
-    output = EEx.eval_string(eex, assigns: [msg: "hello"])
+    output = run_eex(eex, assigns: [msg: "hello"])
     assert output == "<div>\nhello\n</div>\n"
   end
 
@@ -52,5 +52,14 @@ defmodule ExpugTest do
     assert_raise Expug.Error, msg, fn ->
       Expug.to_eex!("h1\n  h2\n    h3\n h4")
     end
+  end
+
+  @doc """
+  A terrible hack, I know
+  """
+  def run_eex(eex, opts \\ []) do
+    eex
+    |> String.replace(~r/raw\(/, "raw.(")
+    |> EEx.eval_string([{:raw, fn x -> x end} | opts])
   end
 end
