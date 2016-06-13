@@ -4,6 +4,8 @@ defmodule ExpugCompilerTest do
   import Expug.Tokenizer, only: [tokenize: 1]
   import Expug.Compiler, only: [compile: 1]
 
+  doctest Expug.Compiler
+
   test "doctype only" do
     {:ok, tokens} = tokenize("doctype html5")
     {:ok, ast} = compile(tokens)
@@ -182,48 +184,142 @@ defmodule ExpugCompilerTest do
   test "attributes" do
     {:ok, tokens} = tokenize("div(style: 'color: blue')")
     {:ok, ast} = compile(tokens)
-    assert ast ==
-      %{ type: :document,
-        children:
-        [ %{ attributes:
-            [ %{ type: :attribute,
-                key: "style",
-                val: "'color: blue'" } ],
-            name: "div",
-            type: :element } ] }
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        attributes: [%{
+          type: :attribute,
+          key: "style",
+          val: "'color: blue'"
+        }]
+      }]
+    } = ast
   end
 
   test "2 attributes" do
     {:ok, tokens} = tokenize("div(id: 'box' style: 'color: blue')")
     {:ok, ast} = compile(tokens)
-    assert ast ==
-      %{ type: :document,
-        children:
-        [ %{ attributes:
-            [ %{ type: :attribute,
-                key: "id",
-                val: "'box'" },
-              %{ type: :attribute,
-                key: "style",
-                val: "'color: blue'" } ],
-            name: "div",
-            type: :element } ] }
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        attributes: [%{
+          type: :attribute,
+          key: "id",
+          val: "'box'"
+        }, %{
+          type: :attribute,
+          key: "style",
+          val: "'color: blue'"
+        }]
+      }]
+    } = ast
   end
 
   test "dupe attributes" do
     {:ok, tokens} = tokenize("div(src=1 src=2)")
     {:ok, ast} = compile(tokens)
-    assert ast ==
-      %{ type: :document,
-        children:
-        [ %{ attributes:
-            [ %{ type: :attribute,
-                key: "src",
-                val: "1" },
-              %{ type: :attribute,
-                key: "src",
-                val: "2" } ],
-            name: "div",
-            type: :element } ] }
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        attributes: [%{
+          type: :attribute,
+          key: "src",
+          val: "1"
+        }, %{
+          type: :attribute,
+          key: "src",
+          val: "2"
+        }]
+      }]
+    } = ast
+  end
+
+  test "start with class" do
+    {:ok, tokens} = tokenize(".hello")
+    {:ok, ast} = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        class: ["hello"]
+      }]
+    } = ast
+  end
+
+  test "start with id" do
+    {:ok, tokens} = tokenize("#hello")
+    {:ok, ast} = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        id: "hello"
+      }]
+    } = ast
+  end
+
+  test "classes and id" do
+    {:ok, tokens} = tokenize(".small.blue#box")
+    {:ok, ast} = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        class: ["small", "blue"],
+        id: "box"
+      }]
+    } = ast
+  end
+
+  test "raw text only" do
+    {:ok, tokens} = tokenize("| hi")
+    {:ok, ast} = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :raw_text,
+        value: "hi",
+        token: {_, _, _}
+      }]
+    } = ast
+  end
+
+  test "double raw text" do
+    {:ok, tokens} = tokenize("| hi\n| hello")
+    {:ok, ast} = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :raw_text,
+        value: "hi",
+        token: {_, _, _}
+      }, %{
+        type: :raw_text,
+        value: "hello",
+        token: {_, _, _}
+      }]
+    } = ast
+  end
+
+  test "buffered text only" do
+    {:ok, tokens} = tokenize("= hi")
+    {:ok, ast} = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "hi",
+        token: {_, _, _}
+      }]
+    } = ast
   end
 end
