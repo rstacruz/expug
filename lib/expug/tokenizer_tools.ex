@@ -244,8 +244,8 @@ defmodule Expug.TokenizerTools do
   """
   def convert_positions(doc, source) do
     offsets = String.split(source, "\n")
-      |> Enum.map(&(String.length(&1) + 1))
-      |> Enum.scan(&(&1 + &2))
+      |> Stream.map(&(String.length(&1) + 1))
+      |> Stream.scan(&(&1 + &2))
       |> Enum.to_list
     offsets = [ 0 | offsets ]
     convert_position(doc, offsets)
