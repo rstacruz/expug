@@ -7,10 +7,29 @@ defmodule ExpugTest do
   #   assert eex == "<!doctype html>\n<div>\nHello\n</div>\n"
   # end
 
-  # test "with buffered text" do
-  #   {:ok, eex} = Expug.to_eex("div= hola()")
-  #   assert eex == "<div>\n<%= hola() %>\n</div>\n"
-  # end
+  test "with class" do
+    {:ok, eex} = Expug.to_eex("div.hello")
+    output = EEx.eval_string(eex)
+    assert output == "<div class=\"hello\">\n</div>\n"
+  end
+
+  test "with buffered text" do
+    {:ok, eex} = Expug.to_eex("div.hello.world")
+    output = EEx.eval_string(eex)
+    assert output == "<div class=\"hello world\">\n</div>\n"
+  end
+
+  test "with assigns in attribute" do
+    {:ok, eex} = Expug.to_eex("div(class=@klass)")
+    output = EEx.eval_string(eex, assigns: [klass: "hello"])
+    assert output == "<div class=\"hello\">\n</div>\n"
+  end
+
+  test "with assigns in text" do
+    {:ok, eex} = Expug.to_eex("div\n  = @msg")
+    output = EEx.eval_string(eex, assigns: [msg: "hello"])
+    assert output == "<div>\nhello\n</div>\n"
+  end
 
   test "parse error" do
     {:error, output} = Expug.to_eex("hello\nhuh?")

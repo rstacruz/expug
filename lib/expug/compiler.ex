@@ -141,11 +141,13 @@ defmodule Expug.Compiler do
         element({node, rest}, depth)
 
       [{_, :element_id, value} | rest] ->
-        node = Map.put(node, :id, value)
+        attr_list = add_attribute(node[:attributes] || %{}, "id", {:text, value})
+        node = Map.put(node, :attributes, attr_list)
         element({node, rest}, depth)
 
       [{_, :element_class, value} | rest] ->
-        node = Map.update(node, :class, [value], &(&1 ++ [value]))
+        attr_list = add_attribute(node[:attributes] || %{}, "class", {:text, value})
+        node = Map.put(node, :attributes, attr_list)
         element({node, rest}, depth)
 
       [{_, :sole_raw_text, value} = t | rest] ->
@@ -160,7 +162,7 @@ defmodule Expug.Compiler do
         element({node, rest}, depth)
 
       [{_, :attribute_open, _} | rest] ->
-        {attr_list, rest} = attribute({%{}, rest})
+        {attr_list, rest} = attribute({node[:attributes] || %{}, rest})
         node = Map.put(node, :attributes, attr_list)
         {node, rest}
 

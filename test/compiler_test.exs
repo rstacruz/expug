@@ -54,14 +54,15 @@ defmodule ExpugCompilerTest do
     assert %{
       doctype: %{
         type: :doctype,
-        value: "html5",
-        token: _
+        value: "html5"
       },
       type: :document,
       children: [%{
-        id: "box",
+        type: :element,
         name: "div",
-        type: :element
+        attributes: %{
+          "id" => [{:text, "box"}]
+        }
       }]
   } = ast
   end
@@ -74,7 +75,9 @@ defmodule ExpugCompilerTest do
       children: [%{
         name: "div",
         type: :element,
-        class: ["blue", "small"]
+        attributes: %{
+          "class" => [{:text, "blue"}, {:text, "small"}]
+        }
       }]
     } = ast
   end
@@ -237,7 +240,9 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :element,
         name: "div",
-        class: ["hello"]
+        attributes: %{
+          "class" => [{:text, "hello"}]
+        }
       }]
     } = ast
   end
@@ -250,7 +255,9 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :element,
         name: "div",
-        id: "hello"
+        attributes: %{
+          "id" => [{:text, "hello"}]
+        }
       }]
     } = ast
   end
@@ -263,8 +270,10 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :element,
         name: "div",
-        class: ["small", "blue"],
-        id: "box"
+        attributes: %{
+          "class" => [{:text, "small"}, {:text, "blue"}],
+          "id" => [{:text, "box"}]
+        }
       }]
     } = ast
   end
