@@ -19,3 +19,16 @@ Hello,
 %><button class="btn">
 Save<%="\n"%></button><%="\n"%></div>
 ```
+
+```js
+lines = %{
+  1: [ {:line, "<div>"} ]
+  2: [ {:line, "Hello,"} ]
+  3: [ {:line, "<%= @name %>"} ]
+  4: []
+  5: [ {:line, "<button class="btn">"} ]
+  6: [ {:line, "Save"}
+       {:line, "</button>"}
+       {:line, "</div>"} ]
+}
+```
