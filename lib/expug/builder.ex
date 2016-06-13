@@ -72,7 +72,7 @@ defmodule Expug.Builder do
 
   def make(doc, %{type: :unescaped_text, value: value} = node) do
     doc
-    |> put(node, "<%= raw(#{value}) %>")
+    |> put(node, "<%= {:safe, #{value}} %>")
   end
 
   def make(doc, nil) do
