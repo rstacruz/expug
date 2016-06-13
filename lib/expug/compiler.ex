@@ -21,6 +21,7 @@ defmodule Expug.Compiler do
   give you an element, or a text node, or whatever.
   """
 
+  require Logger
   import List, only: [first: 1]
 
   @doc """
@@ -35,7 +36,7 @@ defmodule Expug.Compiler do
     try do
       {node, _tokens} = document({node, tokens})
       {:ok, node}
-    catch {:compile_error, type, {pos, _, _} = _token} ->
+    catch {:compile_error, type, {pos, _, _} = token} ->
       {:error, %{
         type: type,
         position: pos
@@ -174,7 +175,7 @@ defmodule Expug.Compiler do
       [{_, :attribute_open, _} | rest] ->
         {attr_list, rest} = attribute({node[:attributes] || %{}, rest})
         node = Map.put(node, :attributes, attr_list)
-        {node, rest}
+        element({node, rest}, depth)
 
       [{_, :indent, subdepth} | _] = tokens ->
         if subdepth > depth do
@@ -201,7 +202,7 @@ defmodule Expug.Compiler do
         {attr_list, rest}
 
       rest ->
-        throw {:compile_error, :unexpected_token, first(rest)}
+        {attr_list, rest}
     end
   end
 

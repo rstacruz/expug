@@ -109,4 +109,18 @@ defmodule BuilderTest do
       4 => ["Hello", "</span>", "</h1>", "</div>"]
     }
   end
+
+  test "attr and =" do
+    {:ok, eex} = build("""
+    div(role="main")= @hello
+    """)
+    assert eex == %{
+      :lines => 1,
+      1 => [
+        "<div role=<%= raw(Expug.Runtime.attr_value(\"main\")) %>>",
+        "<%= @hello %>",
+        "</div>"
+      ]
+    }
+  end
 end
