@@ -11,8 +11,8 @@ defmodule Expug.Builder do
       children(node[:children])
   end
 
-  def doctype(doctype) when is_list(doctype) do
-    "<!doctype #{doctype[:value]}>\n"
+  def doctype(%{ value: value }) do
+    "<!doctype #{value}>\n"
   end
 
   def doctype(_) do
@@ -38,15 +38,15 @@ defmodule Expug.Builder do
       "</" <> node[:name] <> ">\n"
   end
 
-  def text([type: :raw_text, value: value]) do
+  def text(%{type: :raw_text, value: value}) do
     "#{value}\n"
   end
 
-  def text([type: :buffered_text, value: value]) do
+  def text(%{type: :buffered_text, value: value}) do
     "<%= #{value} %>\n"
   end
 
-  def text([type: :unescaped_text, value: value]) do
+  def text(%{type: :unescaped_text, value: value}) do
     "<%= #{value} %>\n"
   end
 

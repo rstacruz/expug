@@ -8,7 +8,7 @@ defmodule Expug.Compiler do
 
   def compile(tokens) do
     tokens = Enum.reverse(tokens)
-    node = [type: :document]
+    node = %{type: :document}
 
     try do
       {node, _tokens} = {node, tokens} |> doctype()
@@ -21,12 +21,11 @@ defmodule Expug.Compiler do
   def doctype({node, tokens}) do
     case tokens do
       [{_, :doctype, type} = token | rest] ->
-        doctype = [
+        node = Map.put(node, :doctype, %{
           type: :doctype,
           value: type,
           token: token
-        ]
-        node = K.put(node, :doctype, doctype)
+        })
         statements({node, rest}, -1)
 
       _ ->
@@ -48,8 +47,8 @@ defmodule Expug.Compiler do
         if subindent < indent do
           throw {:compile_error, :ambiguous_indentation, first(tokens)}
         end
-        {child, rest} = element({[type: :element], tokens}, subindent)
-        node = K.update(node, :children, [child], &(&1 ++ [child]))
+        {child, rest} = element({%{type: :element}, tokens}, subindent)
+        node = Map.update(node, :children, [child], &(&1 ++ [child]))
         statements({node, rest}, indent)
 
       [] ->
@@ -68,29 +67,29 @@ defmodule Expug.Compiler do
   def element({node, tokens}, indent) do
     case tokens do
       [{_, :element_name, value} | rest] ->
-        node = K.put(node, :name, value)
+        node = Map.put(node, :name, value)
         element({node, rest}, indent)
 
       [{_, :element_id, value} | rest] ->
-        node = K.put(node, :id, value)
+        node = Map.put(node, :id, value)
         element({node, rest}, indent)
 
       [{_, :element_class, value} | rest] ->
-        node = K.update(node, :class, [value], &(&1 ++ [value]))
+        node = Map.update(node, :class, [value], &(&1 ++ [value]))
         element({node, rest}, indent)
 
       [{_, :sole_raw_text, value} | rest] ->
         # should be in children
-        node = K.put(node, :text, [type: :raw_text, value: value])
+        node = Map.put(node, :text, %{type: :raw_text, value: value})
         element({node, rest}, indent)
 
       [{_, :sole_buffered_text, value} | rest] ->
-        node = K.put(node, :text, [type: :buffered_text, value: value])
+        node = Map.put(node, :text, %{type: :buffered_text, value: value})
         element({node, rest}, indent)
 
       [{_, :attribute_open, _} | rest] ->
         {attr_list, rest} = attributes({node[:attributes] || [], rest})
-        node = K.put(node, :attributes, attr_list)
+        node = Map.put(node, :attributes, attr_list)
         {node, rest}
 
       [{_, :indent, subindent} | _] = tokens ->
@@ -111,7 +110,7 @@ defmodule Expug.Compiler do
   def attributes({attr_list, tokens}) do
     case tokens do
       [{_, :attribute_key, key}, {_, :attribute_value, value} | rest] ->
-        attr_list = attr_list ++ [ [type: :attribute, key: key, val: value] ]
+        attr_list = attr_list ++ [ %{type: :attribute, key: key, val: value} ]
         attributes({attr_list, rest})
 
       [{_, :attribute_close, _} | rest] ->
