@@ -160,7 +160,7 @@ defmodule Expug.Compiler do
         element({node, rest}, depth)
 
       [{_, :attribute_open, _} | rest] ->
-        {attr_list, rest} = attribute({node[:attributes] || [], rest})
+        {attr_list, rest} = attribute({[], rest})
         node = Map.put(node, :attributes, attr_list)
         {node, rest}
 
