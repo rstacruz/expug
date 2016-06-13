@@ -13,7 +13,7 @@ defmodule ExpugCompilerTest do
       doctype: %{
         type: :doctype,
         value: "html5",
-        token: {8, :doctype, "html5"}
+        token: {{1, 9}, :doctype, "html5"}
       },
       type: :document
     } = ast
@@ -102,7 +102,7 @@ defmodule ExpugCompilerTest do
       doctype: %{
         type: :doctype,
         value: "html5",
-        token: {8, :doctype, "html5"}
+        token: {{1, 9}, :doctype, "html5"}
       },
       type: :document,
       children: [%{
@@ -178,7 +178,7 @@ defmodule ExpugCompilerTest do
     {:ok, tokens} = tokenize("head\n  title\n    span\n meta")
     {:compile_error, type, token} = compile(tokens)
     assert type == :ambiguous_indentation
-    assert token == {23, :element_name, "meta"}
+    assert token == {{4, 2}, :element_name, "meta"}
   end
 
   test "attributes" do

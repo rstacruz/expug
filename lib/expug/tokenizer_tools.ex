@@ -59,7 +59,7 @@ defmodule Expug.TokenizerTools do
       {:parse_error, [source: source, position: position, expected: expected]}
     else
       doc = scrub_parse_errors(doc)
-      {:ok, doc}
+      {:ok, convert_positions(doc, source)}
     end
   end
 
@@ -223,5 +223,42 @@ defmodule Expug.TokenizerTools do
       [ {pos, token_name, left <> right} | rest ]
     end)
   end
+
+  @doc ~S"""
+  Converts numeric positions into `{line, col}` tuples.
+
+      iex> source = "div\n  body"
+      iex> doc = [
+      ...>   { 0, :indent, "" },
+      ...>   { 0, :element_name, "div" },
+      ...>   { 4, :indent, "  " },
+      ...>   { 6, :element_name, "body" }
+      ...> ]
+      iex> Expug.TokenizerTools.convert_positions(doc, source)
+      [ { {1, 1}, :indent, "" },
+        { {1, 1}, :element_name, "div" },
+        { {2, 1}, :indent, "  " },
+        { {2, 3}, :element_name, "body" } ]
+  """
+  def convert_positions(doc, source) do
+    offsets = String.split(source, "\n")
+      |> Enum.map(&(String.length(&1) + 1))
+      |> Enum.scan(&(&1 + &2))
+      |> Enum.to_list
+    offsets = [ 0 | offsets ]
+    convert_position(doc, offsets)
+  end
+
+  def convert_position([ {pos, a, b} | rest ], offsets) do
+    line = Enum.find_index(offsets, &(pos < &1))
+    offset = Enum.at(offsets, line - 1)
+    col = pos - offset
+    [ {{line, col + 1}, a, b} | convert_position(rest, offsets) ]
+  end
+
+  def convert_position([], _offsets) do
+    []
+  end
+
 end
 

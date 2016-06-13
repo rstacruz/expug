@@ -56,9 +56,9 @@ defmodule Expug.Tokenizer do
       iex> {:ok, res} = Expug.Tokenizer.tokenize("title= name")
       iex> res
       [
-        {7, :sole_buffered_text, "name"},
-        {0, :element_name, "title"},
-        {0, :indent, 0}
+        {{1, 8}, :sole_buffered_text, "name"},
+        {{1, 1}, :element_name, "title"},
+        {{1, 1}, :indent, 0}
       ]
   """
   def tokenize(source) do
