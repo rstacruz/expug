@@ -297,6 +297,20 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test ~S[div(src=a, id=b)] do
+    {:ok, output} = tokenize(~S[div(src=a, id=b)])
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{1, 4}, :attribute_open, "("},
+      {{1, 5}, :attribute_key, "src"},
+      {{1, 9}, :attribute_value, "a"},
+      {{1, 12}, :attribute_key, "id"},
+      {{1, 15}, :attribute_value, "b"},
+      {{1, 16}, :attribute_close, ")"}
+    ]
+  end
+
 
   # test "comma delimited attributes"
   # test "script."

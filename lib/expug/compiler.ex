@@ -23,6 +23,11 @@ defmodule Expug.Compiler do
 
   import List, only: [first: 1]
 
+  @doc """
+  Compiles tokens. Returns `{:ok, ast}` on success.
+
+  On failure, it returns `{:error, [type: type, position: {line, col}]}`.
+  """
   def compile(tokens) do
     tokens = Enum.reverse(tokens)
     node = %{type: :document}

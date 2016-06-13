@@ -235,8 +235,19 @@ defmodule Expug.Tokenizer do
   def attribute_list(state) do
     state
     |> many_of(
-      &(&1 |> attribute() |> whitespace()),
+      &(&1 |> attribute() |> attribute_separator() |> whitespace()),
       &(&1 |> attribute()))
+  end
+
+  @doc """
+  Matches an optional comma in between attributes.
+
+      div(id=a class=b)
+      div(id=a, class=b)
+  """
+  def attribute_separator(state) do
+    state
+    |> eat(~r/^,?/, :comma, nil)
   end
 
   @doc """
@@ -246,7 +257,7 @@ defmodule Expug.Tokenizer do
     state
     |> attribute_key()
     |> optional_whitespace()
-    |> attribute_separator()
+    |> attribute_equal()
     |> optional_whitespace()
     |> attribute_value()
   end
@@ -261,7 +272,7 @@ defmodule Expug.Tokenizer do
     |> Expug.ExpressionTokenizer.expression(:attribute_value)
   end
 
-  def attribute_separator(state) do
+  def attribute_equal(state) do
     state
     |> one_of([
       &(&1 |> eat(~r/=/, :attribute_separator_eq, nil)),
