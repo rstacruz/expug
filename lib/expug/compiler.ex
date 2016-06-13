@@ -30,8 +30,8 @@ defmodule Expug.Compiler do
     try do
       {node, _tokens} = document({node, tokens})
       {:ok, node}
-    catch {:compile_error, err, token} ->
-      {:error, err, token}
+    catch {:compile_error, _err, _token} = err ->
+      err
     end
   end
 
@@ -103,13 +103,13 @@ defmodule Expug.Compiler do
     create_element(node, t, tokens, depth)
   end
 
-  def statement({node, [{_, :raw_text, value} = t | tokens]}, depth) do
+  def statement({node, [{_, :raw_text, value} = t | tokens]}, _depth) do
     child = %{type: :raw_text, value: value, token: t}
     node = add_child(node, child)
     {node, tokens}
   end
 
-  def statement({node, [{_, :buffered_text, value} = t | tokens]}, depth) do
+  def statement({node, [{_, :buffered_text, value} = t | tokens]}, _depth) do
     child = %{type: :buffered_text, value: value, token: t}
     node = add_child(node, child)
     {node, tokens}
