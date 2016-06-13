@@ -14,7 +14,7 @@ defmodule Expug.Mixfile do
   end
 
   def application do
-    [applications: []]
+    [applications: [:logger]]
   end
 
   defp deps do

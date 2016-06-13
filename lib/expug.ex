@@ -1,5 +1,5 @@
 defmodule Expug do
-  @doc """
+  @moduledoc """
   Expug.
 
   ## AST
@@ -29,6 +29,8 @@ defmodule Expug do
     ]
   """
 
+  require Logger
+
   @doc ~S"""
   Compiles an Expug template to an Eex template.
 
@@ -38,7 +40,10 @@ defmodule Expug do
   """
   def to_eex(source) do
     with {:ok, tokens} <- Expug.Tokenizer.tokenize(source),
-         {:ok, ast} <- Expug.Compiler.compile(tokens),
-         do: Expug.Builder.build(ast)
+         {:ok, ast} <- Expug.Compiler.compile(tokens) do
+      Logger.debug(inspect(tokens))
+      Logger.debug(inspect(ast))
+      Expug.Builder.build(ast)
+    end
   end
 end
