@@ -235,10 +235,12 @@ defmodule Expug.TokenizerTools do
       ...>   { 6, :element_name, "body" }
       ...> ]
       iex> Expug.TokenizerTools.convert_positions(doc, source)
-      [ { {1, 1}, :indent, "" },
+      [
+        { {1, 1}, :indent, "" },
         { {1, 1}, :element_name, "div" },
         { {2, 1}, :indent, "  " },
-        { {2, 3}, :element_name, "body" } ]
+        { {2, 3}, :element_name, "body" }
+      ]
   """
   def convert_positions(doc, source) do
     offsets = String.split(source, "\n")
