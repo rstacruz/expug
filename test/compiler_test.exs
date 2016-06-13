@@ -176,9 +176,11 @@ defmodule ExpugCompilerTest do
 
   test "zigzag nesting error" do
     {:ok, tokens} = tokenize("head\n  title\n    span\n meta")
-    {:compile_error, type, token} = compile(tokens)
-    assert type == :ambiguous_indentation
-    assert token == {{4, 2}, :element_name, "meta"}
+    {:error, params} = compile(tokens)
+    assert params == [
+      type: :ambiguous_indentation,
+      position: {4, 2}
+    ]
   end
 
   test "attributes" do

@@ -30,8 +30,11 @@ defmodule Expug.Compiler do
     try do
       {node, _tokens} = document({node, tokens})
       {:ok, node}
-    catch {:compile_error, _err, _token} = err ->
-      err
+    catch {:compile_error, type, {pos, _, _} = _token} ->
+      {:error, [
+        type: type,
+        position: pos
+      ]}
     end
   end
 
