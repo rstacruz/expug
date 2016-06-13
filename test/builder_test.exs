@@ -93,4 +93,20 @@ defmodule BuilderTest do
       4 => ["<span>", "</span>"]
     }
   end
+
+  test "indentation magic" do
+    {:ok, eex} = build("""
+    div
+      h1
+        span
+          | Hello
+    """)
+    assert eex == %{
+      :lines => 4,
+      1 => ["<div>"],
+      2 => ["<h1>"],
+      3 => ["<span>"],
+      4 => ["Hello", "</span>", "</h1>", "</div>"]
+    }
+  end
 end
