@@ -5,6 +5,7 @@ defmodule Expug.Mixfile do
     [app: :expug,
      version: "0.0.1",
      elixir: "~> 1.2",
+     elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      source_url: "https://github.com/rstacruz/expug",
@@ -21,6 +22,9 @@ defmodule Expug.Mixfile do
       {:calliope, "~> 0.4.0", only: :test}
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   def package do
     [

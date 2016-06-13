@@ -26,14 +26,12 @@ defmodule TestUtils do
 
   @doc """
   Checks if the given object is a keyword list.
+
+      iex> TestUtils.is_keyword_list([a: 2])
+      true
   """
-  def is_keyword_list(list) when is_list(list) do
-    try do
-      [ {key, _val} | _rest ] = list
-      is_atom(key)
-    rescue _ ->
-      false
-    end
+  def is_keyword_list([{key, _val} | rest]) when is_atom(key) do
+    true
   end
 
   def is_keyword_list(_) do
