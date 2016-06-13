@@ -1,18 +1,26 @@
 defmodule Expug.Builder do
+  require Logger
+
   def build(ast) do
     {:ok, document(ast)}
   end
 
   def document(node) do
-    result = ""
-    if node[:doctype] do
-      result = result <> "<!doctype #{node[:doctype][:value]}>\n"
-    end
+    "" <>
+      doctype(node[:doctype]) <>
+      children(node[:children])
+  end
 
-    if node[:children] do
-      result = result <> children(node[:children])
-    end
-    result
+  def doctype(doctype) when is_list(doctype) do
+    "<!doctype #{doctype[:value]}>\n"
+  end
+
+  def doctype(_) do
+    ""
+  end
+
+  def children(nil) do
+    ""
   end
 
   def children(list) do
@@ -22,20 +30,12 @@ defmodule Expug.Builder do
   end
 
   def element(node) do
-    result = ""
-    result = result <> "<" <> node[:name]
-    result = result <> ">\n"
-
-    if node[:text] do
-      result = result <> text(node[:text])
-    end
-
-    if node[:children] do
-      result = result <> children(node[:children])
-    end
-
-    result = result <> "</" <> node[:name] <> ">\n"
-    result
+    "" <>
+      "<" <> node[:name] <>
+      ">\n" <>
+      text(node[:text]) <>
+      children(node[:children]) <>
+      "</" <> node[:name] <> ">\n"
   end
 
   def text([type: :raw_text, value: value]) do
@@ -48,5 +48,9 @@ defmodule Expug.Builder do
 
   def text([type: :unescaped_text, value: value]) do
     "<%= #{value} %>\n"
+  end
+
+  def text(_) do
+    ""
   end
 end
