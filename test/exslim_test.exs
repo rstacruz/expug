@@ -15,7 +15,6 @@ defmodule ExpugTest do
   test "parse error" do
     {:parse_error, output} = Expug.to_eex("hello\nhuh?")
     assert output == [
-      source: "hello\nhuh?",
       position: {2, 4},
       expected: [:eq, :whitespace, :attribute_open]
     ]

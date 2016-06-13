@@ -167,7 +167,6 @@ defmodule ExpugTokenizerTest do
   test "parse error" do
     {:parse_error, output} = tokenize("hello\nhuh?")
     assert output == [
-      source: "hello\nhuh?",
       position: {2, 4},
       expected: [:eq, :whitespace, :attribute_open]
     ]

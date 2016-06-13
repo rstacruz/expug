@@ -56,7 +56,7 @@ defmodule Expug.TokenizerTools do
     if String.slice(source, position..-1) != "" do
       expected = Enum.uniq_by(get_parse_errors(doc), &(&1))
       position = convert_positions(position, source)
-      {:parse_error, [source: source, position: position, expected: expected]}
+      {:parse_error, [position: position, expected: expected]}
     else
       doc = doc
       |> scrub_parse_errors()
