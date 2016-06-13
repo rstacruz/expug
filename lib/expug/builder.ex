@@ -1,6 +1,19 @@
 defmodule Expug.Builder do
-  @moduledoc """
+  @moduledoc ~S"""
   Builds lines from an AST.
+
+      iex> source = "div\n  | Hello"
+      iex> with {:ok, tokens} <- Expug.Tokenizer.tokenize(source),
+      ...>      {:ok, ast} <- Expug.Compiler.compile(tokens),
+      ...>      {:ok, lines} <- Expug.Builder.build(ast),
+      ...>   do: lines
+      %{
+        :lines => 2,
+        1 => ["<div>"],
+        2 => ["Hello", "</div>"]
+      }
+
+  This gives you a map of lines that the `Stringifier` will work on.
   """
 
   require Logger
@@ -77,13 +90,8 @@ defmodule Expug.Builder do
   Adds a line based on a token's location.
   """
   def put(%{lines: max} = doc, %{token: {{line, _col}, _, _}}, str) do
-    doc = if line > max do
-      Map.put(doc, :lines, line)
-    else
-      doc
-    end
-
     doc
+    |> update_line_count(line, max)
     |> Map.update(line, [str], &(&1 ++ [str]))
   end
 
@@ -93,5 +101,16 @@ defmodule Expug.Builder do
   def put_last(%{lines: line} = doc, str) do
     doc
     |> Map.update(line, [str], &(&1 ++ [str]))
+  end
+
+  @doc """
+  Updates the `:lines` count if the latest line is beyond the current max.
+  """
+  def update_line_count(doc, line, max) when line > max do
+    Map.put(doc, :lines, line)
+  end
+
+  def update_line_count(doc, _line, _max) do
+    doc
   end
 end
