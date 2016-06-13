@@ -6,7 +6,7 @@ defmodule Expug.Builder do
   require Logger
 
   def build(ast) do
-    {:ok, %{} |> make(ast)}
+    {:ok, %{lines: 0} |> make(ast)}
   end
 
   def make(doc, nil) do
@@ -76,7 +76,13 @@ defmodule Expug.Builder do
   @doc """
   Adds a line based on a token's location.
   """
-  def put(doc, %{token: {{line, _col}, _, _}}, str) do
+  def put(%{lines: max} = doc, %{token: {{line, _col}, _, _}}, str) do
+    doc = if line > max do
+      Map.put(doc, :lines, line)
+    else
+      doc
+    end
+
     doc
     |> Map.update(line, [str], &(&1 ++ [str]))
   end
@@ -84,8 +90,7 @@ defmodule Expug.Builder do
   @doc """
   Adds a line to the end of a document.
   """
-  def put_last(doc, str) do
-    {line, _} = Map.to_list(doc) |> List.last()
+  def put_last(%{lines: line} = doc, str) do
     doc
     |> Map.update(line, [str], &(&1 ++ [str]))
   end

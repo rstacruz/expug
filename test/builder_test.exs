@@ -11,6 +11,7 @@ defmodule BuilderTest do
   test "build" do
     {:ok, eex} = build("doctype html\ndiv Hello")
     assert eex == %{
+      :lines => 2,
       1 => ["<!doctype html>"],
       2 => ["<div>", "Hello", "</div>"]
     }
@@ -19,6 +20,7 @@ defmodule BuilderTest do
   test "with buffered text" do
     {:ok, eex} = build("div= hola()")
     assert eex == %{
+      :lines => 1,
       1 =>["<div>", "<%= hola() %>", "</div>"]
     }
   end
@@ -30,6 +32,7 @@ defmodule BuilderTest do
       span= @hello
     """)
     assert eex == %{
+      :lines => 3,
       1 =>["<!doctype html>"],
       2 =>["<div>"],
       3 =>["<span>", "<%= @hello %>", "</span>", "</div>"]

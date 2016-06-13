@@ -24,12 +24,13 @@ Save<%="\n"%></button><%="\n"%></div>
 
 ```js
 lines = %{
-  1: [ "<div>" ]
-  2: [ "Hello," ]
-  3: [ "<%= @name %>" ]
-  4: nil
-  5: [ "<button class="btn">" ]
-  6: [ "Save", "</button>", "</div>" ]
+  :lines => 6,
+  1 => [ "<div>" ],
+  2 => [ "Hello," ],
+  3 => [ "<%= @name %>" ],
+
+  5 => [ "<button class="btn">" ],
+  6 => [ "Save", "</button>", "</div>" ]
 }
 ```
 
