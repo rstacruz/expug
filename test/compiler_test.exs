@@ -191,11 +191,9 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :element,
         name: "div",
-        attributes: [%{
-          type: :attribute,
-          key: "style",
-          value: "'color: blue'"
-        }]
+        attributes: %{
+          "style" => [{:eval, "'color: blue'"}]
+        }
       }]
     } = ast
   end
@@ -208,15 +206,10 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :element,
         name: "div",
-        attributes: [%{
-          type: :attribute,
-          key: "id",
-          value: "'box'"
-        }, %{
-          type: :attribute,
-          key: "style",
-          value: "'color: blue'"
-        }]
+        attributes: %{
+          "id" => [{:eval, "'box'"}],
+          "style" => [{:eval, "'color: blue'"}]
+        }
       }]
     } = ast
   end
@@ -229,15 +222,9 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :element,
         name: "div",
-        attributes: [%{
-          type: :attribute,
-          key: "src",
-          value: "1"
-        }, %{
-          type: :attribute,
-          key: "src",
-          value: "2"
-        }]
+        attributes: %{
+          "src" => [{:eval, "1"}, {:eval, "2"}]
+        }
       }]
     } = ast
   end

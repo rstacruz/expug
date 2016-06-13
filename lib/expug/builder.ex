@@ -100,14 +100,51 @@ defmodule Expug.Builder do
     "<" <> node[:name] <> attributes(node[:attributes]) <> ">"
   end
 
-  def attributes([ %{key: key, value: value} | rest]) do
-    " #{key}=<%= Expug.Runtime.attr_value(#{value}) %>" <> attributes(rest)
+  @doc ~S"""
+  Stringifies an attributes map.
+
+      iex> Expug.Builder.attributes(%{ "src" => [{:text, "image.jpg"}] })
+      " src=\"image.jpg\""
+
+      #iex> Expug.Builder.attributes(%{ "class" => [{:text, "a"}, {:text, "b"}] })
+      #" class=\"a b\""
+
+      iex> Expug.Builder.attributes(%{ "src" => [{:eval, "@image"}] })
+      " src=<%= Expug.Runtime.attr_value(@image) %>"
+
+      iex> Expug.Builder.attributes(%{ "class" => [{:eval, "@a"}, {:eval, "@b"}] })
+      " class=<%= Expug.Runtime.attr_value(Enum.join([@a, @b], \" \")) %>"
+  """
+  def attributes(nil), do: ""
+
+  def attributes(%{} = attributes) do
+    Enum.reduce attributes, "", fn {key, values}, acc ->
+      acc <> " #{key}=" <> valueify(values)
+    end
   end
 
-  def attributes(_) do
-    ""
+  def valueify([{:eval, value}]) do
+    "<%= Expug.Runtime.attr_value(#{value}) %>"
   end
 
+  def valueify([{:text, value}]) do
+    Expug.Runtime.attr_value(value)
+  end
+
+  def valueify(values) when length(values) > 1 do
+    inside = Enum.reduce values, "", fn
+      {:eval, value}, acc ->
+        acc |> str_join(value, ", ")
+      {:text, value}, acc ->
+        acc |> str_join(Expug.Runtime.attr_value(value), ", ")
+    end
+
+    "<%= Expug.Runtime.attr_value(Enum.join([#{inside}], \" \")) %>"
+  end
+
+  def str_join(left, str, sep \\ " ")
+  def str_join("", str, _sep), do: str
+  def str_join(left, str, sep), do: left <> sep <> str
 
   @doc """
   Adds a line based on a token's location.

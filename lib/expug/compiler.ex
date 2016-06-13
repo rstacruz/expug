@@ -160,7 +160,7 @@ defmodule Expug.Compiler do
         element({node, rest}, depth)
 
       [{_, :attribute_open, _} | rest] ->
-        {attr_list, rest} = attribute({[], rest})
+        {attr_list, rest} = attribute({%{}, rest})
         node = Map.put(node, :attributes, attr_list)
         {node, rest}
 
@@ -182,8 +182,7 @@ defmodule Expug.Compiler do
   def attribute({attr_list, tokens}) do
     case tokens do
       [{_, :attribute_key, key}, {_, :attribute_value, value} | rest] ->
-        attr = %{type: :attribute, key: key, value: value}
-        attr_list = attr_list ++ [ attr ]
+        attr_list = add_attribute(attr_list, key, {:eval, value})
         attribute({attr_list, rest})
 
       [{_, :attribute_close, _} | rest] ->
@@ -192,6 +191,10 @@ defmodule Expug.Compiler do
       rest ->
         throw {:compile_error, :unexpected_token, first(rest)}
     end
+  end
+
+  def add_attribute(list, key, value) do
+    Map.update(list, key, [value], &(&1 ++ [value]))
   end
 
   @doc """
