@@ -261,6 +261,4 @@ defmodule Expug.TokenizerTools do
   def convert_position([], _offsets) do
     []
   end
-
 end
-
