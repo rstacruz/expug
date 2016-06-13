@@ -49,14 +49,14 @@ defmodule Expug.TokenizerTools do
   """
 
   @doc """
-  Turns a state tuple (`{doc, source, position}`) into a final result.
-  Returns either `{:ok, doc}` or `{:error, [source: _, position: _, expected: _]}`.
+  Turns a state tuple (`{doc, source, position}`) into a final result.  Returns
+  either `{:ok, doc}` or `{:parse_error, [source: _, position: _, expected: _]}`.
   Guards against unexpected end-of-file.
   """
   def finalize({doc, source, position}) do
     if String.slice(source, position..-1) != "" do
       expected = Enum.uniq_by(get_parse_errors(doc), &(&1))
-      {:error, [source: source, position: position, expected: expected]}
+      {:parse_error, [source: source, position: position, expected: expected]}
     else
       doc = scrub_parse_errors(doc)
       {:ok, doc}

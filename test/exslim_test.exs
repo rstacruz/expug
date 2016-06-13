@@ -11,4 +11,13 @@ defmodule ExpugTest do
     {:ok, eex} = Expug.to_eex("div= hola()")
     assert eex == "<div>\n<%= hola() %>\n</div>\n"
   end
+
+  test "parse error" do
+    {:parse_error, output} = Expug.to_eex("hello\nhuh?")
+    assert output == [
+      source: "hello\nhuh?",
+      position: 9,
+      expected: [:eq, :whitespace, :attribute_open]
+    ]
+  end
 end

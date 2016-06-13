@@ -29,6 +29,7 @@ This is a work in progress.
 Supported:
 
 - [x] Most everything
+- [ ] track line/column in tokens
 - [ ] `!=` unescaped code
 - [ ] HTML escaping
 - [ ] `/` comments
