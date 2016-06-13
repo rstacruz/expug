@@ -3,11 +3,13 @@ defmodule Expug.Error do
   A parse error
   """
 
-  defexception [:message]
+  defexception [:message, :line, :column]
 
   def exception(%{type: type, position: {ln, col}}= err) do
     %Expug.Error{
-      message: "line #{ln}:#{col}: " <> exception_message(type, err)
+      message: exception_message(type, err) <> " on line #{ln} col #{col}",
+      line: ln,
+      column: col
     }
   end
 
@@ -19,6 +21,10 @@ defmodule Expug.Error do
 
   def exception_message(:parse_error, %{expected: expected}) do
     "parse error, expected one of: #{Enum.join(expected, ", ")}"
+  end
+
+  def exception_message(:ambiguous_indentation, _) do
+    "ambiguous indentation"
   end
 
   def exception_message(type, _) do

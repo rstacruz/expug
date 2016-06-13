@@ -36,10 +36,10 @@ defmodule Expug.Compiler do
       {node, _tokens} = document({node, tokens})
       {:ok, node}
     catch {:compile_error, type, {pos, _, _} = _token} ->
-      {:error, [
+      {:error, %{
         type: type,
         position: pos
-      ]}
+      }}
     end
   end
 
@@ -85,8 +85,8 @@ defmodule Expug.Compiler do
     {node, []}
   end
 
-  def indent({_node, [t | _]}, _depth) do
-    throw {:compile_error, :unexpected_token, t}
+  def indent({_node, [token | _]}, _depth) do
+    throw {:compile_error, :unexpected_token, token}
   end
 
   @doc """
