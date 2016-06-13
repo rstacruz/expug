@@ -194,7 +194,7 @@ defmodule ExpugCompilerTest do
         attributes: [%{
           type: :attribute,
           key: "style",
-          val: "'color: blue'"
+          value: "'color: blue'"
         }]
       }]
     } = ast
@@ -211,11 +211,11 @@ defmodule ExpugCompilerTest do
         attributes: [%{
           type: :attribute,
           key: "id",
-          val: "'box'"
+          value: "'box'"
         }, %{
           type: :attribute,
           key: "style",
-          val: "'color: blue'"
+          value: "'color: blue'"
         }]
       }]
     } = ast
@@ -232,11 +232,11 @@ defmodule ExpugCompilerTest do
         attributes: [%{
           type: :attribute,
           key: "src",
-          val: "1"
+          value: "1"
         }, %{
           type: :attribute,
           key: "src",
-          val: "2"
+          value: "2"
         }]
       }]
     } = ast

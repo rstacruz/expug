@@ -51,7 +51,7 @@ defmodule Expug.Builder do
   """
   def make(doc, %{type: :element} = node) do
     doc
-    |> put(node, "<" <> node[:name] <> ">")
+    |> put(node, element(node))
     |> make(node[:text])
     |> children(node[:children])
     |> put_last("</" <> node[:name] <> ">") # wrong
@@ -91,6 +91,23 @@ defmodule Expug.Builder do
       make(doc, node)
     end
   end
+
+  @doc """
+  Builds an element opening tag.
+  """
+
+  def element(node) do
+    "<" <> node[:name] <> attributes(node[:attributes]) <> ">"
+  end
+
+  def attributes([ %{key: key, value: value} | rest]) do
+    " #{key}=<%= Expug.Runtime.attr_value(#{value}) %>" <> attributes(rest)
+  end
+
+  def attributes(_) do
+    ""
+  end
+
 
   @doc """
   Adds a line based on a token's location.

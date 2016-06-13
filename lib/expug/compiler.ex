@@ -182,7 +182,7 @@ defmodule Expug.Compiler do
   def attribute({attr_list, tokens}) do
     case tokens do
       [{_, :attribute_key, key}, {_, :attribute_value, value} | rest] ->
-        attr = %{type: :attribute, key: key, val: value}
+        attr = %{type: :attribute, key: key, value: value}
         attr_list = attr_list ++ [ attr ]
         attribute({attr_list, rest})
 

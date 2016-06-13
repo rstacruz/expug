@@ -17,6 +17,22 @@ defmodule BuilderTest do
     }
   end
 
+  test "single element" do
+    {:ok, eex} = build("div")
+    assert eex == %{
+      :lines => 1,
+      1 => ["<div>", "</div>"]
+    }
+  end
+
+  test "single element with attributes" do
+    {:ok, eex} = build("div(id=foo)")
+    assert eex == %{
+      :lines => 1,
+      1 => ["<div id=<%= Expug.Runtime.attr_value(foo) %>>", "</div>"]
+    }
+  end
+
   test "with buffered text" do
     {:ok, eex} = build("div= hola()")
     assert eex == %{
