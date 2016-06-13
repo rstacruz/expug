@@ -20,15 +20,20 @@ Hello,
 Save<%="\n"%></button><%="\n"%></div>
 ```
 
+## Building
+
 ```js
 lines = %{
-  1: [ {:line, "<div>"} ]
-  2: [ {:line, "Hello,"} ]
-  3: [ {:line, "<%= @name %>"} ]
-  4: []
-  5: [ {:line, "<button class="btn">"} ]
-  6: [ {:line, "Save"}
-       {:line, "</button>"}
-       {:line, "</div>"} ]
+  1: [ "<div>" ]
+  2: [ "Hello," ]
+  3: [ "<%= @name %>" ]
+  4: nil
+  5: [ "<button class="btn">" ]
+  6: [ "Save", "</button>", "</div>" ]
 }
 ```
+
+Here's what happens:
+
+- Multiline lines (like 6) will be joined with a fake newline (`<%= "\n" %>`).
+- Empty lines (like line 4) will start with `<%`, with a final `%>` in the next line that has something.

@@ -8,8 +8,8 @@ defmodule Expug do
   @doc ~S"""
   Compiles an Expug template to an Eex template.
 
-      iex> source = "div Hello"
-      iex> Expug.to_eex(source)
+      ###> source = "div Hello"
+      ###> Expug.to_eex(source)
       {:ok, "<div>\nHello\n</div>\n"}
   """
   def to_eex(source) do
