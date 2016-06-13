@@ -3,16 +3,15 @@ defmodule ExpugCompilerTest do
 
   import Expug.Tokenizer, only: [tokenize: 1]
   import Expug.Compiler, only: [compile: 1]
-  import TestUtils, only: [sort: 1]
 
   test "doctype only" do
     {:ok, tokens} = tokenize("doctype html5")
     {:ok, ast} = compile(tokens)
     assert %{
       doctype: %{
-        token: {8, :doctype, "html5"},
         type: :doctype,
-        value: "html5"
+        value: "html5",
+        token: {8, :doctype, "html5"}
       },
       type: :document
     } = ast

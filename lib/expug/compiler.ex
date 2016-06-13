@@ -17,19 +17,17 @@ defmodule Expug.Compiler do
     end
   end
 
-  def doctype({node, tokens}) do
-    case tokens do
-      [{_, :doctype, type} = token | rest] ->
-        node = Map.put(node, :doctype, %{
-          type: :doctype,
-          value: type,
-          token: token
-        })
-        statements({node, rest}, -1)
+  def doctype({node, [{_, :doctype, type} = token | rest]}) do
+    node = Map.put(node, :doctype, %{
+      type: :doctype,
+      value: type,
+      token: token
+    })
+    statements({node, rest}, -1)
+  end
 
-      _ ->
-        statements({node, tokens}, -1) # optional
-    end
+  def doctype({node, rest}) do
+    statements({node, rest}, -1) # optional
   end
 
   def statements({node, tokens}, indent) do
