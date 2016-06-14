@@ -1,39 +1,53 @@
 # Expug
 
-> Pug templates for Elixir
+> Indented shorthand HTML templates for Elixir
+
+Expug is a template language based on [Pug][] (formerly known as [Jade][]).
+This is a [work-in-progress](docs/todo.md).
+
+[Pug]: http://www.pug-lang.com/
+[Jade]: http://jade-lang.com/
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+Add expug to your list of dependencies in `mix.exs`:
 
-  1. Add expug to your list of dependencies in `mix.exs`:
+```elixir
+def deps do
+  #[{:expug, "~> 0.0.1"}]
+  [{:expug, git: "https://github.com/rstacruz/expug.git"}]
+end
+```
 
-        def deps do
-          [{:expug, "~> 0.0.1"}]
-        end
+Also see [phoenix_expug](https://github.com/rstacruz/phoenix_expug) for Phoenix integration.
 
-  2. Ensure expug is started before your application:
+## The language
 
-        def application do
-          [applications: [:expug]]
-        end
+Expug lets you write HTML as indented shorthand, inspired by Haml, Slim, Pug/Jade, and so on.
 
-## To Do
+```jade
+doctype html
+html
+  meta(charset="utf-8")
+  title Hello, world!
+body
+  a(href=@link)
+    | This is a link
+```
 
-This is a work in progress.
+Also see:
 
-- [95%] String -> Tokens (`tokens = Expug.Tokenizer.tokenize(str)`)
-- [80%] Tokens -> AST (`ast = Expug.Compiler.compile(tokens)`) - *getting there!*
-- [1%] AST -> EEx templates (`eex = Expug.Builder.build(ast)`)
+- [Comparison with Pug](docs/comparison_with_pug.md)
+- [Jade language reference](http://jade-lang.com/reference/) (jade-lang.com)
 
-Supported:
+## Thanks
 
-- [x] Most everything
-- [x] track line/column in tokens
-- [x] `,` comma-delimited attributes
-- [x] Multiline attributes
-- [ ] Multiline `-` and `=` expressions
-- [ ] `!=` unescaped code
-- [ ] HTML escaping
-- [ ] `/` comments
-- [ ] `.` raw text (like `script.`)
+**expug** © 2016+, Rico Sta. Cruz. Released under the [MIT] License.<br>
+Authored and maintained by Rico Sta. Cruz with help from contributors ([list][contributors]).
+
+> [ricostacruz.com](http://ricostacruz.com) &nbsp;&middot;&nbsp;
+> GitHub [@rstacruz](https://github.com/rstacruz) &nbsp;&middot;&nbsp;
+> Twitter [@rstacruz](https://twitter.com/rstacruz)
+
+[MIT]: http://mit-license.org/
+[contributors]: http://github.com/rstacruz/expug/contributors
