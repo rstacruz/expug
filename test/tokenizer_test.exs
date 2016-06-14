@@ -56,6 +56,14 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "| name $200" do
+    {:ok, output} = tokenize("| name $200")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 3}, :raw_text, "name $200"}
+    ]
+  end
+
   test "multiline" do
     {:ok, output} = tokenize("head\nbody\n")
     assert reverse(output) == [

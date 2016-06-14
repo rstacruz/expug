@@ -353,7 +353,7 @@ defmodule Expug.Tokenizer do
     state
     |> eat(~r/^\|/, :pipe, nil)
     |> optional_whitespace()
-    |> eat(~r/^[^\n$]+/, :raw_text)
+    |> eat(~r/^[^\n]+/, :raw_text)
   end
 
   def statement(state) do
