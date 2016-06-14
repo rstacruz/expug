@@ -43,7 +43,7 @@ defmodule ExpugTokenizerTest do
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "title"},
-      {{1, 7}, :sole_raw_text, "Hello world"}
+      {{1, 7}, :raw_text, "Hello world"}
     ]
   end
 
@@ -52,7 +52,7 @@ defmodule ExpugTokenizerTest do
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "title"},
-      {{1, 8}, :sole_buffered_text, "name"}
+      {{1, 8}, :buffered_text, "name"}
     ]
   end
 

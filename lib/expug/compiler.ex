@@ -178,13 +178,13 @@ defmodule Expug.Compiler do
         node = Map.put(node, :attributes, attr_list)
         element({node, rest}, parent, depths)
 
-      [{_, :sole_raw_text, value} = t | rest] ->
+      [{_, :raw_text, value} = t | rest] ->
         # should be in children
         child = %{type: :raw_text, value: value, token: t}
         node = add_child(node, child)
         element({node, rest}, parent, depths)
 
-      [{_, :sole_buffered_text, value} = t | rest] ->
+      [{_, :buffered_text, value} = t | rest] ->
         child = %{type: :buffered_text, value: value, token: t}
         node = add_child(node, child)
         element({node, rest}, parent, depths)

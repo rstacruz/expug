@@ -56,7 +56,7 @@ defmodule Expug.Tokenizer do
       iex> {:ok, res} = Expug.Tokenizer.tokenize("title= name")
       iex> res
       [
-        {{1, 8}, :sole_buffered_text, "name"},
+        {{1, 8}, :buffered_text, "name"},
         {{1, 1}, :element_name, "title"},
         {{1, 1}, :indent, 0}
       ]
@@ -310,16 +310,14 @@ defmodule Expug.Tokenizer do
   def sole_buffered_text(state) do
     state
     |> optional_whitespace()
-    |> eat(~r/^=/, :eq, nil)
-    |> optional_whitespace()
-    |> eat(~r/^[^\n$]+/, :sole_buffered_text)
+    |> buffered_text()
   end
 
   @doc "Matches text"
   def sole_raw_text(state) do
     state
     |> whitespace()
-    |> eat(~r/^[^\n$]+/, :sole_raw_text)
+    |> eat(~r/^[^\n$]+/, :raw_text)
   end
 
   @doc "Matches `title` in `title= hello`"
