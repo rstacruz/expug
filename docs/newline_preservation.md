@@ -1,6 +1,6 @@
 # New line preservation
 
-Eex has no provisions for source maps so we'll have to emulate.
+Eex has no provisions for source maps, so we'll have to emulate this by outputing EEx that matches line numbers *exactly* with the source `.pug` files.
 
 ```jade
 div
@@ -20,7 +20,9 @@ Hello,
 Save<%="\n"%></button><%="\n"%></div>
 ```
 
-## Building
+## Internal notes
+
+Expug.Builder brings this output:
 
 ```js
 lines = %{
