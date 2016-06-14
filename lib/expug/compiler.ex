@@ -53,31 +53,41 @@ defmodule Expug.Compiler do
       value: type,
       token: t
     })
-    indent({node, tokens}, -1)
+    indent({node, tokens}, [0])
   end
 
   def document({node, tokens}) do
-    indent({node, tokens}, -1) # optional
+    indent({node, tokens}, [0]) # optional
   end
 
   @doc """
   Indentation. Called with `depth` which is the current level its at.
   """
-  def indent({node, [{_, :indent, subdepth} | tokens]}, depth)
-  when subdepth > depth do
-    # Found children, start a new subtree
-    statement({node, tokens}, subdepth)
-    |> indent(depth)
-  end
+  def indent({node, [{_, :indent, subdepth} | tokens]}, [d | _] = depths)
+  when subdepth > d do
+    # Found children, start a new subtree.
+    [child | rest] = Enum.reverse(node[:children] || [])
+    {child, tokens} = statement({child, tokens}, [ subdepth | depths ])
+    |> indent([ subdepth | depths ])
 
-  def indent({node, [{_, :indent, subdepth} | _] = tokens}, depth)
-  when subdepth == depth do
-    # Siblings; stop processing.
+    # Go back to our tree.
+    children = Enum.reverse([child | rest])
+    node = Map.put(node, :children, children)
     {node, tokens}
+    |> indent(depths)
   end
 
-  def indent({_node, [{_, :indent, _}, token | _]}, _depth) do
-    throw {:compile_error, :ambiguous_indentation, token}
+  def indent({node, [{_, :indent, subdepth} | tokens]}, [d | _] = depths)
+  when subdepth == d do
+    {node, tokens}
+    |> statement(depths)
+    |> indent(depths)
+  end
+
+  def indent({node, [{_, :indent, subdepth} | _] = tokens}, [d | _] = depths)
+  when subdepth < d do
+    # throw {:compile_error, :ambiguous_indentation, token}
+    {node, tokens}
   end
 
   # End of file, no tokens left.
@@ -99,27 +109,34 @@ defmodule Expug.Compiler do
       [:attribute_open [...] :attribute_close]
       [:solo_buffered_text | :solo_raw_text]
   """
-  def statement({node, [{_, :line_comment, _} | tokens]}, depth) do
-    {_, tokens} = indent({node, tokens}, depth)
+  def statement({node, [{_, :line_comment, _} | [{_, :indent, subdepth} | _] = tokens]}, [d | _]  = depths)
+  when subdepth > d do
+    # Pretend to be an element and capture stuff into it; discard it afterwards.
+    # This is wrong anyway; it should be tokenized differently.
+    {_, tokens} = indent({%{type: :element}, tokens}, [subdepth | depths])
     {node, tokens}
   end
 
-  def statement({node, [{_, :html_comment, _} | tokens]}, depth) do
+  def statement({node, [{_, :line_comment, _} | tokens]}, depths) do
+    {node, tokens}
+  end
+
+  def statement({node, [{_, :html_comment, _} | tokens]}, depths) do
     # TODO: render
-    {_, tokens} = indent({node, tokens}, depth)
+    {_, tokens} = indent({node, tokens}, depths)
     {node, tokens}
   end
 
-  def statement({node, [{_, :element_name, _} = t | _] = tokens}, depth) do
-    create_element(node, t, tokens, depth)
+  def statement({node, [{_, :element_name, _} = t | _] = tokens}, depths) do
+    add_element(node, t, tokens, depths)
   end
 
-  def statement({node, [{_, :element_class, _} = t | _] = tokens}, depth) do
-    create_element(node, t, tokens, depth)
+  def statement({node, [{_, :element_class, _} = t | _] = tokens}, depths) do
+    add_element(node, t, tokens, depths)
   end
 
-  def statement({node, [{_, :element_id, _} = t | _] = tokens}, depth) do
-    create_element(node, t, tokens, depth)
+  def statement({node, [{_, :element_id, _} = t | _] = tokens}, depths) do
+    add_element(node, t, tokens, depths)
   end
 
   def statement({node, [{_, :raw_text, value} = t | tokens]}, _depth) do
@@ -134,9 +151,9 @@ defmodule Expug.Compiler do
     {node, tokens}
   end
 
-  def create_element(node, t, tokens, depth) do
+  def add_element(node, t, tokens, depth) do
     child = %{type: :element, name: "div", token: t}
-    {child, rest} = element({child, tokens}, depth)
+    {child, rest} = element({child, tokens}, node, depth)
     node = add_child(node, child)
     {node, rest}
   end
@@ -145,47 +162,40 @@ defmodule Expug.Compiler do
   Parses an element.
   Returns a `%{type: :element}` node.
   """
-  def element({node, tokens}, depth) do
+  def element({node, tokens}, parent, [d | _] = depths) do
     case tokens do
       [{_, :element_name, value} | rest] ->
         node = Map.put(node, :name, value)
-        element({node, rest}, depth)
+        element({node, rest}, parent, depths)
 
       [{_, :element_id, value} | rest] ->
         attr_list = add_attribute(node[:attributes] || %{}, "id", {:text, value})
         node = Map.put(node, :attributes, attr_list)
-        element({node, rest}, depth)
+        element({node, rest}, parent, depths)
 
       [{_, :element_class, value} | rest] ->
         attr_list = add_attribute(node[:attributes] || %{}, "class", {:text, value})
         node = Map.put(node, :attributes, attr_list)
-        element({node, rest}, depth)
+        element({node, rest}, parent, depths)
 
       [{_, :sole_raw_text, value} = t | rest] ->
         # should be in children
         child = %{type: :raw_text, value: value, token: t}
         node = add_child(node, child)
-        element({node, rest}, depth)
+        element({node, rest}, parent, depths)
 
       [{_, :sole_buffered_text, value} = t | rest] ->
         child = %{type: :buffered_text, value: value, token: t}
         node = add_child(node, child)
-        element({node, rest}, depth)
+        element({node, rest}, parent, depths)
 
       [{_, :attribute_open, _} | rest] ->
         {attr_list, rest} = attribute({node[:attributes] || %{}, rest})
         node = Map.put(node, :attributes, attr_list)
-        element({node, rest}, depth)
+        element({node, rest}, parent, depths)
 
-      [{_, :indent, subdepth} | _] = tokens ->
-        if subdepth > depth do
-           indent({node, tokens}, depth)
-        else
-          {node, tokens}
-        end
-
-      [] ->
-        {node, []}
+      tokens ->
+        {node, tokens}
     end
   end
 
