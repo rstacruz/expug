@@ -50,6 +50,20 @@ There's [calliope] and [slime] that brings Haml and Slim to Elixir, respectively
 
 [calliope]: https://github.com/nurugger07/calliope
 [slime]: https://github.com/slime-lang/slime
+
+## How it works
+
+Expug converts a `.pug` template into an EEx string:
+
+```elixir
+iex> Expug.to_eex!(~s[div(role="alert")= @message])
+"<div role=<%= raw(\"alert\") %>><%= @message %>"
+```
+
+Note that it needs `raw/1`, something typically provided by [Phoenix.HTML](http://devdocs.io/phoenix/phoenix_html/phoenix.html#raw/1). You don't need Phoenix.HTML however; a binding with `raw/1` would do.
+
+To use Expug with Phoenix, see [phoenix_expug](https://github.com/rstacruz/phoenix_expug).
+
 ## Thanks
 
 **expug** © 2016+, Rico Sta. Cruz. Released under the [MIT] License.<br>
