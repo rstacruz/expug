@@ -5,6 +5,7 @@ defmodule Expug.Stringifier do
 
   def stringify(%{} = doc) do
     {max, doc} = Map.pop(doc, :lines)
+    {_, doc} = Map.pop(doc, :doctype)
     list = doc |> Map.to_list() |> Enum.sort()
     {:ok, s(list, 0, max)}
   end

@@ -27,8 +27,10 @@ defmodule Expug.Builder do
   """
   def make(doc, %{type: :document} = node) do
     doc
+    |> Map.put(:doctype, :html)
     |> make(node[:doctype])
     |> children(node[:children])
+    |> Map.delete(:doctype)
   end
 
   def make(doc, %{type: :doctype, value: "html5"} = node) do
@@ -38,6 +40,7 @@ defmodule Expug.Builder do
 
   def make(doc, %{type: :doctype, value: "xml"} = node) do
     doc
+    |> Map.put(:doctype, :xml)
     |> put(node, ~s(<?xml version="1.0" encoding="utf-8" ?>))
   end
 
@@ -51,14 +54,14 @@ defmodule Expug.Builder do
   """
   def make(doc, %{type: :element, children: list} = node) do
     doc
-    |> put(node, element(node))
+    |> put(node, element(doc, node))
     |> children(list)
     |> put_last("</" <> node[:name] <> ">")
   end
 
   def make(doc, %{type: :element} = node) do
     doc
-    |> put(node, self_closing_element(node))
+    |> put(node, self_closing_element(doc, node))
   end
 
   @doc """
@@ -100,12 +103,26 @@ defmodule Expug.Builder do
   Builds an element opening tag.
   """
 
-  def element(node) do
+  def element(_doc, node) do
     "<" <> node[:name] <> attributes(node[:attributes]) <> ">"
   end
 
-  def self_closing_element(node) do
-    "<" <> node[:name] <> attributes(node[:attributes]) <> "></" <> node[:name] <> ">"
+  @self_closable ["meta", "img", "link"]
+
+  def self_closing_element(doc, node) do
+    tag = node[:name] <> attributes(node[:attributes])
+    cond do
+      doc[:doctype] == :xml ->
+        "<#{tag} />"
+      self_closable?(node) ->
+        "<#{tag}>"
+      true ->
+        "<#{tag}></#{node[:name]}>"
+    end
+  end
+
+  def self_closable?(node) do
+    Enum.any?(@self_closable, &(&1 == node[:name])) && true
   end
 
   @doc ~S"""
@@ -170,13 +187,6 @@ defmodule Expug.Builder do
     doc
     |> Map.update(line, [str], &(&1 ++ [str]))
   end
-
-  # def put_append(%{lines: line} = doc, str) do
-  #   doc
-  #   |> Map.update(line, [str], fn strings ->
-  #     List.update_at(strings, length(strings) - 1, &(&1 <> str))
-  #   end)
-  # end
 
   @doc """
   Updates the `:lines` count if the latest line is beyond the current max.

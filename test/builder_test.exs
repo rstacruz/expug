@@ -17,6 +17,24 @@ defmodule BuilderTest do
     }
   end
 
+  test "self-closing img" do
+    {:ok, eex} = build("doctype html\nimg")
+    assert eex == %{
+      :lines => 2,
+      1 => ["<!doctype html>"],
+      2 => ["<img>"]
+    }
+  end
+
+  test "self-closing xml" do
+    {:ok, eex} = build("doctype xml\nimg")
+    assert eex == %{
+      :lines => 2,
+      1 => ["<?xml version=\"1.0\" encoding=\"utf-8\" ?>"],
+      2 => ["<img />"]
+    }
+  end
+
   test "single element" do
     {:ok, eex} = build("div")
     assert eex == %{
