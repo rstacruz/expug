@@ -446,6 +446,17 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "-# comments, nesting and after" do
+    {:ok, output} = tokenize("-#\n  foobar\ndiv")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 3}, :line_comment, ""},
+      {{2, 3}, :subindent, "foobar"},
+      {{3, 1}, :indent, 0},
+      {{3, 1}, :element_name, "div"}
+    ]
+  end
+
   test "// comments" do
     {:ok, output} = tokenize("div\n// ...")
     assert reverse(output) == [
@@ -453,6 +464,17 @@ defmodule ExpugTokenizerTest do
       {{1, 1}, :element_name, "div"},
       {{2, 1}, :indent, 0},
       {{2, 4}, :html_comment, "..."}
+    ]
+  end
+
+  test "// comments, nesting" do
+    {:ok, output} = tokenize("div\n// ...\n  hi")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{2, 1}, :indent, 0},
+      {{2, 4}, :html_comment, "..."},
+      {{3, 3}, :subindent, "hi"}
     ]
   end
   # test "comma delimited attributes"

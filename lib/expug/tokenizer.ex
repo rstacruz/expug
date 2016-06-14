@@ -363,6 +363,7 @@ defmodule Expug.Tokenizer do
     |> eat(~r[^//], :html_comment, nil)
     |> optional_whitespace()
     |> eat(~r/^[^\n$]*/, :html_comment)
+    |> optional(&subindent_block/1)
   end
 
   def buffered_text(state) do

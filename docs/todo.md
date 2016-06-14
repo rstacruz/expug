@@ -16,9 +16,10 @@ Supported:
 - [ ] auto-end on `cond do ->` etc
 - [ ] value-less attributes (`textarea(spellcheck)`)
 - [ ] boolean value (`textarea(spellcheck=@spellcheck)`)
-- [ ] nested `-#`
+- [x] nested `-#`
 - [ ] error when nesting inside `| ...`
-- [ ] `/` comments
+- [x] `/` comments
+- [ ] nested `/`
 - [ ] `.` raw text (like `script.`)
 - [ ] Multiline `-` and `=` expressions
 - [ ] `!=` unescaped code
