@@ -109,12 +109,19 @@ defmodule Expug.Compiler do
       [:attribute_open [...] :attribute_close]
       [:solo_buffered_text | :solo_raw_text]
   """
-  def statement({node, [{_, :line_comment, _} | [{_, :indent, subdepth} | _] = tokens]}, [d | _]  = depths)
-  when subdepth > d do
+  def statement({node, [{_, :line_comment, _} | [{_, :subindent, _} | _] = tokens]}, [d | _]  = depths) do
     # Pretend to be an element and capture stuff into it; discard it afterwards.
     # This is wrong anyway; it should be tokenized differently.
-    {_, tokens} = indent({%{type: :element}, tokens}, [subdepth | depths])
-    {node, tokens}
+    subindent({node, tokens})
+  end
+
+  @doc "Ignore subindent"
+  def subindent({node, [{_, :subindent, _} | rest]}) do
+    subindent({node, rest})
+  end
+
+  def subindent({node, rest}) do
+     {node, rest}
   end
 
   def statement({node, [{_, :line_comment, _} | tokens]}, depths) do

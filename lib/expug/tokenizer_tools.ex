@@ -47,6 +47,8 @@ defmodule Expug.TokenizerTools do
       |> many_of(&doctype/1)
   """
 
+  require Logger
+
   @doc """
   Turns a state tuple (`{doc, source, position}`) into a final result.  Returns
   either `{:ok, doc}` or `{:parse_error, %{type, position, expected}}`.

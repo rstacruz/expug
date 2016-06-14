@@ -330,7 +330,32 @@ defmodule Expug.Tokenizer do
     state
     |> eat(~r/^-\s*#/, :line_comment, nil)
     |> optional_whitespace()
-    |> eat(~r/^[^\n$]*/, :line_comment)
+    |> eat(~r/^[^\n]*/, :line_comment)
+    |> optional(&subindent_block/1)
+  end
+
+  def subindent_block({doc, _, _} = state) do
+    level = get_indent(doc)
+    state
+    |> many_of(& &1 |> newlines() |> subindent(level))
+  end
+
+  def subindent(state, level) do
+    state
+    |> eat(~r/^[ \t]{#{level}}[ \t]+/, :whitespace, nil)
+    |> eat(~r/^[^\n]*/, :subindent)
+  end
+
+  def get_indent([{_, :indent, text} | _]) do
+    text
+  end
+
+  def get_indent([_ | rest]) do
+    get_indent(rest)
+  end
+
+  def get_indent([]) do
+    ""
   end
 
   def html_comment(state) do
