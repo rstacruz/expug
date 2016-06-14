@@ -110,6 +110,24 @@ defmodule BuilderTest do
     }
   end
 
+  test "indentation magic 2" do
+    {:ok, eex} = build("""
+    div
+      h1
+        span
+          | Hello
+    div
+    """)
+    assert eex == %{
+      :lines => 5,
+      1 => ["<div>"],
+      2 => ["<h1>"],
+      3 => ["<span>"],
+      4 => ["Hello", "</span>", "</h1>", "</div>"],
+      5 => ["<div>", "</div>"]
+    }
+  end
+
   test "attr and =" do
     {:ok, eex} = build("""
     div(role="main")= @hello
