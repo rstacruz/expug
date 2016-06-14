@@ -25,3 +25,13 @@ Expug retains most of Pug/Jade's features, adds some Elixir'isms, and drops the 
 ### Removed
 
 - The following features are not available: `block`, `include`, `extends`.
+
+### The same
+
+- __Indent sensitivity__ rules of Pug/Jade have been preserved. This means you can do:
+
+  ```jade
+  html
+    head
+        title This is indented with 4 spaces
+  ```
