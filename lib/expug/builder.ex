@@ -49,12 +49,16 @@ defmodule Expug.Builder do
   @doc """
   Builds elements.
   """
-  def make(doc, %{type: :element} = node) do
+  def make(doc, %{type: :element, children: list} = node) do
     doc
     |> put(node, element(node))
-    |> make(node[:text])
-    |> children(node[:children])
-    |> put_last("</" <> node[:name] <> ">") # wrong
+    |> children(list)
+    |> put_last("</" <> node[:name] <> ">")
+  end
+
+  def make(doc, %{type: :element} = node) do
+    doc
+    |> put(node, self_closing_element(node))
   end
 
   @doc """
@@ -98,6 +102,10 @@ defmodule Expug.Builder do
 
   def element(node) do
     "<" <> node[:name] <> attributes(node[:attributes]) <> ">"
+  end
+
+  def self_closing_element(node) do
+    "<" <> node[:name] <> attributes(node[:attributes]) <> "></" <> node[:name] <> ">"
   end
 
   @doc ~S"""
@@ -162,6 +170,13 @@ defmodule Expug.Builder do
     doc
     |> Map.update(line, [str], &(&1 ++ [str]))
   end
+
+  # def put_append(%{lines: line} = doc, str) do
+  #   doc
+  #   |> Map.update(line, [str], fn strings ->
+  #     List.update_at(strings, length(strings) - 1, &(&1 <> str))
+  #   end)
+  # end
 
   @doc """
   Updates the `:lines` count if the latest line is beyond the current max.

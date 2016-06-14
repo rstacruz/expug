@@ -21,7 +21,7 @@ defmodule BuilderTest do
     {:ok, eex} = build("div")
     assert eex == %{
       :lines => 1,
-      1 => ["<div>", "</div>"]
+      1 => ["<div></div>"]
     }
   end
 
@@ -29,7 +29,7 @@ defmodule BuilderTest do
     {:ok, eex} = build("div(id=foo)")
     assert eex == %{
       :lines => 1,
-      1 => ["<div id=<%= raw(Expug.Runtime.attr_value(foo)) %>>", "</div>"]
+      1 => ["<div id=<%= raw(Expug.Runtime.attr_value(foo)) %>></div>"]
     }
   end
 
@@ -63,8 +63,8 @@ defmodule BuilderTest do
     """)
     assert eex == %{
       :lines => 3,
-      1 => ["<div>", "</div>"],
-      3 => ["<div>", "</div>"]
+      1 => ["<div></div>"],
+      3 => ["<div></div>"]
     }
   end
 
@@ -76,7 +76,7 @@ defmodule BuilderTest do
     """)
     assert eex == %{
       :lines => 1,
-      1 => ["<div>", "</div>"]
+      1 => ["<div></div>"]
     }
   end
 
@@ -89,8 +89,8 @@ defmodule BuilderTest do
     """)
     assert eex == %{
       :lines => 4,
-      1 => ["<div>", "</div>"],
-      4 => ["<span>", "</span>"]
+      1 => ["<div></div>"],
+      4 => ["<span></span>"]
     }
   end
 
@@ -124,7 +124,7 @@ defmodule BuilderTest do
       2 => ["<h1>"],
       3 => ["<span>"],
       4 => ["Hello", "</span>", "</h1>", "</div>"],
-      5 => ["<div>", "</div>"]
+      5 => ["<div></div>"]
     }
   end
 

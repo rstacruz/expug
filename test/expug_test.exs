@@ -10,19 +10,19 @@ defmodule ExpugTest do
   test "with class" do
     {:ok, eex} = Expug.to_eex("div.hello")
     output = run_eex(eex)
-    assert output == "<div class=\"hello\">\n</div>\n"
+    assert output == "<div class=\"hello\"></div>\n"
   end
 
   test "with buffered text" do
     {:ok, eex} = Expug.to_eex("div.hello.world")
     output = run_eex(eex)
-    assert output == "<div class=\"hello world\">\n</div>\n"
+    assert output == "<div class=\"hello world\"></div>\n"
   end
 
   test "with assigns in attribute" do
     {:ok, eex} = Expug.to_eex("div(class=@klass)")
     output = run_eex(eex, assigns: [klass: "hello"])
-    assert output == "<div class=\"hello\">\n</div>\n"
+    assert output == "<div class=\"hello\"></div>\n"
   end
 
   test "with assigns in text" do
