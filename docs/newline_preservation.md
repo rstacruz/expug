@@ -22,7 +22,7 @@ Save<%="\n"%></button><%="\n"%></div>
 
 ## Internal notes
 
-Expug.Builder brings this output:
+`Expug.Builder` brings this output:
 
 ```js
 lines = %{
@@ -36,7 +36,7 @@ lines = %{
 }
 ```
 
-Here's what happens:
+`Expug.Stringifier` will take this and yield a final EEx string. The rules it follows are:
 
 - Multiline lines (like 6) will be joined with a fake newline (`<%= "\n" %>`).
 - Empty lines (like line 4) will start with `<%`, with a final `%>` in the next line that has something.
