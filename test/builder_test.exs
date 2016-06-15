@@ -159,4 +159,14 @@ defmodule BuilderTest do
       ]
     }
   end
+
+  test "extra space" do
+    {:ok, eex} = build("div\n ")
+    assert eex == %{
+      :lines => 1,
+      1 => [
+        "<div></div>"
+      ]
+    }
+  end
 end
