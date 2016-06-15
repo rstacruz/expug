@@ -144,4 +144,7 @@ defmodule StringifierTest do
 
   @tag :pending
   test "ul: li: button Hello"
+
+  @tag :pending
+  test "! (throw a proper error)"
 end
