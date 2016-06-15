@@ -74,4 +74,65 @@ defmodule StringifierTest do
     Hello<%= "\n" %></a><%= "\n" %></span><%= "\n" %></h1><%= "\n" %></div>
     """
   end
+
+  test "joining classes" do
+    {:ok, eex} = build("""
+    div.foo(class="bar")
+    """)
+
+    assert eex == ~S"""
+    <div class=<%= raw(Expug.Runtime.attr_value(Enum.join(["foo", "bar"], " "))) %>></div>
+    """
+  end
+
+  test "joining IDs" do
+    {:ok, eex} = build("""
+    div#a#b
+    """)
+
+    assert eex == ~S"""
+    <div id=<%= raw(Expug.Runtime.attr_value(Enum.join(["a", "b"], " "))) %>></div>
+    """
+  end
+
+  @tag :pending
+  test "extra depths" do
+    {:ok, eex} = build("""
+    div(role="hi"
+    )
+
+    div
+    """)
+
+    assert eex == ~S"""
+    <div role=<%= raw(Expug.Runtime.attr_value("hi"
+    )) %>></div>
+    <%
+    %><div></div>
+    """
+  end
+
+  @tag :pending
+  test "new line attributes" do
+    {:ok, eex} = build("""
+    div(role="hi"
+    id="foo")
+    """)
+
+    assert eex == ~S"""
+    <div id=<%= raw(Expug.Runtime.attr_value("foo")) %> role=<%= raw(Expug.Runtime.attr_value("hi"
+    )) %>></div>
+    """
+  end
+
+  @tag :pending
+  test "colon in attributes" do
+    {:ok, eex} = build("""
+    div(svg:src="hi")
+    """)
+
+    assert eex == ~S"""
+    <div svg:src=<%= raw(Expug.Runtime.attr_value("hi")) %>></div>
+    """
+  end
 end
