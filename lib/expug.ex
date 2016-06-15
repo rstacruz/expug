@@ -1,16 +1,41 @@
 defmodule Expug do
-  @moduledoc """
-  Expug.
+  @moduledoc ~S"""
+  Expug compiles templates to an eex template. See `to_eex/1`.
+
+      iex> source = "div\n  | Hello"
+      iex> Expug.to_eex(source)
+      {:ok, "<div>\nHello<%= \"\\n\" %></div>\n"}
+
+  There's also `to_eex!/1` which will instead return the result or throw an
+  `Expug.Error`.
+
+      iex> source = "div\n  | Hello"
+      iex> Expug.to_eex!(source)
+      "<div>\nHello<%= \"\\n\" %></div>\n"
+
+  ## The `raw` helper
+  Note that it needs `raw/1`, something typically provided by
+  [Phoenix.HTML](http://devdocs.io/phoenix/phoenix_html/phoenix.html#raw/1).
+  You don't need Phoenix.HTML however; a binding with `raw/1` would do.
+
+      iex> Expug.to_eex!(~s[div(role="alert")= @message])
+      "<div role=<%= raw(Expug.Runtime.attr_value(\"alert\")) %>><%= \"\\n\" %><%= @message %><%= \"\\n\" %></div>\n"
+
+  ## Internal notes
+  
+  `Expug` pieces together 4 steps into a pipeline:
+
+  - `Expug.Tokenizer`
+  - `Expug.Compiler`
+  - `Expug.Builder`
+  - `Expug.Stringifier`
   """
 
   require Logger
 
   @doc ~S"""
-  Compiles an Expug template to an Eex template.
-
-      iex> source = "div\n  | Hello"
-      iex> Expug.to_eex(source)
-      {:ok, "<div>\nHello<%= \"\\n\" %></div>\n"}
+  Compiles an Expug template to an EEx template. Returns `{:ok, result}`, where
+  `result` is an EEx string. On error, it will return `{:error, ...}`.
   """
   def to_eex(source) do
     with {:ok, tokens} <- Expug.Tokenizer.tokenize(source),
@@ -20,6 +45,10 @@ defmodule Expug do
     end
   end
 
+  @doc ~S"""
+  Compiles an Expug template to an EEx template.
+  Returns the EEx string on success. On failure, it raises `Expug.Error`.
+  """
   def to_eex!(source) do
     case to_eex(source) do
       {:ok, eex} ->

@@ -60,7 +60,7 @@ iex> Expug.to_eex!(~s[div(role="alert")= @message])
 "<div role=<%= raw(\"alert\") %>><%= @message %>"
 ```
 
-Note that it needs `raw/1`, something typically provided by [Phoenix.HTML](http://devdocs.io/phoenix/phoenix_html/phoenix.html#raw/1). You don't need Phoenix.HTML however; a binding with `raw/1` would do.
+See the module [Expug] for details.
 
 To use Expug with Phoenix, see [phoenix_expug](https://github.com/rstacruz/phoenix_expug).
 

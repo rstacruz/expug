@@ -1,57 +1,7 @@
 defmodule Expug.Tokenizer do
-  @moduledoc """
+  @moduledoc ~S"""
   Tokenizes a Slim template into a list of tokens. The main entry point is
   `tokenize/1`.
-
-  Note that the tokens are reversed! It's easier to append to the top of a list
-  rather than to the end, making it more efficient.
-
-  ## Token types
-
-  `div.blue#box`
-
-    - `:indent` - (empty string)
-    - `:element_name` - `div`
-    - `:element_class` - `blue`
-    - `:element_id - `box`
-
-  `div(name="en")`
-
-    - :attribute_open` - `(`
-    - :attribute_key` - `name`
-    - :attribute_value` - `"en"`
-    - :attribute_close` - `)`
-
-  `div= hello`
-
-    - `:sole_buffered_text` - `hello`
-
-  `div hello`
-
-    - `:sole_raw_text` - `hello`
-
-  `| Hello there`
-
-    - `:raw_text` - `Hello there`
-
-  `= Hello there`
-
-    - `:buffered_text` - `Hello there`
-
-  `- foo = bar`
-
-    - `:statement` - `foo = bar`
-
-  `doctype html5`
-
-    - `:doctype` - `html5`
-  """
-
-  import Expug.TokenizerTools
-
-  @doc """
-  Tokenizes a string.
-  Returns a list of tokens. Each token is in the format `{position, token, value}`.
 
       iex> {:ok, res} = Expug.Tokenizer.tokenize("title= name")
       iex> res
@@ -60,6 +10,83 @@ defmodule Expug.Tokenizer do
         {{1, 1}, :element_name, "title"},
         {{1, 1}, :indent, 0}
       ]
+
+  Note that the tokens are reversed! It's easier to append to the top of a list
+  rather than to the end, making it more efficient.
+
+  This output is the consumed next by `Expug.Compiler`, which turns them into
+  an Abstract Syntax Tree.
+
+  ## Token types
+
+  ```
+  div.blue#box
+  ```
+
+    - `:indent` - 0
+    - `:element_name` - `"div"`
+    - `:element_class` - `"blue"`
+    - `:element_id` - `"box"`
+
+  ```
+  div(name="en")
+  ```
+
+    - `:attribute_open` - `"("`
+    - `:attribute_key` - `"name"`
+    - `:attribute_value` - `"\"en\""`
+    - `:attribute_close` - `")"`
+
+  ```
+  div= hello
+  ```
+
+    - `:buffered_text` - `hello`
+
+  ```
+  div hello
+  ```
+
+    - `:raw_text` - `"hello"`
+
+  ```
+  | Hello there
+  ```
+
+    - `:raw_text` - `"Hello there"`
+
+  ```
+  = Hello there
+  ```
+
+    - `:buffered_text` - `"Hello there"`
+
+  ```
+  - foo = bar
+  ```
+
+    - `:statement` - `foo = bar`
+
+  ```
+  doctype html5
+  ```
+
+    - `:doctype` - `html5`
+
+  ```
+  -# comment
+    more comments
+  ```
+
+    - `:line_comment` - `comment`
+    - `:subindent` - `more comments`
+  """
+
+  import Expug.TokenizerTools
+
+  @doc """
+  Tokenizes a string.
+  Returns a list of tokens. Each token is in the format `{position, token, value}`.
   """
   def tokenize(source) do
     {[], source, 0}
