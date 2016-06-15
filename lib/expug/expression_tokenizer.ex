@@ -1,6 +1,36 @@
 defmodule Expug.ExpressionTokenizer do
-  @moduledoc """
+  @moduledoc ~S"""
   Tokenizes an expression.
+  This is used by `Expug.Tokenizer` to match attribute values and support multiline.
+
+  `expression/2` is used to capture an expression token.
+
+      state
+      |> Expug.ExpressionTokenizer.expression(:attribute_value)
+
+  ## Valid expressions
+  Expressions are combination of one or more of these:
+
+  - a word without spaces
+  - a balanced `(` ... `)` pair (or `[`, or `{`)
+  - a string with single quotes `'...'` or double quotes `"..."`
+
+  A balanced pair can have balanced pairs, words, and strings inside them.
+  Double-quote strings can have `#{...}` interpolation inside them.
+
+  ## Examples
+  These are valid expressions:
+
+      hello
+      hello(1 + 2)
+      "Hello world"           # strings
+      (hello world)           # balanced (...) pair
+
+  These aren't:
+
+      hello world             # spaces
+      hello(world[)           # pairs not balanced
+      "hello #{foo(}"         # not balanced inside an interpolation
   """
 
   import Expug.TokenizerTools

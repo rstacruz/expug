@@ -1,6 +1,10 @@
 defmodule Expug.Stringifier do
   @moduledoc """
-  Stringifies builder output
+  Stringifies builder output.
+
+  ## Also see
+  - `Expug.Builder` builds the line map used by this stringifier.
+  - `Expug.to_eex/1` is the main entry point that uses this stringifier.
   """
 
   def stringify(%{} = doc) do

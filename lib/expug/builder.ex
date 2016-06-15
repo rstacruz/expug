@@ -14,6 +14,10 @@ defmodule Expug.Builder do
       }
 
   This gives you a map of lines that the `Stringifier` will work on.
+
+  ## Also see
+  - `Expug.Compiler` builds the AST used by this builder.
+  - `Expug.Stringifier` takes this builder's output.
   """
 
   require Logger

@@ -19,6 +19,10 @@ defmodule Expug.Compiler do
 
   The functions `indent()` and `statement()` are a little different. It can
   give you an element, or a text node, or whatever.
+
+  ## Also see
+  - `Expug.Tokenizer` is used to build the tokens used by this compiler.
+  - `Expug.Builder` uses the AST made by this compiler.
   """
 
   require Logger

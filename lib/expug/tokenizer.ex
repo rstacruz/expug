@@ -80,6 +80,11 @@ defmodule Expug.Tokenizer do
 
     - `:line_comment` - `comment`
     - `:subindent` - `more comments`
+
+  ## Also see
+  - `Expug.TokenizerTools` has the functions used by this tokenizer.
+  - `Expug.Compiler` uses the output of this tokenizer to build an AST.
+  - `Expug.ExpressionTokenizer` is used to tokenize expressions.
   """
 
   import Expug.TokenizerTools
