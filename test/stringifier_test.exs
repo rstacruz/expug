@@ -135,4 +135,13 @@ defmodule StringifierTest do
     <div svg:src=<%= raw(Expug.Runtime.attr_value("hi")) %>></div>
     """
   end
+
+  @tag :pending
+  test "-// comment nesting"
+
+  @tag :pending
+  test "script."
+
+  @tag :pending
+  test "ul: li: button Hello"
 end
