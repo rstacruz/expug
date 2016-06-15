@@ -355,7 +355,7 @@ defmodule Expug.Tokenizer do
 
   def line_comment(state) do
     state
-    |> eat(~r/^-\s*#/, :line_comment, nil)
+    |> eat(~r/^-\s*(?:#|\/\/)/, :line_comment, nil)
     |> optional_whitespace()
     |> eat(~r/^[^\n]*/, :line_comment)
     |> optional(&subindent_block/1)

@@ -446,6 +446,15 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "-// comments, nesting" do
+    {:ok, output} = tokenize("-//\n  foobar")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 4}, :line_comment, ""},
+      {{2, 3}, :subindent, "foobar"}
+    ]
+  end
+
   test "-# comments, nesting and after" do
     {:ok, output} = tokenize("-#\n  foobar\ndiv")
     assert reverse(output) == [

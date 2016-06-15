@@ -17,7 +17,7 @@ Expug retains most of Pug/Jade's features, adds some Elixir'isms, and drops the 
 
 ## Changed
 
-- __Comments__ are done using `-#` instead of `-//`, following Elixir conventions.
+- __Comments__ are done using `-#` as well as `-//`, following Elixir conventions. The old `-//` syntax is supported for increased compatibility with text editor syntax highlighting.
 
 - __Text attributes__ need to have double-quoted strings (`"`). Single-line strings will translate to Elixir char lists, which is likely not what you want.
 

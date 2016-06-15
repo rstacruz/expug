@@ -22,7 +22,6 @@ defmodule Expug.Compiler do
   """
 
   require Logger
-  import List, only: [first: 1]
 
   @doc """
   Compiles tokens. Returns `{:ok, ast}` on success.
@@ -36,7 +35,7 @@ defmodule Expug.Compiler do
     try do
       {node, _tokens} = document({node, tokens})
       {:ok, node}
-    catch {:compile_error, type, {pos, _, _} = token} ->
+    catch {:compile_error, type, {pos, _, _}} ->
       {:error, %{
         type: type,
         position: pos
@@ -84,7 +83,7 @@ defmodule Expug.Compiler do
     |> indent(depths)
   end
 
-  def indent({node, [{_, :indent, subdepth} | _] = tokens}, [d | _] = depths)
+  def indent({node, [{_, :indent, subdepth} | _] = tokens}, [d | _])
   when subdepth < d do
     # throw {:compile_error, :ambiguous_indentation, token}
     {node, tokens}
@@ -109,22 +108,13 @@ defmodule Expug.Compiler do
       [:attribute_open [...] :attribute_close]
       [:solo_buffered_text | :solo_raw_text]
   """
-  def statement({node, [{_, :line_comment, _} | [{_, :subindent, _} | _] = tokens]}, [d | _]  = depths) do
+  def statement({node, [{_, :line_comment, _} | [{_, :subindent, _} | _] = tokens]}, _depths) do
     # Pretend to be an element and capture stuff into it; discard it afterwards.
     # This is wrong anyway; it should be tokenized differently.
     subindent({node, tokens})
   end
 
-  @doc "Ignore subindent"
-  def subindent({node, [{_, :subindent, _} | rest]}) do
-    subindent({node, rest})
-  end
-
-  def subindent({node, rest}) do
-     {node, rest}
-  end
-
-  def statement({node, [{_, :line_comment, _} | tokens]}, depths) do
+  def statement({node, [{_, :line_comment, _} | tokens]}, _depths) do
     {node, tokens}
   end
 
@@ -169,7 +159,7 @@ defmodule Expug.Compiler do
   Parses an element.
   Returns a `%{type: :element}` node.
   """
-  def element({node, tokens}, parent, [d | _] = depths) do
+  def element({node, tokens}, parent, depths) do
     case tokens do
       [{_, :element_name, value} | rest] ->
         node = Map.put(node, :name, value)
@@ -239,5 +229,16 @@ defmodule Expug.Compiler do
   """
   def add_child(node, child) do
     Map.update(node, :children, [child], &(&1 ++ [child]))
+  end
+
+  @doc """
+  Matches `:subindent` tokens and discards them. Used for line comments (`-#`).
+  """
+  def subindent({node, [{_, :subindent, _} | rest]}) do
+    subindent({node, rest})
+  end
+
+  def subindent({node, rest}) do
+     {node, rest}
   end
 end
