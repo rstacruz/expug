@@ -160,6 +160,7 @@ defmodule BuilderTest do
     }
   end
 
+  @tag :pending
   test "extra space" do
     {:ok, eex} = build("div\n ")
     assert eex == %{
@@ -169,4 +170,14 @@ defmodule BuilderTest do
       ]
     }
   end
+
+  @tag :pending
+  test "nesting inside" do
+    {:ok, eex} = build("= for item <- @list do\n  div")
+    assert eex == %{
+      :lines => 1,
+      1 => []
+    }
+  end
+
 end

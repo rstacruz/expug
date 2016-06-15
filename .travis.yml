@@ -1,0 +1,9 @@
+language: elixir
+elixir:
+- '1.2.6'
+script:
+- mix test --exclude pending
+cache:
+  directories:
+  - _deps
+  - build
