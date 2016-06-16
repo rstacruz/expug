@@ -39,11 +39,12 @@ defmodule Expug.Compiler do
     try do
       {node, _tokens} = document({node, tokens})
       {:ok, node}
-    catch {:compile_error, type, {pos, _, _}} ->
-      {:error, %{
-        type: type,
-        position: pos
-      }}
+    catch
+      {:compile_error, type, [{pos, _, _} | _]} ->
+        # TODO: create an EOF token
+        {:error, %{ type: type, position: pos }}
+      {:compile_error, type, []} ->
+        {:error, %{ type: type }}
     end
   end
 
@@ -98,8 +99,8 @@ defmodule Expug.Compiler do
     {node, []}
   end
 
-  def indent({_node, [token | _]}, _depth) do
-    throw {:compile_error, :unexpected_token, token}
+  def indent({_node, tokens}, _depth) do
+    throw {:compile_error, :unexpected_token, tokens}
   end
 
   @doc """
@@ -150,6 +151,10 @@ defmodule Expug.Compiler do
     child = %{type: :buffered_text, value: value, token: t}
     node = add_child(node, child)
     {node, tokens}
+  end
+
+  def statement({node, tokens}, _depths) do
+     throw {:compile_error, :unexpected_token, tokens}
   end
 
   def add_element(node, t, tokens, depth) do
