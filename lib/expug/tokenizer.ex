@@ -300,7 +300,7 @@ defmodule Expug.Tokenizer do
 
   def attribute_key(state) do
     state
-    |> eat(~r/^[A-Za-z][A-Za-z\-0-9]*/, :attribute_key)
+    |> eat(~r/^[A-Za-z][A-Za-z\-0-9:]*/, :attribute_key)
   end
 
   def attribute_value(state) do
@@ -310,10 +310,7 @@ defmodule Expug.Tokenizer do
 
   def attribute_equal(state) do
     state
-    |> one_of([
-      &(&1 |> eat(~r/=/, :attribute_separator_eq, nil)),
-      &(&1 |> eat(~r/:/, :attribute_separator_colon, nil))
-    ])
+    |> eat(~r/=/, :eq, nil)
   end
 
   @doc "Matches whitespace; no tokens emitted"

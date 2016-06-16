@@ -193,7 +193,7 @@ defmodule ExpugCompilerTest do
   # end
 
   test "attributes" do
-    {:ok, tokens} = tokenize("div(style: 'color: blue')")
+    {:ok, tokens} = tokenize("div(style='color: blue')")
     {:ok, ast} = compile(tokens)
     assert %{
       type: :document,
@@ -208,7 +208,7 @@ defmodule ExpugCompilerTest do
   end
 
   test "2 attributes" do
-    {:ok, tokens} = tokenize("div(id: 'box' style: 'color: blue')")
+    {:ok, tokens} = tokenize("div(id='box' style='color: blue')")
     {:ok, ast} = compile(tokens)
     assert %{
       type: :document,
