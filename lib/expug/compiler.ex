@@ -67,7 +67,7 @@ defmodule Expug.Compiler do
   @doc """
   Indentation. Called with `depth` which is the current level its at.
   """
-  def indent({node, [{_, :indent, subdepth} | tokens]}, [d | _] = depths)
+  def indent({node, [{_, :indent, subdepth} | [_|_] = tokens]}, [d | _] = depths)
   when subdepth > d do
     # Found children, start a new subtree.
     [child | rest] = Enum.reverse(node[:children] || [])
@@ -81,14 +81,14 @@ defmodule Expug.Compiler do
     |> indent(depths)
   end
 
-  def indent({node, [{_, :indent, subdepth} | tokens]}, [d | _] = depths)
+  def indent({node, [{_, :indent, subdepth} | [_|_] = tokens]}, [d | _] = depths)
   when subdepth == d do
     {node, tokens}
     |> statement(depths)
     |> indent(depths)
   end
 
-  def indent({node, [{_, :indent, subdepth} | _] = tokens}, [d | _])
+  def indent({node, [{_, :indent, subdepth} | [_|_]] = tokens}, [d | _])
   when subdepth < d do
     # throw {:compile_error, :ambiguous_indentation, token}
     {node, tokens}
