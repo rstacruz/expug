@@ -3,8 +3,7 @@ defmodule Expug.Tokenizer do
   Tokenizes a Slim template into a list of tokens. The main entry point is
   `tokenize/1`.
 
-      iex> {:ok, res} = Expug.Tokenizer.tokenize("title= name")
-      iex> res
+      iex> Expug.Tokenizer.tokenize("title= name")
       [
         {{1, 8}, :buffered_text, "name"},
         {{1, 1}, :element_name, "title"},

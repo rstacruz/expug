@@ -21,6 +21,18 @@ defmodule Expug do
       iex> Expug.to_eex!(~s[div(role="alert")= @message])
       "<div role=<%= raw(Expug.Runtime.attr_value(\"alert\")) %>><%= \"\\n\" %><%= @message %><%= \"\\n\" %></div>\n"
 
+  ## Errors
+  `to_eex/1` will give you this in case of an error:
+
+      {:error, %{
+        type: :parse_error,
+        position: {3, 2},    # line/col
+        ...                  # other metadata
+      }}
+
+  Internally, the other classes will throw `%{type, position, ...}` which will
+  be caught here.
+
   ## Internal notes
   
   `Expug` pieces together 4 steps into a pipeline:
@@ -38,10 +50,15 @@ defmodule Expug do
   `result` is an EEx string. On error, it will return `{:error, ...}`.
   """
   def to_eex(source) do
-    with {:ok, tokens} <- Expug.Tokenizer.tokenize(source),
-         {:ok, ast} <- Expug.Compiler.compile(tokens),
-         {:ok, lines} <- Expug.Builder.build(ast) do
-       Expug.Stringifier.stringify(lines)
+    try do
+      with tokens <- Expug.Tokenizer.tokenize(source),
+           ast <- Expug.Compiler.compile(tokens),
+           lines <- Expug.Builder.build(ast),
+           eex <- Expug.Stringifier.stringify(lines) do
+        {:ok, eex}
+      end
+    catch %{type: _type} = err->
+      {:error, err}
     end
   end
 

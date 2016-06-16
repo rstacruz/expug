@@ -38,13 +38,13 @@ defmodule Expug.Compiler do
 
     try do
       {node, _tokens} = document({node, tokens})
-      {:ok, node}
+      node
     catch
       {:compile_error, type, [{pos, _, _} | _]} ->
         # TODO: create an EOF token
-        {:error, %{ type: type, position: pos }}
+        throw %{ type: type, position: pos }
       {:compile_error, type, []} ->
-        {:error, %{ type: type }}
+        throw %{ type: type }
     end
   end
 
@@ -153,7 +153,7 @@ defmodule Expug.Compiler do
     {node, tokens}
   end
 
-  def statement({node, tokens}, _depths) do
+  def statement({_node, tokens}, _depths) do
      throw {:compile_error, :unexpected_token, tokens}
   end
 

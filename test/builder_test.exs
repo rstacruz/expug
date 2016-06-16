@@ -3,13 +3,15 @@ defmodule BuilderTest do
   doctest Expug.Builder
 
   def build(source) do
-    {:ok, tokens} = Expug.Tokenizer.tokenize(source)
-    {:ok, ast} = Expug.Compiler.compile(tokens)
-    Expug.Builder.build(ast)
+    with \
+      tokens <- Expug.Tokenizer.tokenize(source),
+      ast <- Expug.Compiler.compile(tokens) do
+      Expug.Builder.build(ast)
+    end
   end
 
   test "build" do
-    {:ok, eex} = build("doctype html\ndiv Hello")
+    eex = build("doctype html\ndiv Hello")
     assert eex == %{
       :lines => 2,
       1 => ["<!doctype html>"],
@@ -18,7 +20,7 @@ defmodule BuilderTest do
   end
 
   test "self-closing img" do
-    {:ok, eex} = build("doctype html\nimg")
+    eex = build("doctype html\nimg")
     assert eex == %{
       :lines => 2,
       1 => ["<!doctype html>"],
@@ -27,7 +29,7 @@ defmodule BuilderTest do
   end
 
   test "self-closing xml" do
-    {:ok, eex} = build("doctype xml\nimg")
+    eex = build("doctype xml\nimg")
     assert eex == %{
       :lines => 2,
       1 => ["<?xml version=\"1.0\" encoding=\"utf-8\" ?>"],
@@ -36,7 +38,7 @@ defmodule BuilderTest do
   end
 
   test "single element" do
-    {:ok, eex} = build("div")
+    eex = build("div")
     assert eex == %{
       :lines => 1,
       1 => ["<div></div>"]
@@ -44,7 +46,7 @@ defmodule BuilderTest do
   end
 
   test "single element with attributes" do
-    {:ok, eex} = build("div(id=foo)")
+    eex = build("div(id=foo)")
     assert eex == %{
       :lines => 1,
       1 => ["<div id=<%= raw(Expug.Runtime.attr_value(foo)) %>></div>"]
@@ -52,7 +54,7 @@ defmodule BuilderTest do
   end
 
   test "with buffered text" do
-    {:ok, eex} = build("div= hola()")
+    eex = build("div= hola()")
     assert eex == %{
       :lines => 1,
       1 =>["<div>", "<%= hola() %>", "</div>"]
@@ -60,7 +62,7 @@ defmodule BuilderTest do
   end
 
   test "nesting" do
-    {:ok, eex} = build("""
+    eex = build("""
     doctype html
     div
       span= @hello
@@ -74,7 +76,7 @@ defmodule BuilderTest do
   end
 
   test "line comments" do
-    {:ok, eex} = build("""
+    eex = build("""
     div
     -# hi
     div
@@ -87,7 +89,7 @@ defmodule BuilderTest do
   end
 
   test "line comments, capturing" do
-    {:ok, eex} = build("""
+    eex = build("""
     div
     -# hi
       h1
@@ -99,7 +101,7 @@ defmodule BuilderTest do
   end
 
   test "line comments, capturing 2" do
-    {:ok, eex} = build("""
+    eex = build("""
     div
     -# hi
       h1
@@ -113,7 +115,7 @@ defmodule BuilderTest do
   end
 
   test "indentation magic" do
-    {:ok, eex} = build("""
+    eex = build("""
     div
       h1
         span
@@ -129,7 +131,7 @@ defmodule BuilderTest do
   end
 
   test "indentation magic 2" do
-    {:ok, eex} = build("""
+    eex = build("""
     div
       h1
         span
@@ -147,7 +149,7 @@ defmodule BuilderTest do
   end
 
   test "attr and =" do
-    {:ok, eex} = build("""
+    eex = build("""
     div(role="main")= @hello
     """)
     assert eex == %{
@@ -162,7 +164,7 @@ defmodule BuilderTest do
 
   @tag :pending
   test "extra space" do
-    {:ok, eex} = build("div\n ")
+    eex = build("div\n ")
     assert eex == %{
       :lines => 1,
       1 => [
@@ -173,7 +175,7 @@ defmodule BuilderTest do
 
   @tag :pending
   test "nesting inside" do
-    {:ok, eex} = build("= for item <- @list do\n  div")
+    eex = build("= for item <- @list do\n  div")
     assert eex == %{
       :lines => 1,
       1 => []

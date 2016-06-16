@@ -7,8 +7,8 @@ defmodule ExpugCompilerTest do
   doctest Expug.Compiler
 
   test "doctype only" do
-    {:ok, tokens} = tokenize("doctype html5")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("doctype html5")
+    ast = compile(tokens)
     assert %{
       doctype: %{
         type: :doctype,
@@ -20,8 +20,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "tag only" do
-    {:ok, tokens} = tokenize("div")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("div")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -32,8 +32,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "doctype and tag" do
-    {:ok, tokens} = tokenize("doctype html5\ndiv")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("doctype html5\ndiv")
+    ast = compile(tokens)
     assert %{
       doctype: %{
         type: :doctype,
@@ -49,8 +49,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "doctype and tag and id" do
-    {:ok, tokens} = tokenize("doctype html5\ndiv#box")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("doctype html5\ndiv#box")
+    ast = compile(tokens)
     assert %{
       doctype: %{
         type: :doctype,
@@ -68,8 +68,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "tag and classes" do
-    {:ok, tokens} = tokenize("div.blue.small")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("div.blue.small")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -83,8 +83,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "buffered text" do
-    {:ok, tokens} = tokenize("div= hello")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("div= hello")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -99,8 +99,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "doctype and tags" do
-    {:ok, tokens} = tokenize("doctype html5\ndiv\nspan")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("doctype html5\ndiv\nspan")
+    ast = compile(tokens)
     assert %{
       doctype: %{
         type: :doctype,
@@ -121,8 +121,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "nesting" do
-    {:ok, tokens} = tokenize("head\n  title")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("head\n  title")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -137,8 +137,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "nesting deeper" do
-    {:ok, tokens} = tokenize("head\n  title\n    span")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("head\n  title\n    span")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -157,8 +157,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "zigzag nesting" do
-    {:ok, tokens} = tokenize("head\n  title\n    span\n  meta")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("head\n  title\n    span\n  meta")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -184,7 +184,7 @@ defmodule ExpugCompilerTest do
   end
 
   # test "zigzag nesting error" do
-  #   {:ok, tokens} = tokenize("head\n  title\n    span\n meta")
+  #   tokens = tokenize("head\n  title\n    span\n meta")
   #   {:error, params} = compile(tokens)
   #   assert params == %{
   #     type: :ambiguous_indentation,
@@ -193,8 +193,8 @@ defmodule ExpugCompilerTest do
   # end
 
   test "attributes" do
-    {:ok, tokens} = tokenize("div(style='color: blue')")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("div(style='color: blue')")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -208,8 +208,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "2 attributes" do
-    {:ok, tokens} = tokenize("div(id='box' style='color: blue')")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("div(id='box' style='color: blue')")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -224,8 +224,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "dupe attributes" do
-    {:ok, tokens} = tokenize("div(src=1 src=2)")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("div(src=1 src=2)")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -239,8 +239,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "start with class" do
-    {:ok, tokens} = tokenize(".hello")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize(".hello")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -254,8 +254,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "start with id" do
-    {:ok, tokens} = tokenize("#hello")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("#hello")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -269,8 +269,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "classes and id" do
-    {:ok, tokens} = tokenize(".small.blue#box")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize(".small.blue#box")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -285,8 +285,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "raw text only" do
-    {:ok, tokens} = tokenize("| hi")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("| hi")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -298,8 +298,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "double raw text" do
-    {:ok, tokens} = tokenize("| hi\n| hello")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("| hi\n| hello")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{
@@ -315,8 +315,8 @@ defmodule ExpugCompilerTest do
   end
 
   test "buffered text only" do
-    {:ok, tokens} = tokenize("= hi")
-    {:ok, ast} = compile(tokens)
+    tokens = tokenize("= hi")
+    ast = compile(tokens)
     assert %{
       type: :document,
       children: [%{

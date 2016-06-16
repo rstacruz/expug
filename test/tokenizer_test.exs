@@ -7,7 +7,7 @@ defmodule ExpugTokenizerTest do
   doctest Expug.Tokenizer
 
   test "basic" do
-    {:ok, output} = tokenize("head")
+    output = tokenize("head")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "head"}
@@ -15,7 +15,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "h1" do
-    {:ok, output} = tokenize("h1")
+    output = tokenize("h1")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "h1"}
@@ -23,7 +23,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "xml namespace" do
-    {:ok, output} = tokenize("html:h1")
+    output = tokenize("html:h1")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "html:h1"}
@@ -31,7 +31,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "dashes" do # but why?
-    {:ok, output} = tokenize("Todo-app")
+    output = tokenize("Todo-app")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "Todo-app"}
@@ -39,7 +39,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "basic with text" do
-    {:ok, output} = tokenize("title Hello world")
+    output = tokenize("title Hello world")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "title"},
@@ -48,7 +48,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "title= name" do
-    {:ok, output} = tokenize("title= name")
+    output = tokenize("title= name")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "title"},
@@ -57,7 +57,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "| name $200" do
-    {:ok, output} = tokenize("| name $200")
+    output = tokenize("| name $200")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 3}, :raw_text, "name $200"}
@@ -65,7 +65,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "multiline" do
-    {:ok, output} = tokenize("head\nbody\n")
+    output = tokenize("head\nbody\n")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "head"},
@@ -75,7 +75,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "multiline with blank lines" do
-    {:ok, output} = tokenize("head\n   \n  \nbody\n")
+    output = tokenize("head\n   \n  \nbody\n")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "head"},
@@ -85,7 +85,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "div[]" do
-    {:ok, output} = tokenize("div[]")
+    output = tokenize("div[]")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -95,7 +95,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "div()" do
-    {:ok, output} = tokenize("div()")
+    output = tokenize("div()")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -105,7 +105,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "div(id=\"hi\")" do
-    {:ok, output} = tokenize("div(id=\"hi\")")
+    output = tokenize("div(id=\"hi\")")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -117,7 +117,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "div(id='hi')" do
-    {:ok, output} = tokenize("div(id='hi')")
+    output = tokenize("div(id='hi')")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -129,7 +129,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test ~S[div(id='\'')] do
-    {:ok, output} = tokenize(~S[div(id='\'')])
+    output = tokenize(~S[div(id='\'')])
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -141,7 +141,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test ~S[div(id='hi\'')] do
-    {:ok, output} = tokenize(~S[div(id='hi\'')])
+    output = tokenize(~S[div(id='hi\'')])
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -153,7 +153,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "div(id=\"hi\" class=\"foo\")" do
-    {:ok, output} = tokenize("div(id=\"hi\" class=\"foo\")")
+    output = tokenize("div(id=\"hi\" class=\"foo\")")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -167,7 +167,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "class" do
-    {:ok, output} = tokenize("div.blue")
+    output = tokenize("div.blue")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -176,7 +176,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "classes" do
-    {:ok, output} = tokenize("div.blue.sm")
+    output = tokenize("div.blue.sm")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -186,7 +186,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "classes and ID" do
-    {:ok, output} = tokenize("div.blue.sm#box")
+    output = tokenize("div.blue.sm#box")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -197,16 +197,20 @@ defmodule ExpugTokenizerTest do
   end
 
   test "parse error" do
-    {:error, output} = tokenize("hello\nhuh?")
-    assert output == %{
-      type: :parse_error,
-      position: {2, 4},
-      expected: [:eq, :whitespace, :attribute_open]
-    }
+    try do
+      tokenize("hello\nhuh?")
+    catch output ->
+      assert %{
+        type: :parse_error,
+        position: {2, 4},
+        expected: [:eq, :whitespace, :attribute_open],
+        trace: _
+      } = output
+    end
   end
 
   test "| raw text" do
-    {:ok, output} = tokenize("| text")
+    output = tokenize("| text")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 3}, :raw_text, "text"}
@@ -214,7 +218,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "= buffered text" do
-    {:ok, output} = tokenize("= text")
+    output = tokenize("= text")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 3}, :buffered_text, "text"}
@@ -222,7 +226,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "- statement" do
-    {:ok, output} = tokenize("- text")
+    output = tokenize("- text")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 3}, :statement, "text"}
@@ -230,14 +234,14 @@ defmodule ExpugTokenizerTest do
   end
 
   test "doctype" do
-    {:ok, output} = tokenize("doctype html5")
+    output = tokenize("doctype html5")
     assert reverse(output) == [
       {{1, 9}, :doctype, "html5"}
     ]
   end
 
   test "doctype + html" do
-    {:ok, output} = tokenize("doctype html5\nhtml")
+    output = tokenize("doctype html5\nhtml")
     assert reverse(output) == [
       {{1, 9}, :doctype, "html5"},
       {{2, 1}, :indent, 0},
@@ -246,7 +250,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "div(id=(hello))" do
-    {:ok, output} = tokenize("div(id=(hello))")
+    output = tokenize("div(id=(hello))")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -258,7 +262,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "div(id=(hello(world)))" do
-    {:ok, output} = tokenize("div(id=(hello(world)))")
+    output = tokenize("div(id=(hello(world)))")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -270,7 +274,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "div(id=(hello(worl[]d)))" do
-    {:ok, output} = tokenize("div(id=(hello(worl[]d)))")
+    output = tokenize("div(id=(hello(worl[]d)))")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -282,7 +286,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test ~S[div(id="hello #{world}")] do
-    {:ok, output} = tokenize(~S[div(id="hello #{world}")])
+    output = tokenize(~S[div(id="hello #{world}")])
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -294,7 +298,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test ~S[div(id=hello)] do
-    {:ok, output} = tokenize(~S[div(id=hello)])
+    output = tokenize(~S[div(id=hello)])
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -306,7 +310,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "with indent" do
-    {:ok, output} = tokenize("head\n  title")
+    output = tokenize("head\n  title")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "head"},
@@ -316,7 +320,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test ~S[div(src=a id=b)] do
-    {:ok, output} = tokenize(~S[div(src=a id=b)])
+    output = tokenize(~S[div(src=a id=b)])
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -330,7 +334,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test ~S[div( src=a id=b )] do
-    {:ok, output} = tokenize(~S[div( src=a id=b )])
+    output = tokenize(~S[div( src=a id=b )])
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -344,7 +348,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test ~S[div(src=a, id=b)] do
-    {:ok, output} = tokenize(~S[div(src=a, id=b)])
+    output = tokenize(~S[div(src=a, id=b)])
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -358,7 +362,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "newline between attributes" do
-    {:ok, output} = tokenize("div(src=a,\n  id=b)")
+    output = tokenize("div(src=a,\n  id=b)")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -372,7 +376,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "multiline attribute contents" do
-    {:ok, output} = tokenize("div(\n  src=a\n  )")
+    output = tokenize("div(\n  src=a\n  )")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -384,7 +388,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "multiline expressions" do
-    {:ok, output} = tokenize("div(src=(a\n  b))")
+    output = tokenize("div(src=(a\n  b))")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -396,7 +400,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "empty attributes" do
-    {:ok, output} = tokenize("div(src=\"\")")
+    output = tokenize("div(src=\"\")")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -408,7 +412,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "-# comments" do
-    {:ok, output} = tokenize("div\n-# ...")
+    output = tokenize("div\n-# ...")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -418,7 +422,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "-# comments, blank" do
-    {:ok, output} = tokenize("div\n-#")
+    output = tokenize("div\n-#")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -428,7 +432,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "-# comments, space" do
-    {:ok, output} = tokenize("div\n-# ")
+    output = tokenize("div\n-# ")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -438,7 +442,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "-# comments, nesting" do
-    {:ok, output} = tokenize("-#\n  foobar")
+    output = tokenize("-#\n  foobar")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 3}, :line_comment, ""},
@@ -447,7 +451,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "-// comments, nesting" do
-    {:ok, output} = tokenize("-//\n  foobar")
+    output = tokenize("-//\n  foobar")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 4}, :line_comment, ""},
@@ -456,7 +460,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "-# comments, nesting and after" do
-    {:ok, output} = tokenize("-#\n  foobar\ndiv")
+    output = tokenize("-#\n  foobar\ndiv")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 3}, :line_comment, ""},
@@ -467,7 +471,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "// comments" do
-    {:ok, output} = tokenize("div\n// ...")
+    output = tokenize("div\n// ...")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
@@ -477,7 +481,7 @@ defmodule ExpugTokenizerTest do
   end
 
   test "// comments, nesting" do
-    {:ok, output} = tokenize("div\n// ...\n  hi")
+    output = tokenize("div\n// ...\n  hi")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},

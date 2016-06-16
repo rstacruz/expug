@@ -2,14 +2,16 @@ defmodule StringifierTest do
   use ExUnit.Case
 
   def build(source) do
-    {:ok, tokens} = Expug.Tokenizer.tokenize(source)
-    {:ok, ast} = Expug.Compiler.compile(tokens)
-    {:ok, lines} = Expug.Builder.build(ast)
-    Expug.Stringifier.stringify(lines)
+    with \
+      tokens <- Expug.Tokenizer.tokenize(source),
+      ast <- Expug.Compiler.compile(tokens),
+      lines <- Expug.Builder.build(ast) do
+      Expug.Stringifier.stringify(lines)
+    end
   end
 
   test "nesting" do
-    {:ok, eex} = build("""
+    eex = build("""
     doctype html
     div
       span= @hello
@@ -23,7 +25,7 @@ defmodule StringifierTest do
   end
 
   test "with extra lines" do
-    {:ok, eex} = build("""
+    eex = build("""
     doctype html
 
 
@@ -41,7 +43,7 @@ defmodule StringifierTest do
   end
 
   test "with extra lines, 2" do
-    {:ok, eex} = build("""
+    eex = build("""
     doctype html
 
     div
@@ -59,7 +61,7 @@ defmodule StringifierTest do
   end
 
   test "indentation magic" do
-    {:ok, eex} = build("""
+    eex = build("""
     div
       h1
         span
@@ -76,7 +78,7 @@ defmodule StringifierTest do
   end
 
   test "joining classes" do
-    {:ok, eex} = build("""
+    eex = build("""
     div.foo(class="bar")
     """)
 
@@ -86,7 +88,7 @@ defmodule StringifierTest do
   end
 
   test "joining IDs" do
-    {:ok, eex} = build("""
+    eex = build("""
     div#a#b
     """)
 
@@ -97,7 +99,7 @@ defmodule StringifierTest do
 
   @tag :pending
   test "extra depths" do
-    {:ok, eex} = build("""
+    eex = build("""
     div(role="hi"
     )
 
@@ -114,7 +116,7 @@ defmodule StringifierTest do
 
   @tag :pending
   test "new line attributes" do
-    {:ok, eex} = build("""
+    eex = build("""
     div(role="hi"
     id="foo")
     """)
@@ -127,7 +129,7 @@ defmodule StringifierTest do
 
   @tag :pending
   test "colon in attributes" do
-    {:ok, eex} = build("""
+    eex = build("""
     div(svg:src="hi")
     """)
 

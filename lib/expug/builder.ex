@@ -3,9 +3,9 @@ defmodule Expug.Builder do
   Builds lines from an AST.
 
       iex> source = "div\n  | Hello"
-      iex> with {:ok, tokens} <- Expug.Tokenizer.tokenize(source),
-      ...>      {:ok, ast} <- Expug.Compiler.compile(tokens),
-      ...>      {:ok, lines} <- Expug.Builder.build(ast),
+      iex> with tokens <- Expug.Tokenizer.tokenize(source),
+      ...>      ast <- Expug.Compiler.compile(tokens),
+      ...>      lines <- Expug.Builder.build(ast),
       ...>   do: lines
       %{
         :lines => 2,
@@ -23,7 +23,7 @@ defmodule Expug.Builder do
   require Logger
 
   def build(ast) do
-    {:ok, %{lines: 0} |> make(ast)}
+    %{lines: 0} |> make(ast)
   end
 
   @doc """

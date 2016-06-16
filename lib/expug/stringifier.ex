@@ -11,7 +11,7 @@ defmodule Expug.Stringifier do
     {max, doc} = Map.pop(doc, :lines)
     {_, doc} = Map.pop(doc, :doctype)
     list = doc |> Map.to_list() |> Enum.sort()
-    {:ok, s(list, 0, max)}
+    s(list, 0, max)
   end
 
   def s([{line, elements} | rest], last, max) do

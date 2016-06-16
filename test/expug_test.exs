@@ -33,11 +33,11 @@ defmodule ExpugTest do
 
   test "parse error" do
     {:error, output} = Expug.to_eex("hello\nhuh?")
-    assert output == %{
+    assert %{
       type: :parse_error,
       position: {2, 4},
       expected: [:eq, :whitespace, :attribute_open]
-    }
+    } = output
   end
 
   test "bang, parse error" do
