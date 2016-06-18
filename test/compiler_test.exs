@@ -322,8 +322,26 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :buffered_text,
         value: "hi",
-        token: {_, _, _}
+        token: {{1, 3}, :buffered_text, "hi"}
       }]
-    } = ast
+    } == ast
+  end
+
+  test "statement with children" do
+    tokens = tokenize("- hi\n  div")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :statement,
+        value: "hi",
+        children: [%{
+          name: "div",
+          token: {{2, 3}, :element_name, "div"},
+          type: :element
+        }],
+      token: {{1, 3}, :statement, "hi"}
+      }]
+    } == ast
   end
 end

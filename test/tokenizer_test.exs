@@ -490,6 +490,26 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "- with children" do
+    output = tokenize("- hi\n  div")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 3}, :statement, "hi"},
+      {{2, 1}, :indent, 2},
+      {{2, 3}, :element_name, "div"}
+    ]
+  end
+
+  test "= with children" do
+    output = tokenize("= hi\n  div")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 3}, :buffered_text, "hi"},
+      {{2, 1}, :indent, 2},
+      {{2, 3}, :element_name, "div"}
+    ]
+  end
+
   # test "comma delimited attributes"
   # test "script."
   # test "comments"
