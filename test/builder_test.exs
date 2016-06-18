@@ -176,6 +176,12 @@ defmodule BuilderTest do
   end
 
   @tag :pending
+  test "dash" do
+    eex = build("-hi")
+    assert eex == ""
+  end
+
+  @tag :pending
   test "extra space" do
     eex = build("div\n ")
     assert eex == %{

@@ -40,9 +40,9 @@ defmodule Expug.Compiler do
       {node, _tokens} = document({node, tokens})
       node
     catch
-      {:compile_error, type, [{pos, _, _} | _]} ->
+      {:compile_error, type, [{pos, token, _} | _]} ->
         # TODO: create an EOF token
-        throw %{ type: type, position: pos }
+        throw %{ type: type, position: pos, token_type: token }
       {:compile_error, type, []} ->
         throw %{ type: type }
     end
