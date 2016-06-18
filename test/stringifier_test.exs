@@ -127,7 +127,6 @@ defmodule StringifierTest do
     """
   end
 
-  @tag :pending
   test "colon in attributes" do
     eex = build("""
     div(svg:src="hi")
