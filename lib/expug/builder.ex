@@ -22,6 +22,8 @@ defmodule Expug.Builder do
 
   require Logger
 
+  @self_closable ["meta", "img", "link"]
+
   def build(ast, _opts \\ []) do
     %{lines: 0} |> make(ast)
   end
@@ -137,8 +139,6 @@ defmodule Expug.Builder do
   def element(_doc, node) do
     "<" <> node[:name] <> attributes(node[:attributes]) <> ">"
   end
-
-  @self_closable ["meta", "img", "link"]
 
   def self_closing_element(doc, node) do
     tag = node[:name] <> attributes(node[:attributes])
