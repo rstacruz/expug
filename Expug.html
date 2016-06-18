@@ -74,11 +74,11 @@
 
       
         <section id="moduledoc" class="docstring">
-          <p>Expug compiles templates to an eex template. See <a href="#to_eex/1"><code class="inline">to_eex/1</code></a>.</p>
+          <p>Expug compiles templates to an eex template. See <code class="inline">to_eex/1</code>.</p>
 <pre><code class="iex elixir">iex&gt; source = &quot;div\n  | Hello&quot;
 iex&gt; Expug.to_eex(source)
 {:ok, &quot;&lt;div&gt;\nHello&lt;%= \&quot;\\n\&quot; %&gt;&lt;/div&gt;\n&quot;}</code></pre>
-<p>There’s also <a href="#to_eex!/1"><code class="inline">to_eex!/1</code></a> which will instead return the result or throw an
+<p>There’s also <code class="inline">to_eex!/1</code> which will instead return the result or throw an
 <a href="Expug.Error.html"><code class="inline">Expug.Error</code></a>.</p>
 <pre><code class="iex elixir">iex&gt; source = &quot;div\n  | Hello&quot;
 iex&gt; Expug.to_eex!(source)
@@ -90,7 +90,7 @@ You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1
 <pre><code class="iex elixir">iex&gt; Expug.to_eex!(~s[div(role=&quot;alert&quot;)= @message])
 &quot;&lt;div role=&lt;%= raw(Expug.Runtime.attr_value(\&quot;alert\&quot;)) %&gt;&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;%= @message %&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;/div&gt;\n&quot;</code></pre>
 <h2>Errors</h2>
-<p><a href="#to_eex/1"><code class="inline">to_eex/1</code></a> will give you this in case of an error:</p>
+<p><code class="inline">to_eex/1</code> will give you this in case of an error:</p>
 <pre><code class="elixir">{:error, %{
   type: :parse_error,
   position: {3, 2},    # line/col
@@ -131,7 +131,7 @@ be caught here.</p>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#to_eex/1">to_eex(source)</a>
+    <a href="#to_eex/2">to_eex(source, opts \\ [])</a>
   </div>
   
     <div class="summary-synopsis"><p>Compiles an Expug template to an EEx template. Returns <code class="inline">{:ok, result}</code>, where
@@ -141,7 +141,7 @@ be caught here.</p>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#to_eex!/1">to_eex!(source)</a>
+    <a href="#to_eex!/2">to_eex!(source, opts \\ [])</a>
   </div>
   
     <div class="summary-synopsis"><p>Compiles an Expug template to an EEx template.
@@ -170,12 +170,12 @@ Returns the EEx string on success. On failure, it raises <a href="Expug.Error.ht
             </a>
             Functions
           </h1>
-          <div class="detail" id="to_eex/1">
+          <div class="detail" id="to_eex/2">
   <div class="detail-header">
-    <a href="#to_eex/1" class="detail-link" title="Link to this function">
+    <a href="#to_eex/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">to_eex(source)</span>
+    <span class="signature">to_eex(source, opts \\ [])</span>
       
       <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L52" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
@@ -189,12 +189,12 @@ Returns the EEx string on success. On failure, it raises <a href="Expug.Error.ht
 
   </section>
 </div>
-<div class="detail" id="to_eex!/1">
+<div class="detail" id="to_eex!/2">
   <div class="detail-header">
-    <a href="#to_eex!/1" class="detail-link" title="Link to this function">
+    <a href="#to_eex!/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">to_eex!(source)</span>
+    <span class="signature">to_eex!(source, opts \\ [])</span>
       
       <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L69" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>

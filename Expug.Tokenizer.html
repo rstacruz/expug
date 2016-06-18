@@ -75,7 +75,7 @@
       
         <section id="moduledoc" class="docstring">
           <p>Tokenizes a Slim template into a list of tokens. The main entry point is
-<a href="#tokenize/1"><code class="inline">tokenize/1</code></a>.</p>
+<code class="inline">tokenize/1</code>.</p>
 <pre><code class="iex elixir">iex&gt; Expug.Tokenizer.tokenize(&quot;title= name&quot;)
 [
   {{1, 8}, :buffered_text, &quot;name&quot;},
@@ -465,7 +465,7 @@ where the last number is the number of spaces/tabs</p>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#tokenize/1">tokenize(source)</a>
+    <a href="#tokenize/2">tokenize(source, opts \\ [])</a>
   </div>
   
     <div class="summary-synopsis"><p>Tokenizes a string.
@@ -1180,12 +1180,12 @@ space.</p>
     
   </section>
 </div>
-<div class="detail" id="tokenize/1">
+<div class="detail" id="tokenize/2">
   <div class="detail-header">
-    <a href="#tokenize/1" class="detail-link" title="Link to this function">
+    <a href="#tokenize/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">tokenize(source)</span>
+    <span class="signature">tokenize(source, opts \\ [])</span>
       
       <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer.ex#L95" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>

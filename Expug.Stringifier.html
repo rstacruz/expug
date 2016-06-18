@@ -79,7 +79,7 @@
 <ul>
 <li><a href="Expug.Builder.html"><code class="inline">Expug.Builder</code></a> builds the line map used by this stringifier.
 </li>
-<li><a href="Expug.html#to_eex/1"><code class="inline">Expug.to_eex/1</code></a> is the main entry point that uses this stringifier.
+<li><code class="inline">Expug.to_eex/1</code> is the main entry point that uses this stringifier.
 </li>
 </ul>
 
@@ -103,6 +103,12 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
+    <a href="#count_newlines/1">count_newlines(str)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#newlines/1">newlines(n)</a>
   </div>
   
@@ -121,7 +127,7 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#stringify/1">stringify(doc)</a>
+    <a href="#stringify/2">stringify(doc, opts \\ [])</a>
   </div>
   
 </div>
@@ -146,14 +152,31 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="newlines/1">
+          <div class="detail" id="count_newlines/1">
+  <div class="detail-header">
+    <a href="#count_newlines/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">count_newlines(str)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/stringifier.ex#L30" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="newlines/1">
   <div class="detail-header">
     <a href="#newlines/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">newlines(n)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/stringifier.ex#L37" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/stringifier.ex#L42" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -170,7 +193,7 @@
     </a>
     <span class="signature">padding(line, last)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/stringifier.ex#L29" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/stringifier.ex#L34" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -197,12 +220,12 @@
     
   </section>
 </div>
-<div class="detail" id="stringify/1">
+<div class="detail" id="stringify/2">
   <div class="detail-header">
-    <a href="#stringify/1" class="detail-link" title="Link to this function">
+    <a href="#stringify/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">stringify(doc)</span>
+    <span class="signature">stringify(doc, opts \\ [])</span>
       
       <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/stringifier.ex#L10" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
