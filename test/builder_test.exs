@@ -202,6 +202,34 @@ defmodule BuilderTest do
   end
 
   @tag :pending
+  test "equal with body with (" do
+    eex = build("= Enum.map(@list, fn item ->\n  div")
+    assert eex == %{
+      :lines => 2,
+      1 => [ "<%= Enum.map(@list, fn item -> %>" ],
+      2 => [ "<div></div><% end) %>" ]
+    }
+  end
+
+  @tag :pending
+  test "if .. else ... end" do
+    eex = build("= if @x do\n  div\n- else\n  div")
+    assert eex == %{
+      :lines => 4,
+      1 => ["<%= if @x do %>"],
+      2 => ["<div></div>"],
+      3 => ["<% else %>"],
+      4 => ["<div></div><% end %>"]
+    }
+  end
+
+  @tag :pending
+  test "cond do ... -> ... end"
+
+  @tag :pending
+  test "case do ... -> ... end"
+
+  @tag :pending
   test "extra space" do
     eex = build("div\n ")
     assert eex == %{
