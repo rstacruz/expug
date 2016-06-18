@@ -135,6 +135,16 @@ defmodule StringifierTest do
   end
 
   @tag :pending
+  test "illegal nesting inside |" do
+    eex = build("""
+    | hi
+      foo
+    """)
+
+    assert eex == ""
+  end
+
+  @tag :pending
   test "-// comment nesting"
 
   @tag :pending
