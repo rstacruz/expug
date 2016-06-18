@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.5">
+    <title>Expug – expug v0.0.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="extras">
+
+<div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="readme.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        expug
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.0.1
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+<h1>Expug</h1>
+<blockquote><p>Indented shorthand HTML templates for Elixir</p>
+</blockquote>
+<p>Expug is a template language based on <a href="http://www.pug-lang.com/" title="">Pug</a> (formerly known as <a href="http://jade-lang.com/" title="">Jade</a>).
+This is a <a href="docs/todo.md">work-in-progress</a>.</p>
+<p><a href="https://travis-ci.org/rstacruz/expug" title="See test builds"><img src="https://travis-ci.org/rstacruz/expug.svg?branch=master" alt="Status"/></a></p>
+<h2 id="installation"> Installation</h2><p>Add expug to your list of dependencies in <code class="inline">mix.exs</code>:</p>
+<pre><code class="elixir">def deps do
+  #[{:expug, &quot;~&gt; 0.0.1&quot;}]
+  [{:expug, git: &quot;https://github.com/rstacruz/expug.git&quot;}]
+end</code></pre>
+<p>Also see <a href="https://github.com/rstacruz/phoenix_expug">phoenix_expug</a> for Phoenix integration.</p>
+<h2 id="the-language"> The language</h2><p>Expug lets you write HTML as indented shorthand, inspired by Haml, Slim, Pug/Jade, and so on.</p>
+<pre><code class="jade">doctype html
+html
+  meta(charset=&quot;utf-8&quot;)
+  title Hello, world!
+body
+  a(href=@link)
+    | This is a link</code></pre>
+<p>Also see:</p>
+<ul>
+<li><a href="docs/compatibility_with_pug.md">Comparison with Pug</a>
+</li>
+<li><a href="http://jade-lang.com/reference/">Jade language reference</a> (jade-lang.com)
+</li>
+</ul>
+<h2 id="prior-art"> Prior art</h2><p>There’s <a href="https://github.com/nurugger07/calliope" title="">calliope</a> and <a href="https://github.com/slime-lang/slime" title="">slime</a> that brings Haml and Slim to Elixir, respectively. Expug offers a bit more:</p>
+<ul>
+<li>Jade syntax! - something I personally find more sensible than Slim.
+</li>
+<li>True multilines - Expug has a non-line-based tokenizer that can figure out multiline breaks.
+</li>
+<li>Correct line number errors - Errors in Expug will always map to the correct source line numbers.
+</li>
+</ul>
+<h2 id="how-it-works"> How it works</h2><p>Expug converts a <code class="inline">.pug</code> template into an EEx string:</p>
+<pre><code class="elixir">iex&gt; Expug.to_eex!(~s[div(role=&quot;alert&quot;)= @message])
+&quot;&lt;div role=&lt;%= raw(\&quot;alert\&quot;) %&gt;&gt;&lt;%= @message %&gt;&quot;</code></pre>
+<p>See the module <a href="Expug.html"><code class="inline">Expug</code></a> for details.</p>
+<p>To use Expug with Phoenix, see <a href="https://github.com/rstacruz/phoenix_expug">phoenix_expug</a>.</p>
+<h2 id="thanks"> Thanks</h2><p><strong>expug</strong> © 2016+, Rico Sta. Cruz. Released under the <a href="http://mit-license.org/" title="">MIT</a> License.<br>
+Authored and maintained by Rico Sta. Cruz with help from contributors (<a href="http://github.com/rstacruz/expug/contributors" title="">list</a>).</p>
+<blockquote><p><a href="http://ricostacruz.com">ricostacruz.com</a> &nbsp;&middot;&nbsp;
+GitHub <a href="https://github.com/rstacruz">@rstacruz</a> &nbsp;&middot;&nbsp;
+Twitter <a href="https://twitter.com/rstacruz">@rstacruz</a></p>
+</blockquote>
+
+    <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+

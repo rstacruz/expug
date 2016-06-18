@@ -1,0 +1,645 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.5">
+    <title>Expug.TokenizerTools – expug v0.0.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="readme.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        expug
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.0.1
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">expug v0.0.1</small>
+        Expug.TokenizerTools
+        
+        
+          <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>For tokenizers.</p>
+<pre><code class="elixir">def tokenizer(source)
+  {[], source, 0}
+  |&gt; document()
+  |&gt; finalize()
+end
+
+def document(state)
+  state
+  |&gt; eat(~r/^doctype /, :doctype)  # create a token
+end</code></pre>
+<h2>The state</h2>
+<p>The state begins as a tuple of <code class="inline">{[], source, 0}</code>. This is the list of tokens,
+the source text, and the cursor position (aka, <code class="inline">{doc, source, pos}</code>).</p>
+<pre><code class="elixir">eat(state, ~r/^&quot;/, :open_quote)</code></pre>
+<p>The <code class="inline">eat()</code> function tries to find the given regexp from the <code class="inline">source</code> at
+position <code class="inline">pos</code>. If it matches, it returns a new state: a new token is added
+(<code class="inline">:open_quote</code> in this case), and the position <code class="inline">pos</code> is advanced.</p>
+<p>If it fails to match, it’ll throw a <code class="inline">{:parse_error, pos, [:open_quote]}</code>.
+Roughly this translates to “parse error in position <em>pos</em>, expected to find
+<em>:open_quote</em>”.</p>
+<h2>Mixing and matching</h2>
+<p>Normally you’d make functions for most token types:</p>
+<pre><code class="elixir">def doctype(state)
+  state
+  |&gt; eat(%r/^doctype/, :doctype, nil)
+  |&gt; whitespace()
+  |&gt; eat(%r/^[a-z0-9]+/, :doctype_value)
+end</code></pre>
+<p>You can then compose these functions using:</p>
+<pre><code class="elixir">state
+|&gt; one_of([ &amp;doctype/1, &amp;foobar/1 ])
+|&gt; optional(&amp;doctype/1)
+|&gt; many_of(&amp;doctype/1)</code></pre>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#convert_position/2">convert_position(pos, offsets)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts a position number <code class="inline">n</code> to a tuple <code class="inline">{line, col}</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#convert_positions/2">convert_positions(doc, source)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts numeric positions into <code class="inline">{line, col}</code> tuples</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#eat/2">eat(state, expr)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Eats a token</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#eat/3">eat(state, expr, token_name)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#eat/4">eat(state, expr, token_name, fun)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#eat_string/2">eat_string(state, expr)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Like eat(), but instead of creating a token, it appends to the last token.
+Useful alongside <code class="inline">start_empty()</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#finalize/1">finalize(arg)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Turns a state tuple (<code class="inline">{doc, source, position}</code>) into a final result.  Returns
+either <code class="inline">{:ok, doc}</code> or <code class="inline">{:parse_error, %{type, position, expected}}</code>.
+Guards against unexpected end-of-file</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_parse_errors/1">get_parse_errors(arg1)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Extracts the last parse errors that happened</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#many_of/2">many_of(state, head)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks many of a certain token</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#many_of/3">many_of(arg, head, tail)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#match/2">match(expr, remainder)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#one_of/3">one_of(state, funs, expected \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Finds any one of the given token-eater functions</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#optional/2">optional(state, fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>An optional argument</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#optional_many_of/2">optional_many_of(state, head)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#scrub_parse_errors/1">scrub_parse_errors(doc)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Gets rid of the <code class="inline">:parse_error</code> hints in the document</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start_empty/2">start_empty(arg, token_name)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Creates an token with a given <code class="inline">token_name</code>.
+This is functionally the same as <code class="inline">|&gt; eat(~r//, :token_name)</code>, but using
+<code class="inline">start_empty()</code> can make your code more readable</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="convert_position/2">
+  <div class="detail-header">
+    <a href="#convert_position/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">convert_position(pos, offsets)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L266" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Converts a position number <code class="inline">n</code> to a tuple <code class="inline">{line, col}</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="convert_positions/2">
+  <div class="detail-header">
+    <a href="#convert_positions/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">convert_positions(doc, source)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L253" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Converts numeric positions into <code class="inline">{line, col}</code> tuples.</p>
+<pre><code class="iex elixir">iex&gt; source = &quot;div\n  body&quot;
+iex&gt; doc = [
+...&gt;   { 0, :indent, &quot;&quot; },
+...&gt;   { 0, :element_name, &quot;div&quot; },
+...&gt;   { 4, :indent, &quot;  &quot; },
+...&gt;   { 6, :element_name, &quot;body&quot; }
+...&gt; ]
+iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
+[
+  { {1, 1}, :indent, &quot;&quot; },
+  { {1, 1}, :element_name, &quot;div&quot; },
+  { {2, 1}, :indent, &quot;  &quot; },
+  { {2, 3}, :element_name, &quot;body&quot; }
+]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="eat/2">
+  <div class="detail-header">
+    <a href="#eat/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">eat(state, expr)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L173" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Eats a token.</p>
+<ul>
+<li><code class="inline">state</code> - assumed to be <code class="inline">{doc, source, pos}</code> (given by <code class="inline">run_tokenizer/2</code>).
+</li>
+<li><code class="inline">expr</code> - regexp expression.
+</li>
+<li><code class="inline">token_name</code> (atom, optional) - token name.
+</li>
+<li><code class="inline">reducer</code> (function, optional) - a function.
+</li>
+</ul>
+<p>Returns <code class="inline">{ doc, source, pos }</code> too, where <code class="inline">doc</code> is transformed via <code class="inline">fun</code>.</p>
+<pre><code class="elixir">eat state, ~r/.../, :document
+eat state, ~r/.../, :document, nil  # discard it
+eat state, ~r/.../, :document, &amp;[{&amp;3, :document, &amp;2} | &amp;1]
+
+# &amp;1 == current state
+# &amp;2 == matched String
+# &amp;3 == position</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="eat/3">
+  <div class="detail-header">
+    <a href="#eat/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">eat(state, expr, token_name)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L177" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="eat/4">
+  <div class="detail-header">
+    <a href="#eat/4" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">eat(state, expr, token_name, fun)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L181" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="eat_string/2">
+  <div class="detail-header">
+    <a href="#eat_string/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">eat_string(state, expr)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L226" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Like eat(), but instead of creating a token, it appends to the last token.
+Useful alongside <code class="inline">start_empty()</code>.</p>
+<pre><code class="elixir">state
+|&gt; start_empty(:quoted_string)
+|&gt; eat_string(~r/^&quot;/)
+|&gt; eat_string(~r/[^&quot;]+/)
+|&gt; eat_string(~r/^&quot;/)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="finalize/1">
+  <div class="detail-header">
+    <a href="#finalize/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">finalize(arg)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L57" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Turns a state tuple (<code class="inline">{doc, source, position}</code>) into a final result.  Returns
+either <code class="inline">{:ok, doc}</code> or <code class="inline">{:parse_error, %{type, position, expected}}</code>.
+Guards against unexpected end-of-file.</p>
+
+  </section>
+</div>
+<div class="detail" id="get_parse_errors/1">
+  <div class="detail-header">
+    <a href="#get_parse_errors/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_parse_errors(arg1)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L75" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Extracts the last parse errors that happened.</p>
+<p>In case of failure, <code class="inline">run_tokenizer()</code> will check the last parse errors
+that happened. Returns a list of atoms of the expected tokens.</p>
+
+  </section>
+</div>
+<div class="detail" id="many_of/2">
+  <div class="detail-header">
+    <a href="#many_of/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">many_of(state, head)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L134" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Checks many of a certain token.</p>
+
+  </section>
+</div>
+<div class="detail" id="many_of/3">
+  <div class="detail-header">
+    <a href="#many_of/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">many_of(arg, head, tail)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L138" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="match/2">
+  <div class="detail-header">
+    <a href="#match/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">match(expr, remainder)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L196" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="one_of/3">
+  <div class="detail-header">
+    <a href="#one_of/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">one_of(state, funs, expected \\ [])</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L97" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Finds any one of the given token-eater functions.</p>
+<pre><code class="elixir">state |&gt; one_of([ &amp;brackets/1, &amp;braces/1, &amp;parens/1 ])</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="optional/2">
+  <div class="detail-header">
+    <a href="#optional/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">optional(state, fun)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L115" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>An optional argument.</p>
+<pre><code class="elixir">state |&gt; optional(&amp;text/1)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="optional_many_of/2">
+  <div class="detail-header">
+    <a href="#optional_many_of/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">optional_many_of(state, head)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L150" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="scrub_parse_errors/1">
+  <div class="detail-header">
+    <a href="#scrub_parse_errors/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">scrub_parse_errors(doc)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L86" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Gets rid of the <code class="inline">:parse_error</code> hints in the document.</p>
+
+  </section>
+</div>
+<div class="detail" id="start_empty/2">
+  <div class="detail-header">
+    <a href="#start_empty/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">start_empty(arg, token_name)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L211" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Creates an token with a given <code class="inline">token_name</code>.
+This is functionally the same as <code class="inline">|&gt; eat(~r//, :token_name)</code>, but using
+<code class="inline">start_empty()</code> can make your code more readable.</p>
+<pre><code class="elixir">state
+|&gt; start_empty(:quoted_string)
+|&gt; eat_string(~r/^&quot;/)
+|&gt; eat_string(~r/[^&quot;]+/)
+|&gt; eat_string(~r/^&quot;/)</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+
