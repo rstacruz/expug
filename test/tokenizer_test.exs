@@ -203,8 +203,7 @@ defmodule ExpugTokenizerTest do
       assert %{
         type: :parse_error,
         position: {2, 4},
-        expected: [:eq, :whitespace, :attribute_open],
-        trace: _
+        expected: [:eq, :whitespace, :attribute_open]
       } = output
     end
   end

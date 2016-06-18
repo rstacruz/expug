@@ -94,8 +94,7 @@ defmodule Expug.Tokenizer do
   """
   def tokenize(source) do
     {[], source, 0}
-    |> document()
-    |> finalize()
+    |> run(&document/1)
   end
 
   @doc """

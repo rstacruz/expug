@@ -4,8 +4,7 @@ defmodule Expug.TokenizerTools do
 
       def tokenizer(source)
         {[], source, 0}
-        |> document()
-        |> finalize()
+        |> run(&document/1)
       end
 
       def document(state)
@@ -57,12 +56,24 @@ defmodule Expug.TokenizerTools do
   def finalize({doc, source, position}) do
     if String.slice(source, position..-1) != "" do
       expected = Enum.uniq_by(get_parse_errors(doc), &(&1))
-      position = convert_positions(position, source)
-      throw %{type: :parse_error, position: position, expected: expected, trace: System.stacktrace}
+      throw {:parse_error, position, expected}
     else
       doc
       |> scrub_parse_errors()
       |> convert_positions(source)
+    end
+  end
+
+  @doc """
+  Runs; catches parse errors and throws them properly.
+  """
+  def run({_, source, _} = state, fun) do
+    try do
+      fun.(state)
+      |> finalize()
+    catch {:parse_error, position, expected} ->
+      position = convert_positions(position, source)
+      throw %{type: :parse_error, position: position, expected: expected}
     end
   end
 
@@ -103,7 +114,7 @@ defmodule Expug.TokenizerTools do
     end
   end
 
-  def one_of({_, pos, _}, [], expected) do
+  def one_of({_, _, pos}, [], expected) do
     throw {:parse_error, pos, expected}
   end
 

@@ -162,6 +162,19 @@ defmodule BuilderTest do
     }
   end
 
+  test "lone dot" do
+    try do
+      build(".")
+      flunk "should've thrown something"
+    catch err ->
+      assert %{
+        expected: _,
+        position: {1, 1},
+        type: :parse_error
+      } = err
+    end
+  end
+
   @tag :pending
   test "extra space" do
     eex = build("div\n ")
@@ -175,11 +188,16 @@ defmodule BuilderTest do
 
   @tag :pending
   test "nesting inside" do
-    eex = build("= for item <- @list do\n  div")
-    assert eex == %{
-      :lines => 1,
-      1 => []
-    }
+    try do
+      build("= for item <- @list do\n  div")
+      flunk "should've thrown something"
+    catch err ->
+      assert %{
+        expected: _,
+        position: {1, 1},
+        type: :parse_error
+      } = err
+    end
   end
 
 end
