@@ -222,8 +222,7 @@ defmodule Expug.Builder do
   def put_last_no_space(%{lines: line} = doc, str) do
     doc
     |> Map.update(line, [str], fn segments ->
-      [last | rest] = Enum.reverse(segments)
-      Enum.reverse([last <> str | rest])
+      List.update_at(segments, -1, &(&1 <> str))
     end)
   end
 

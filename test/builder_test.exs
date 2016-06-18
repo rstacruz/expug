@@ -192,6 +192,16 @@ defmodule BuilderTest do
     }
   end
 
+  @tag :pending
+  test "dash with body, collapsing" do
+    eex = build("- for item <- @list do\n  div")
+    assert eex == %{
+      :lines => 2,
+      1 => {:collapse, ["<% for item <- @list do %>"]},
+      2 => {:line, ["<div></div><% end %>"]}
+    }
+  end
+
   test "equal with body" do
     eex = build("= for item <- @list do\n  div")
     assert eex == %{
@@ -228,6 +238,9 @@ defmodule BuilderTest do
 
   @tag :pending
   test "case do ... -> ... end"
+
+  @tag :pending
+  test "try do ... catch ... rescue ... after ... end"
 
   @tag :pending
   test "extra space" do
