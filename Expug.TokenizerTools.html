@@ -77,8 +77,7 @@
           <p>For tokenizers.</p>
 <pre><code class="elixir">def tokenizer(source)
   {[], source, 0}
-  |&gt; document()
-  |&gt; finalize()
+  |&gt; run(&amp;document/1)
 end
 
 def document(state)
@@ -243,6 +242,15 @@ Guards against unexpected end-of-file</p>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#run/2">run(state, fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Runs; catches parse errors and throws them properly</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#scrub_parse_errors/1">scrub_parse_errors(doc)</a>
   </div>
   
@@ -289,7 +297,7 @@ This is functionally the same as <code class="inline">|&gt; eat(~r//, :token_nam
     </a>
     <span class="signature">convert_position(pos, offsets)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L266" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L277" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -307,7 +315,7 @@ This is functionally the same as <code class="inline">|&gt; eat(~r//, :token_nam
     </a>
     <span class="signature">convert_positions(doc, source)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L253" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L264" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -339,7 +347,7 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
     </a>
     <span class="signature">eat(state, expr)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L173" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L184" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -375,7 +383,7 @@ eat state, ~r/.../, :document, &amp;[{&amp;3, :document, &amp;2} | &amp;1]
     </a>
     <span class="signature">eat(state, expr, token_name)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L177" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L188" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -392,7 +400,7 @@ eat state, ~r/.../, :document, &amp;[{&amp;3, :document, &amp;2} | &amp;1]
     </a>
     <span class="signature">eat(state, expr, token_name, fun)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L181" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L192" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -409,7 +417,7 @@ eat state, ~r/.../, :document, &amp;[{&amp;3, :document, &amp;2} | &amp;1]
     </a>
     <span class="signature">eat_string(state, expr)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L226" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L237" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -433,7 +441,7 @@ Useful alongside <code class="inline">start_empty()</code>.</p>
     </a>
     <span class="signature">finalize(arg)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L57" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L56" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -453,7 +461,7 @@ Guards against unexpected end-of-file.</p>
     </a>
     <span class="signature">get_parse_errors(arg1)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L75" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L86" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -473,7 +481,7 @@ that happened. Returns a list of atoms of the expected tokens.</p>
     </a>
     <span class="signature">many_of(state, head)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L134" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L145" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -491,7 +499,7 @@ that happened. Returns a list of atoms of the expected tokens.</p>
     </a>
     <span class="signature">many_of(arg, head, tail)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L138" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L149" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -508,7 +516,7 @@ that happened. Returns a list of atoms of the expected tokens.</p>
     </a>
     <span class="signature">match(expr, remainder)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L196" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L207" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -525,7 +533,7 @@ that happened. Returns a list of atoms of the expected tokens.</p>
     </a>
     <span class="signature">one_of(state, funs, expected \\ [])</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L97" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L108" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -544,7 +552,7 @@ that happened. Returns a list of atoms of the expected tokens.</p>
     </a>
     <span class="signature">optional(state, fun)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L115" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L126" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -563,7 +571,7 @@ that happened. Returns a list of atoms of the expected tokens.</p>
     </a>
     <span class="signature">optional_many_of(state, head)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L150" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L161" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -573,6 +581,24 @@ that happened. Returns a list of atoms of the expected tokens.</p>
     
   </section>
 </div>
+<div class="detail" id="run/2">
+  <div class="detail-header">
+    <a href="#run/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">run(state, fun)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L70" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Runs; catches parse errors and throws them properly.</p>
+
+  </section>
+</div>
 <div class="detail" id="scrub_parse_errors/1">
   <div class="detail-header">
     <a href="#scrub_parse_errors/1" class="detail-link" title="Link to this function">
@@ -580,7 +606,7 @@ that happened. Returns a list of atoms of the expected tokens.</p>
     </a>
     <span class="signature">scrub_parse_errors(doc)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L86" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L97" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -598,7 +624,7 @@ that happened. Returns a list of atoms of the expected tokens.</p>
     </a>
     <span class="signature">start_empty(arg, token_name)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L211" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L222" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
