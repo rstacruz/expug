@@ -1,9 +1,15 @@
 defmodule Expug.Mixfile do
   use Mix.Project
 
+  @version "0.0.1"
+  @description """
+  Indented shorthand templates for HTML.
+  """
+
   def project do
     [app: :expug,
-     version: "0.0.1",
+     version: @version,
+     description: @description,
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
@@ -40,6 +46,7 @@ defmodule Expug.Mixfile do
 
   def docs do
     [
+      source_ref: "v#{@version}",
       main: "readme",
       extras: [
         Path.wildcard("*.md") |
