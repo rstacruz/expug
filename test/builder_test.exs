@@ -177,7 +177,20 @@ defmodule BuilderTest do
 
   test "dash" do
     eex = build("-hi")
-    assert eex == ""
+    assert eex == %{
+      :lines => 1,
+      1 => ["<% hi %>"]
+    }
+  end
+
+  @tag :pending
+  test "dash with body" do
+    eex = build("- for item <- @list do\n  div")
+    assert eex == %{
+      :lines => 2,
+      1 => [ "<% for item <- list do %>" ],
+      2 => [ "<div></div><% end %>" ]
+    }
   end
 
   @tag :pending
@@ -185,24 +198,18 @@ defmodule BuilderTest do
     eex = build("div\n ")
     assert eex == %{
       :lines => 1,
-      1 => [
-        "<div></div>"
-      ]
+      1 => [ "<div></div>" ]
     }
   end
 
   @tag :pending
-  test "nesting inside" do
-    try do
-      build("= for item <- @list do\n  div")
-      flunk "should've thrown something"
-    catch err ->
-      assert %{
-        expected: _,
-        position: {1, 1},
-        type: :parse_error
-      } = err
-    end
+  test "equal with body" do
+    eex = build("= for item <- @list do\n  div")
+    assert eex == %{
+      :lines => 2,
+      1 => [ "<%= for item <- list do %>" ],
+      2 => [ "<div></div><% end %>" ]
+    }
   end
 
 end

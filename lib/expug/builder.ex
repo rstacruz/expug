@@ -68,6 +68,18 @@ defmodule Expug.Builder do
     |> put(node, self_closing_element(doc, node))
   end
 
+  def make(doc, %{type: :statement, value: value, children: [_|_] = list} = node) do
+    doc
+    |> put(node, "<% #{value} %>")
+    |> children(list)
+    |> put_last("<% end %>")
+  end
+
+  def make(doc, %{type: :statement, value: value} = node) do
+    doc
+    |> put(node, "<% #{value} %>")
+  end
+
   @doc """
   Builds text.
   """
