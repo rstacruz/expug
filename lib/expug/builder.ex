@@ -72,7 +72,7 @@ defmodule Expug.Builder do
     doc
     |> put(node, "<% #{value} %>")
     |> children(list)
-    |> put_last("<% end %>")
+    |> put_last_no_space("<% end %>")
   end
 
   def make(doc, %{type: :statement, value: value} = node) do
@@ -86,6 +86,13 @@ defmodule Expug.Builder do
   def make(doc, %{type: :raw_text, value: value} = node) do
     doc
     |> put(node, "#{value}")
+  end
+
+  def make(doc, %{type: :buffered_text, value: value, children: [_|_] = list} = node) do
+    doc
+    |> put(node, "<%= #{value} %>")
+    |> children(list)
+    |> put_last_no_space("<% end %>")
   end
 
   def make(doc, %{type: :buffered_text, value: value} = node) do
@@ -102,7 +109,7 @@ defmodule Expug.Builder do
     doc
   end
 
-  def make(doc, %{type: type, token: {position, _, _}}) do
+  def make(_doc, %{type: type, token: {position, _, _}}) do
     throw %{
       type: :cant_build_node,
       node_type: type,
@@ -210,6 +217,14 @@ defmodule Expug.Builder do
   def put_last(%{lines: line} = doc, str) do
     doc
     |> Map.update(line, [str], &(&1 ++ [str]))
+  end
+
+  def put_last_no_space(%{lines: line} = doc, str) do
+    doc
+    |> Map.update(line, [str], fn segments ->
+      [last | rest] = Enum.reverse(segments)
+      Enum.reverse([last <> str | rest])
+    end)
   end
 
   @doc """
