@@ -174,6 +174,12 @@ iex&gt; with tokens &lt;- Expug.Tokenizer.tokenize(source),
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#put_last_no_space/2">put_last_no_space(doc, str)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#self_closable?/1">self_closable?(node)</a>
   </div>
   
@@ -233,7 +239,7 @@ iex&gt; with tokens &lt;- Expug.Tokenizer.tokenize(source),
     </a>
     <span class="signature">attributes(attributes)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L167" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L174" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -279,7 +285,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">children(doc, list)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L116" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L123" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -297,7 +303,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">element(doc, node)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L130" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L137" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -333,7 +339,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">put(doc, map, str)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L201" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L208" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -351,7 +357,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">put_last(doc, str)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L210" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L217" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -362,6 +368,23 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
 
   </section>
 </div>
+<div class="detail" id="put_last_no_space/2">
+  <div class="detail-header">
+    <a href="#put_last_no_space/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">put_last_no_space(doc, str)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L222" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
 <div class="detail" id="self_closable?/1">
   <div class="detail-header">
     <a href="#self_closable?/1" class="detail-link" title="Link to this function">
@@ -369,7 +392,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">self_closable?(node)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L148" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L155" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -386,7 +409,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">self_closing_element(doc, node)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L136" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L143" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -403,7 +426,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">str_join(left, str, sep \\ &quot; &quot;)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L194" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L201" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -420,7 +443,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">update_line_count(doc, line, max)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L218" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L233" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -438,7 +461,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">valueify(values)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L175" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L182" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
