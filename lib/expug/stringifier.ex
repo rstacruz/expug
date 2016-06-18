@@ -15,11 +15,16 @@ defmodule Expug.Stringifier do
   end
 
   def s([{line, elements} | rest], last, max) do
+    meat = Enum.join(elements, ~S[<%= "\n" %>])
     "" <>
     padding(line, last) <>
-    Enum.join(elements, ~S[<%= "\n" %>]) <>
+    meat <>
     "\n"
-    <> s(rest, line, max)
+    <> s(rest, line + count_newlines(meat), max)
+  end
+
+  def count_newlines(str) do
+    length(Regex.scan(~r/\n/, str)) - 0
   end
 
   def s([], _last, _max) do

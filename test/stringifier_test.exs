@@ -97,7 +97,6 @@ defmodule StringifierTest do
     """
   end
 
-  @tag :pending
   test "extra depths" do
     eex = build("""
     div(role="hi"
