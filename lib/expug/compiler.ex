@@ -32,7 +32,7 @@ defmodule Expug.Compiler do
 
   On failure, it returns `{:error, [type: type, position: {line, col}]}`.
   """
-  def compile(tokens) do
+  def compile(tokens, _opts \\ []) do
     tokens = Enum.reverse(tokens)
     node = %{type: :document}
 

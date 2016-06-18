@@ -49,12 +49,12 @@ defmodule Expug do
   Compiles an Expug template to an EEx template. Returns `{:ok, result}`, where
   `result` is an EEx string. On error, it will return `{:error, ...}`.
   """
-  def to_eex(source) do
+  def to_eex(source, opts \\ []) do
     try do
-      with tokens <- Expug.Tokenizer.tokenize(source),
-           ast <- Expug.Compiler.compile(tokens),
-           lines <- Expug.Builder.build(ast),
-           eex <- Expug.Stringifier.stringify(lines) do
+      with tokens <- Expug.Tokenizer.tokenize(source, opts),
+           ast <- Expug.Compiler.compile(tokens, opts),
+           lines <- Expug.Builder.build(ast, opts),
+           eex <- Expug.Stringifier.stringify(lines, opts) do
         {:ok, eex}
       end
     catch %{type: _type} = err->
@@ -66,8 +66,8 @@ defmodule Expug do
   Compiles an Expug template to an EEx template.
   Returns the EEx string on success. On failure, it raises `Expug.Error`.
   """
-  def to_eex!(source) do
-    case to_eex(source) do
+  def to_eex!(source, opts \\ []) do
+    case to_eex(source, opts) do
       {:ok, eex} ->
         eex
       {:error, err} ->

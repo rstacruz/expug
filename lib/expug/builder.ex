@@ -22,7 +22,7 @@ defmodule Expug.Builder do
 
   require Logger
 
-  def build(ast) do
+  def build(ast, _opts \\ []) do
     %{lines: 0} |> make(ast)
   end
 

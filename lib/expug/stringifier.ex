@@ -7,7 +7,7 @@ defmodule Expug.Stringifier do
   - `Expug.to_eex/1` is the main entry point that uses this stringifier.
   """
 
-  def stringify(%{} = doc) do
+  def stringify(%{} = doc, _opts \\ []) do
     {max, doc} = Map.pop(doc, :lines)
     {_, doc} = Map.pop(doc, :doctype)
     list = doc |> Map.to_list() |> Enum.sort()
@@ -23,12 +23,12 @@ defmodule Expug.Stringifier do
     <> s(rest, line + count_newlines(meat), max)
   end
 
-  def count_newlines(str) do
-    length(Regex.scan(~r/\n/, str)) - 0
-  end
-
   def s([], _last, _max) do
     ""
+  end
+
+  def count_newlines(str) do
+    length(Regex.scan(~r/\n/, str)) - 0
   end
 
   def padding(line, last) do
