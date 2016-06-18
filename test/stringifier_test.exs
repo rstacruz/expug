@@ -106,14 +106,13 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div role=<%= raw(Expug.Runtime.attr_value("hi"
-    )) %>></div>
+    <div role=<%= raw(Expug.Runtime.attr_value("hi")) %>></div>
     <%
+
     %><div></div>
     """
   end
 
-  @tag :pending
   test "new line attributes" do
     eex = build("""
     div(role="hi"
@@ -121,8 +120,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div id=<%= raw(Expug.Runtime.attr_value("foo")) %> role=<%= raw(Expug.Runtime.attr_value("hi"
-    )) %>></div>
+    <div id=<%= raw(Expug.Runtime.attr_value("foo")) %> role=<%= raw(Expug.Runtime.attr_value("hi")) %>></div>
     """
   end
 

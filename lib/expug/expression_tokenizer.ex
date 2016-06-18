@@ -58,7 +58,7 @@ defmodule Expug.ExpressionTokenizer do
   """
   def expression_term(state) do
     state
-    |> eat_string(~r/^[^\(\)\[\]\{\}"', ]+/)
+    |> eat_string(~r/^[^\(\)\[\]\{\}"', \n\t]+/)
   end
 
   @doc """

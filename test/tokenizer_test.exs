@@ -381,7 +381,7 @@ defmodule ExpugTokenizerTest do
       {{1, 1}, :element_name, "div"},
       {{1, 4}, :attribute_open, "("},
       {{2, 3}, :attribute_key, "src"},
-      {{2, 7}, :attribute_value, "a\n"},
+      {{2, 7}, :attribute_value, "a"},
       {{3, 3}, :attribute_close, ")"}
     ]
   end
@@ -507,6 +507,20 @@ defmodule ExpugTokenizerTest do
       {{1, 3}, :buffered_text, "hi"},
       {{2, 1}, :indent, 2},
       {{2, 3}, :element_name, "div"}
+    ]
+  end
+
+  test "separating attributes with newlines" do
+    output = tokenize("div(a=1\nb=2)")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{1, 4}, :attribute_open, "("},
+      {{1, 5}, :attribute_key, "a"},
+      {{1, 7}, :attribute_value, "1"},
+      {{2, 1}, :attribute_key, "b"},
+      {{2, 3}, :attribute_value, "2"},
+      {{2, 4}, :attribute_close, ")"}
     ]
   end
 
