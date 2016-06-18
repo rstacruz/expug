@@ -153,6 +153,12 @@ defmodule Expug.Compiler do
     {node, tokens}
   end
 
+  def statement({node, [{_, :statement, value} = t | tokens]}, _depth) do
+    child = %{type: :statement, value: value, token: t}
+    node = add_child(node, child)
+    {node, tokens}
+  end
+
   def statement({_node, tokens}, _depths) do
      throw {:compile_error, :unexpected_token, tokens}
   end

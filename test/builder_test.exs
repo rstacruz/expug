@@ -175,7 +175,6 @@ defmodule BuilderTest do
     end
   end
 
-  @tag :pending
   test "dash" do
     eex = build("-hi")
     assert eex == ""

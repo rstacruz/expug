@@ -90,6 +90,14 @@ defmodule Expug.Builder do
     doc
   end
 
+  def make(doc, %{type: type, token: {position, _, _}}) do
+    throw %{
+      type: :cant_build_node,
+      node_type: type,
+      position: position
+    }
+  end
+
   @doc """
   Builds a list of nodes.
   """
