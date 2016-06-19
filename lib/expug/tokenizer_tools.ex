@@ -64,8 +64,8 @@ defmodule Expug.TokenizerTools do
   @doc """
   Runs; catches parse errors and throws them properly.
   """
-  def run(source, _opts, fun) do
-    state = %{tokens: [], source: source, position: 0}
+  def run(source, opts, fun) do
+    state = %{tokens: [], source: source, position: 0, options: opts}
     try do
       fun.(state)
       |> finalize()
