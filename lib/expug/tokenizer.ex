@@ -87,6 +87,7 @@ defmodule Expug.Tokenizer do
   """
 
   import Expug.TokenizerTools
+  alias Expug.TokenizerTools.State
 
   @doc """
   Tokenizes a string.
@@ -422,7 +423,7 @@ defmodule Expug.Tokenizer do
       iex> Expug.Tokenizer.get_next_indent(%{tokens: doc, source: source, position: 2}, 0)
       2
   """
-  def get_next_indent(%{tokens: doc} = state) do
+  def get_next_indent(%State{tokens: doc} = state) do
     level = get_indent(doc)
     get_next_indent(state, level)
   end

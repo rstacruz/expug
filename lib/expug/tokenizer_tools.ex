@@ -1,26 +1,37 @@
 defmodule Expug.TokenizerTools do
   @moduledoc """
-  For tokenizers.
+  Builds tokenizers.
 
-      def tokenizer(source)
-        run(source, [], &document/1)
-      end
+      defmodule MyTokenizer do
+        import Expug.TokenizerTools
 
-      def document(state)
-        state
-        |> eat(~r/^doctype /, :doctype)  # create a token
+        def tokenizer(source)
+          run(source, [], &document/1)
+        end
+
+        def document(state)
+          state
+          |> eat(~r/^doctype /, nil)    # consumes text
+          |> eat(~r/^[a-z+]/, :doctype) # consumes text and creates a token
+        end
       end
 
   ## The state
 
-  The state begins as a tuple of `{[], source, 0}`. This is the list of tokens,
-  the source text, and the cursor position (aka, `{doc, source, pos}`).
+  The state begins as a struct from the given `source` and `opts` passed to `run/3`.
+
+      %{ tokens: [], source: "...", position: 0, options: ... }
+
+  `run/3` creates the state and invokes a function you give it.
+
+      source = "doctype html"
+      run(source, [], &document/1)
+
+  `eat/3` tries to find the given regexp from the `source` at position `pos`.
+  If it matches, it returns a new state: a new token is added (`:open_quote` in
+  this case), and the position `pos` is advanced.
 
       eat(state, ~r/^"/, :open_quote)
-
-  The `eat()` function tries to find the given regexp from the `source` at
-  position `pos`. If it matches, it returns a new state: a new token is added
-  (`:open_quote` in this case), and the position `pos` is advanced.
 
   If it fails to match, it'll throw a `{:parse_error, pos, [:open_quote]}`.
   Roughly this translates to "parse error in position *pos*, expected to find
@@ -45,12 +56,15 @@ defmodule Expug.TokenizerTools do
       |> many_of(&doctype/1)
   """
 
+  alias Expug.TokenizerTools.State
+
   @doc """
-  Turns a state map (`%{tokens, source, position}`) into a final result.  Returns
-  either `{:ok, doc}` or `{:parse_error, %{type, position, expected}}`.
+  Turns a State into a final result.
+
+  Returns either `{:ok, doc}` or `{:parse_error, %{type, position, expected}}`.
   Guards against unexpected end-of-file.
   """
-  def finalize(%{tokens: doc, source: source, position: position}) do
+  def finalize(%State{tokens: doc, source: source, position: position}) do
     if String.slice(source, position..-1) != "" do
       expected = Enum.uniq_by(get_parse_errors(doc), &(&1))
       throw {:parse_error, position, expected}
@@ -65,7 +79,7 @@ defmodule Expug.TokenizerTools do
   Runs; catches parse errors and throws them properly.
   """
   def run(source, opts, fun) do
-    state = %{tokens: [], source: source, position: 0, options: opts}
+    state = %State{tokens: [], source: source, position: 0, options: opts}
     try do
       fun.(state)
       |> finalize()
@@ -104,7 +118,7 @@ defmodule Expug.TokenizerTools do
       state |> one_of([ &brackets/1, &braces/1, &parens/1 ])
   """
   def one_of(state, funs, expected \\ [])
-  def one_of(state, [fun | rest], expected) do
+  def one_of(%State{} = state, [fun | rest], expected) do
     try do
       fun.(state)
     catch {:parse_error, _, expected_} ->
@@ -112,7 +126,7 @@ defmodule Expug.TokenizerTools do
     end
   end
 
-  def one_of(%{position: pos}, [], expected) do
+  def one_of(%State{position: pos}, [], expected) do
     throw {:parse_error, pos, expected}
   end
 
@@ -144,7 +158,10 @@ defmodule Expug.TokenizerTools do
     many_of(state, head, head)
   end
 
-  def many_of(state = %{source: source, position: pos}, head, tail) do
+  @doc """
+  Checks many of a certain token, and lets you provide a different `tail`.
+  """
+  def many_of(state = %State{source: source, position: pos}, head, tail) do
     if String.slice(source, pos..-1) == "" do
       state
     else
@@ -156,41 +173,68 @@ defmodule Expug.TokenizerTools do
     end
   end
 
+  @doc """
+  Checks many of a certain token.
+  
+  Syntactic sugar for `optional(s, many_of(s, ...))`.
+  """
   def optional_many_of(state, head) do
     state
     |> optional(&(&1 |> many_of(head)))
   end
 
   @doc """
-  Eats a token.
+  Consumes a token.
+
+  See `eat/4`.
+  """
+  def eat(state, expr) do
+    eat(state, expr, nil, fn doc, _, _ -> doc end)
+  end
+
+  @doc """
+  Consumes a token.
+
+  See `eat/4`.
+  """
+  def eat(state, expr, token_name) do
+    eat(state, expr, token_name, &([{&3, token_name, &2} | &1]))
+  end
+
+  @doc """
+  Consumes a token, but doesn't push it to the State.
+
+  See `eat/4`.
+  """
+  def eat(state, expr, token_name, nil) do
+    eat state, expr, token_name, fn state, _, _ -> state end
+  end
+
+  @doc """
+  Consumes a token.
+
+      eat state, ~r/.../, :document
+
+  Returns a `State`. Available parameters are:
 
   * `state` - assumed to be a state map (given by `run/3`).
   * `expr` - regexp expression.
   * `token_name` (atom, optional) - token name.
   * `reducer` (function, optional) - a function.
 
-  Returns `{ doc, source, pos }` too, where `doc` is transformed via `fun`.
+  You may pass `nil` as the 4th parameter. This discards the token (ie, doesn't
+  push it to the State).
 
-      eat state, ~r/.../, :document
       eat state, ~r/.../, :document, nil  # discard it
+
+  If `reducer` is a function, `tokens` is transformed using that function.
+
       eat state, ~r/.../, :document, &[{&3, :document, &2} | &1]
 
-      # &1 == current state
+      # &1 == tokens in current State
       # &2 == matched String
       # &3 == position
   """
-  def eat(state, expr) do
-    eat(state, expr, nil, fn doc, _, _ -> doc end)
-  end
-
-  def eat(state, expr, token_name) do
-    eat(state, expr, token_name, &([{&3, token_name, &2} | &1]))
-  end
-
-  def eat(state, expr, token_name, nil) do
-    eat state, expr, token_name, fn state, _, _ -> state end
-  end
-
   def eat(%{tokens: doc, source: source, position: pos} = state, expr, token_name, fun) do
     remainder = String.slice(source, pos..-1)
     case match(expr, remainder) do
@@ -204,12 +248,9 @@ defmodule Expug.TokenizerTools do
     end
   end
 
-  def match(expr, remainder) do
-    Regex.run(expr, remainder)
-  end
-
   @doc """
   Creates an token with a given `token_name`.
+
   This is functionally the same as `|> eat(~r//, :token_name)`, but using
   `start_empty()` can make your code more readable.
 
@@ -219,7 +260,7 @@ defmodule Expug.TokenizerTools do
       |> eat_string(~r/[^"]+/)
       |> eat_string(~r/^"/)
   """
-  def start_empty(%{position: pos} = state, token_name) do
+  def start_empty(%State{position: pos} = state, token_name) do
     token = {pos, token_name, ""}
     state
     |> Map.update(:tokens, [token], &[token | &1])
@@ -271,26 +312,27 @@ defmodule Expug.TokenizerTools do
     convert_position(doc, offsets)
   end
 
-  @doc """
-  Converts a position number `n` to a tuple `{line, col}`.
-  """
-
-  def convert_position(pos, offsets) when is_number(pos) do
+  # Converts a position number `n` to a tuple `{line, col}`.
+  defp convert_position(pos, offsets) when is_number(pos) do
     line = Enum.find_index(offsets, &(pos < &1))
     offset = Enum.at(offsets, line - 1)
     col = pos - offset
     {line, col + 1}
   end
 
-  def convert_position({pos, a, b}, offsets) do
+  defp convert_position({pos, a, b}, offsets) do
     {convert_position(pos, offsets), a, b}
   end
 
-  def convert_position([ token | rest ], offsets) do
+  defp convert_position([ token | rest ], offsets) do
     [ convert_position(token, offsets) | convert_position(rest, offsets) ]
   end
 
-  def convert_position([], _offsets) do
+  defp convert_position([], _offsets) do
     []
+  end
+
+  defp match(expr, remainder) do
+    Regex.run(expr, remainder)
   end
 end
