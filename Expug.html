@@ -173,8 +173,7 @@ You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1
     <a href="#to_eex/2">to_eex(source, opts \\ [])</a>
   </div>
   
-    <div class="summary-synopsis"><p>Compiles an Expug template to an EEx template. Returns <code class="inline">{:ok, result}</code>, where
-<code class="inline">result</code> is an EEx string. On error, it will return <code class="inline">{:error, ...}</code></p>
+    <div class="summary-synopsis"><p>Compiles an Expug template to an EEx template</p>
 </div>
   
 </div>
@@ -183,8 +182,7 @@ You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1
     <a href="#to_eex!/2">to_eex!(source, opts \\ [])</a>
   </div>
   
-    <div class="summary-synopsis"><p>Compiles an Expug template to an EEx template.
-Returns the EEx string on success. On failure, it raises <a href="Expug.Error.html"><code class="inline">Expug.Error</code></a></p>
+    <div class="summary-synopsis"><p>Compiles an Expug template to an EEx template and raises errors on failure</p>
 </div>
   
 </div>
@@ -279,15 +277,16 @@ Returns the EEx string on success. On failure, it raises <a href="Expug.Error.ht
     </a>
     <span class="signature">to_eex(source, opts \\ [])</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L64" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L66" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    <p>Compiles an Expug template to an EEx template. Returns <code class="inline">{:ok, result}</code>, where
-<code class="inline">result</code> is an EEx string. On error, it will return <code class="inline">{:error, ...}</code>.</p>
+    <p>Compiles an Expug template to an EEx template.</p>
+<p>Returns <code class="inline">{:ok, result}</code>, where <code class="inline">result</code> is an EEx string. On error, it will
+return <code class="inline">{:error, ...}</code>.</p>
 
   </section>
 </div>
@@ -298,15 +297,15 @@ Returns the EEx string on success. On failure, it raises <a href="Expug.Error.ht
     </a>
     <span class="signature">to_eex!(source, opts \\ [])</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L81" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L84" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
   </div>
   
   <section class="docstring">
-    <p>Compiles an Expug template to an EEx template.
-Returns the EEx string on success. On failure, it raises <a href="Expug.Error.html"><code class="inline">Expug.Error</code></a>.</p>
+    <p>Compiles an Expug template to an EEx template and raises errors on failure.</p>
+<p>Returns the EEx string on success. On failure, it raises <a href="Expug.Error.html"><code class="inline">Expug.Error</code></a>.</p>
 
   </section>
 </div>
