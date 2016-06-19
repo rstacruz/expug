@@ -18,7 +18,7 @@ defmodule Expug.TokenizerTools do
 
   ## The state
 
-  The state begins as a struct from the given `source` and `opts` passed to `run/3`.
+  `Expug.TokenizerTools.State` is a struct from the `source` and `opts` given to `run/3`.
 
       %{ tokens: [], source: "...", position: 0, options: ... }
 
@@ -39,7 +39,7 @@ defmodule Expug.TokenizerTools do
 
   ## Mixing and matching
 
-  Normally you'd make functions for most token types:
+  `eat/3` will normally be wrapped into functions for most token types.
 
       def doctype(state)
         state
@@ -48,7 +48,12 @@ defmodule Expug.TokenizerTools do
         |> eat(%r/^[a-z0-9]+/, :doctype_value)
       end
 
-  You can then compose these functions using:
+      def whitespace(state)
+        state
+        |> eat(^r/[ \s\t]+, :whitespace, :nil)
+      end
+
+  `one_of/3`, `optional/2`, `many_of/2` can then be used to compose these functions.
 
       state
       |> one_of([ &doctype/1, &foobar/1 ])
@@ -267,7 +272,8 @@ defmodule Expug.TokenizerTools do
   end
 
   @doc """
-  Like eat(), but instead of creating a token, it appends to the last token.
+  Like `eat/4`, but instead of creating a token, it appends to the last token.
+
   Useful alongside `start_empty()`.
 
       state
