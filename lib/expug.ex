@@ -58,8 +58,10 @@ defmodule Expug do
   defdelegate stringify(lines, opts), to: Expug.Stringifier
 
   @doc ~S"""
-  Compiles an Expug template to an EEx template. Returns `{:ok, result}`, where
-  `result` is an EEx string. On error, it will return `{:error, ...}`.
+  Compiles an Expug template to an EEx template.
+  
+  Returns `{:ok, result}`, where `result` is an EEx string. On error, it will
+  return `{:error, ...}`.
   """
   def to_eex(source, opts \\ []) do
     try do
@@ -75,7 +77,8 @@ defmodule Expug do
   end
 
   @doc ~S"""
-  Compiles an Expug template to an EEx template.
+  Compiles an Expug template to an EEx template and raises errors on failure.
+
   Returns the EEx string on success. On failure, it raises `Expug.Error`.
   """
   def to_eex!(source, opts \\ []) do
