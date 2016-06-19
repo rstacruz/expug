@@ -74,23 +74,18 @@
 
       
         <section id="moduledoc" class="docstring">
-          <p>Expug compiles templates to an eex template. See <code class="inline">to_eex/1</code>.</p>
+          <p>Expug compiles templates to an eex template.</p>
+<p><a href="#to_eex/2"><code class="inline">to_eex/2</code></a> turns an Expug source into an EEx template.</p>
 <pre><code class="iex elixir">iex&gt; source = &quot;div\n  | Hello&quot;
 iex&gt; Expug.to_eex(source)
 {:ok, &quot;&lt;div&gt;\nHello&lt;%= \&quot;\\n\&quot; %&gt;&lt;/div&gt;\n&quot;}</code></pre>
-<p>There’s also <code class="inline">to_eex!/1</code> which will instead return the result or throw an
+<p><a href="#to_eex!/2"><code class="inline">to_eex!/2</code></a> is the same, and instead returns the result or throws an
 <a href="Expug.Error.html"><code class="inline">Expug.Error</code></a>.</p>
 <pre><code class="iex elixir">iex&gt; source = &quot;div\n  | Hello&quot;
 iex&gt; Expug.to_eex!(source)
 &quot;&lt;div&gt;\nHello&lt;%= \&quot;\\n\&quot; %&gt;&lt;/div&gt;\n&quot;</code></pre>
-<h2>The <code class="inline">raw</code> helper</h2>
-<p>Note that it needs <code class="inline">raw/1</code>, something typically provided by
-<a href="http://devdocs.io/phoenix/phoenix_html/phoenix.html#raw/1">Phoenix.HTML</a>.
-You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1</code> would do.</p>
-<pre><code class="iex elixir">iex&gt; Expug.to_eex!(~s[div(role=&quot;alert&quot;)= @message])
-&quot;&lt;div role=&lt;%= raw(Expug.Runtime.attr_value(\&quot;alert\&quot;)) %&gt;&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;%= @message %&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;/div&gt;\n&quot;</code></pre>
 <h2>Errors</h2>
-<p><code class="inline">to_eex/1</code> will give you this in case of an error:</p>
+<p><a href="#to_eex/2"><code class="inline">to_eex/2</code></a> will give you this in case of an error:</p>
 <pre><code class="elixir">{:error, %{
   type: :parse_error,
   position: {3, 2},    # line/col
@@ -98,8 +93,25 @@ You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1
 }}</code></pre>
 <p>Internally, the other classes will throw <code class="inline">%{type, position, ...}</code> which will
 be caught here.</p>
+<h2>The <code class="inline">raw</code> helper</h2>
+<p>Note that it needs <code class="inline">raw/1</code>, something typically provided by
+<a href="http://devdocs.io/phoenix/phoenix_html/phoenix.html#raw/1">Phoenix.HTML</a>.
+You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1</code> would do.</p>
+<pre><code class="iex elixir">iex&gt; Expug.to_eex!(~s[div(role=&quot;alert&quot;)= @message])
+&quot;&lt;div role=&lt;%= raw(Expug.Runtime.attr_value(\&quot;alert\&quot;)) %&gt;&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;%= @message %&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;/div&gt;\n&quot;</code></pre>
 <h2>Internal notes</h2>
-<p><a href="Expug.html#content"><code class="inline">Expug</code></a> pieces together 4 steps into a pipeline:</p>
+<p><a href="Expug.html#to_eex/2"><code class="inline">Expug.to_eex/2</code></a> pieces together 4 steps into a pipeline:</p>
+<ul>
+<li><a href="#tokenize/2"><code class="inline">tokenize/2</code></a> - turns source into tokens.
+</li>
+<li><a href="#compile/2"><code class="inline">compile/2</code></a> - turns tokens into an AST.
+</li>
+<li><a href="#build/2"><code class="inline">build/2</code></a> - turns an AST into a line map.
+</li>
+<li><a href="#stringify/2"><code class="inline">stringify/2</code></a> - turns a line map into an EEx template.
+</li>
+</ul>
+<h2>Also see</h2>
 <ul>
 <li><a href="Expug.Tokenizer.html"><code class="inline">Expug.Tokenizer</code></a>
 </li>
@@ -131,6 +143,33 @@ be caught here.</p>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
+    <a href="#build/2">build(ast, opts)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>See <a href="Expug.Builder.html#build/2"><code class="inline">Expug.Builder.build/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#compile/2">compile(tokens, opts)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>See <a href="Expug.Compiler.html#compile/2"><code class="inline">Expug.Compiler.compile/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#stringify/2">stringify(lines, opts)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>See <a href="Expug.Stringifier.html#stringify/2"><code class="inline">Expug.Stringifier.stringify/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#to_eex/2">to_eex(source, opts \\ [])</a>
   </div>
   
@@ -146,6 +185,15 @@ be caught here.</p>
   
     <div class="summary-synopsis"><p>Compiles an Expug template to an EEx template.
 Returns the EEx string on success. On failure, it raises <a href="Expug.Error.html"><code class="inline">Expug.Error</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#tokenize/2">tokenize(source, opts)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>See <a href="Expug.Tokenizer.html#tokenize/2"><code class="inline">Expug.Tokenizer.tokenize/2</code></a></p>
 </div>
   
 </div>
@@ -170,14 +218,68 @@ Returns the EEx string on success. On failure, it raises <a href="Expug.Error.ht
             </a>
             Functions
           </h1>
-          <div class="detail" id="to_eex/2">
+          <div class="detail" id="build/2">
+  <div class="detail-header">
+    <a href="#build/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">build(ast, opts)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L57" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>See <a href="Expug.Builder.html#build/2"><code class="inline">Expug.Builder.build/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="compile/2">
+  <div class="detail-header">
+    <a href="#compile/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">compile(tokens, opts)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L56" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>See <a href="Expug.Compiler.html#compile/2"><code class="inline">Expug.Compiler.compile/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="stringify/2">
+  <div class="detail-header">
+    <a href="#stringify/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">stringify(lines, opts)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L58" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>See <a href="Expug.Stringifier.html#stringify/2"><code class="inline">Expug.Stringifier.stringify/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="to_eex/2">
   <div class="detail-header">
     <a href="#to_eex/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">to_eex(source, opts \\ [])</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L52" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L64" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -196,7 +298,7 @@ Returns the EEx string on success. On failure, it raises <a href="Expug.Error.ht
     </a>
     <span class="signature">to_eex!(source, opts \\ [])</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L69" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L81" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -205,6 +307,24 @@ Returns the EEx string on success. On failure, it raises <a href="Expug.Error.ht
   <section class="docstring">
     <p>Compiles an Expug template to an EEx template.
 Returns the EEx string on success. On failure, it raises <a href="Expug.Error.html"><code class="inline">Expug.Error</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="tokenize/2">
+  <div class="detail-header">
+    <a href="#tokenize/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">tokenize(source, opts)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug.ex#L55" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>See <a href="Expug.Tokenizer.html#tokenize/2"><code class="inline">Expug.Tokenizer.tokenize/2</code></a>.</p>
 
   </section>
 </div>
