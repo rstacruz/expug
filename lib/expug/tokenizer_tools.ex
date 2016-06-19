@@ -3,8 +3,7 @@ defmodule Expug.TokenizerTools do
   For tokenizers.
 
       def tokenizer(source)
-        {[], source, 0}
-        |> run(&document/1)
+        run(source, [], &document/1)
       end
 
       def document(state)
@@ -46,8 +45,6 @@ defmodule Expug.TokenizerTools do
       |> many_of(&doctype/1)
   """
 
-  require Logger
-
   @doc """
   Turns a state tuple (`{doc, source, position}`) into a final result.  Returns
   either `{:ok, doc}` or `{:parse_error, %{type, position, expected}}`.
@@ -67,7 +64,8 @@ defmodule Expug.TokenizerTools do
   @doc """
   Runs; catches parse errors and throws them properly.
   """
-  def run({_, source, _} = state, fun) do
+  def run(source, _opts, fun) do
+    state = {[], source, 0}
     try do
       fun.(state)
       |> finalize()
@@ -80,7 +78,7 @@ defmodule Expug.TokenizerTools do
   @doc """
   Extracts the last parse errors that happened.
 
-  In case of failure, `run_tokenizer()` will check the last parse errors
+  In case of failure, `run/3` will check the last parse errors
   that happened. Returns a list of atoms of the expected tokens.
   """
   def get_parse_errors([{_, :parse_error, expected} | rest]) do
@@ -166,7 +164,7 @@ defmodule Expug.TokenizerTools do
   @doc """
   Eats a token.
 
-  * `state` - assumed to be `{doc, source, pos}` (given by `run_tokenizer/2`).
+  * `state` - assumed to be `{doc, source, pos}` (given by `run/3`).
   * `expr` - regexp expression.
   * `token_name` (atom, optional) - token name.
   * `reducer` (function, optional) - a function.

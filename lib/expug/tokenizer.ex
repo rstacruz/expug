@@ -92,9 +92,8 @@ defmodule Expug.Tokenizer do
   Tokenizes a string.
   Returns a list of tokens. Each token is in the format `{position, token, value}`.
   """
-  def tokenize(source, _opts \\ []) do
-    {[], source, 0}
-    |> run(&document/1)
+  def tokenize(source, opts \\ []) do
+    run(source, opts, &document/1)
   end
 
   @doc """
