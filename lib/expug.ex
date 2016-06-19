@@ -1,28 +1,22 @@
 defmodule Expug do
   @moduledoc ~S"""
-  Expug compiles templates to an eex template. See `to_eex/1`.
+  Expug compiles templates to an eex template.
+  
+  `to_eex/2` turns an Expug source into an EEx template.
 
       iex> source = "div\n  | Hello"
       iex> Expug.to_eex(source)
       {:ok, "<div>\nHello<%= \"\\n\" %></div>\n"}
 
-  There's also `to_eex!/1` which will instead return the result or throw an
+  `to_eex!/2` is the same, and instead returns the result or throws an
   `Expug.Error`.
 
       iex> source = "div\n  | Hello"
       iex> Expug.to_eex!(source)
       "<div>\nHello<%= \"\\n\" %></div>\n"
 
-  ## The `raw` helper
-  Note that it needs `raw/1`, something typically provided by
-  [Phoenix.HTML](http://devdocs.io/phoenix/phoenix_html/phoenix.html#raw/1).
-  You don't need Phoenix.HTML however; a binding with `raw/1` would do.
-
-      iex> Expug.to_eex!(~s[div(role="alert")= @message])
-      "<div role=<%= raw(Expug.Runtime.attr_value(\"alert\")) %>><%= \"\\n\" %><%= @message %><%= \"\\n\" %></div>\n"
-
   ## Errors
-  `to_eex/1` will give you this in case of an error:
+  `to_eex/2` will give you this in case of an error:
 
       {:error, %{
         type: :parse_error,
@@ -33,9 +27,24 @@ defmodule Expug do
   Internally, the other classes will throw `%{type, position, ...}` which will
   be caught here.
 
+  ## The `raw` helper
+  Note that it needs `raw/1`, something typically provided by
+  [Phoenix.HTML](http://devdocs.io/phoenix/phoenix_html/phoenix.html#raw/1).
+  You don't need Phoenix.HTML however; a binding with `raw/1` would do.
+
+      iex> Expug.to_eex!(~s[div(role="alert")= @message])
+      "<div role=<%= raw(Expug.Runtime.attr_value(\"alert\")) %>><%= \"\\n\" %><%= @message %><%= \"\\n\" %></div>\n"
+
   ## Internal notes
   
-  `Expug` pieces together 4 steps into a pipeline:
+  `Expug.to_eex/2` pieces together 4 steps into a pipeline:
+
+  - `tokenize/2` - turns source into tokens.
+  - `compile/2` - turns tokens into an AST.
+  - `build/2` - turns an AST into a line map.
+  - `stringify/2` - turns a line map into an EEx template.
+
+  ## Also see
 
   - `Expug.Tokenizer`
   - `Expug.Compiler`
@@ -43,7 +52,10 @@ defmodule Expug do
   - `Expug.Stringifier`
   """
 
-  require Logger
+  defdelegate tokenize(source, opts), to: Expug.Tokenizer
+  defdelegate compile(tokens, opts), to: Expug.Compiler
+  defdelegate build(ast, opts), to: Expug.Builder
+  defdelegate stringify(lines, opts), to: Expug.Stringifier
 
   @doc ~S"""
   Compiles an Expug template to an EEx template. Returns `{:ok, result}`, where
@@ -51,12 +63,12 @@ defmodule Expug do
   """
   def to_eex(source, opts \\ []) do
     try do
-      with tokens <- Expug.Tokenizer.tokenize(source, opts),
-           ast <- Expug.Compiler.compile(tokens, opts),
-           lines <- Expug.Builder.build(ast, opts),
-           eex <- Expug.Stringifier.stringify(lines, opts) do
-        {:ok, eex}
-      end
+      eex = source
+      |> tokenize(opts)
+      |> compile(opts)
+      |> build(opts)
+      |> stringify(opts)
+      {:ok, eex}
     catch %{type: _type} = err->
       {:error, err}
     end
