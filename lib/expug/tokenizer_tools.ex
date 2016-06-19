@@ -46,11 +46,11 @@ defmodule Expug.TokenizerTools do
   """
 
   @doc """
-  Turns a state tuple (`{doc, source, position}`) into a final result.  Returns
+  Turns a state map (`%{tokens, source, position}`) into a final result.  Returns
   either `{:ok, doc}` or `{:parse_error, %{type, position, expected}}`.
   Guards against unexpected end-of-file.
   """
-  def finalize({doc, source, position}) do
+  def finalize(%{tokens: doc, source: source, position: position}) do
     if String.slice(source, position..-1) != "" do
       expected = Enum.uniq_by(get_parse_errors(doc), &(&1))
       throw {:parse_error, position, expected}
@@ -65,7 +65,7 @@ defmodule Expug.TokenizerTools do
   Runs; catches parse errors and throws them properly.
   """
   def run(source, _opts, fun) do
-    state = {[], source, 0}
+    state = %{tokens: [], source: source, position: 0}
     try do
       fun.(state)
       |> finalize()
@@ -112,7 +112,7 @@ defmodule Expug.TokenizerTools do
     end
   end
 
-  def one_of({_, _, pos}, [], expected) do
+  def one_of(%{position: pos}, [], expected) do
     throw {:parse_error, pos, expected}
   end
 
@@ -132,8 +132,8 @@ defmodule Expug.TokenizerTools do
       {:parse_error, err_pos, expected} ->
         # Add a parse error pseudo-token to the document. They will be scrubbed
         # later on, but it will be inspected in case of a parse error.
-        {doc, source, pos} = state
-        {[{err_pos, :parse_error, expected} | doc], source, pos}
+        next = {err_pos, :parse_error, expected}
+        Map.update(state, :tokens, [next], &[next | &1])
     end
   end
 
@@ -144,7 +144,7 @@ defmodule Expug.TokenizerTools do
     many_of(state, head, head)
   end
 
-  def many_of(state = {_doc, source, pos}, head, tail) do
+  def many_of(state = %{source: source, position: pos}, head, tail) do
     if String.slice(source, pos..-1) == "" do
       state
     else
@@ -164,7 +164,7 @@ defmodule Expug.TokenizerTools do
   @doc """
   Eats a token.
 
-  * `state` - assumed to be `{doc, source, pos}` (given by `run/3`).
+  * `state` - assumed to be a state map (given by `run/3`).
   * `expr` - regexp expression.
   * `token_name` (atom, optional) - token name.
   * `reducer` (function, optional) - a function.
@@ -191,12 +191,14 @@ defmodule Expug.TokenizerTools do
     eat state, expr, token_name, fn state, _, _ -> state end
   end
 
-  def eat({doc, source, pos}, expr, token_name, fun) do
+  def eat(%{tokens: doc, source: source, position: pos} = state, expr, token_name, fun) do
     remainder = String.slice(source, pos..-1)
     case match(expr, remainder) do
       [term] ->
         length = String.length(term)
-        { fun.(doc, term, pos), source, pos + length }
+        state
+        |> Map.put(:position, pos + length)
+        |> Map.put(:tokens, fun.(doc, term, pos))
       nil ->
         throw {:parse_error, pos, [token_name]}
     end
@@ -217,9 +219,10 @@ defmodule Expug.TokenizerTools do
       |> eat_string(~r/[^"]+/)
       |> eat_string(~r/^"/)
   """
-  def start_empty({doc, str, pos}, token_name) do
+  def start_empty(%{position: pos} = state, token_name) do
     token = {pos, token_name, ""}
-    {[token | doc], str, pos}
+    state
+    |> Map.update(:tokens, [token], &[token | &1])
   end
 
   @doc """

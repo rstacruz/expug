@@ -419,10 +419,10 @@ defmodule Expug.Tokenizer do
 
       iex> source = "-#\n  span"
       iex> doc = [{0, :indent, 0}]
-      iex> Expug.Tokenizer.get_next_indent({doc, source, 2})
+      iex> Expug.Tokenizer.get_next_indent(%{tokens: doc, source: source, position: 2}, 0)
       2
   """
-  def get_next_indent({doc, _source, _pos} = state) do
+  def get_next_indent(%{tokens: doc} = state) do
     level = get_indent(doc)
     get_next_indent(state, level)
   end
@@ -431,15 +431,16 @@ defmodule Expug.Tokenizer do
   Returns the next indentation level after some newlines.
 
       iex> source = "-#\n  span"
-      iex> Expug.Tokenizer.get_next_indent({[], source, 2}, 0)
+      iex> Expug.Tokenizer.get_next_indent(%{tokens: [], source: source, position: 2}, 0)
       2
 
       iex> source = "-#\n\n\n  span"
-      iex> Expug.Tokenizer.get_next_indent({[], source, 2}, 0)
+      iex> Expug.Tokenizer.get_next_indent(%{tokens: [], source: source, position: 2}, 0)
       2
   """
   def get_next_indent(state, level) do
-    {[{_, :indent, sublevel} |_], _source, pos} = state |> newlines() |> indent()
+    %{tokens: [{_, :indent, sublevel} |_], position: pos} =
+      state |> newlines() |> indent()
     if sublevel <= level, do: throw {:parse_error, pos, [:indent]}
     sublevel
   end
