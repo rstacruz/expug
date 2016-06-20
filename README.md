@@ -3,7 +3,7 @@
 > Indented shorthand HTML templates for Elixir
 
 Expug is a template language based on [Pug][] (formerly known as [Jade][]).
-This is a [work-in-progress](docs/todo.md).
+This is a work-in-progress.
 
 [![Status](https://travis-ci.org/rstacruz/expug.svg?branch=master)](https://travis-ci.org/rstacruz/expug "See test builds")
 
