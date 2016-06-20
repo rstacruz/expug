@@ -114,7 +114,7 @@ defmodule Expug.Tokenizer do
   """
   def doctype(state) do
     state
-    |> eat(~r/^doctype/, :doctype, nil)
+    |> discard(~r/^doctype/, :doctype_prelude)
     |> whitespace()
     |> eat(~r/^[^\n]+/, :doctype)
     |> optional(&newlines/1)
@@ -142,7 +142,7 @@ defmodule Expug.Tokenizer do
   """
   def newlines(state) do
     state
-    |> eat(~r/^\n(?:[ \t]*\n)*/, :newlines, nil)
+    |> discard(~r/^\n(?:[ \t]*\n)*/, :newlines)
   end
 
   @doc """
@@ -214,7 +214,7 @@ defmodule Expug.Tokenizer do
   """
   def element_class(state) do
     state
-    |> eat(~r/^\./, :dot, nil)
+    |> discard(~r/^\./, :dot)
     |> eat(~r/^[A-Za-z0-9_\-]+/, :element_class)
   end
 
@@ -223,7 +223,7 @@ defmodule Expug.Tokenizer do
   """
   def element_id(state) do
     state
-    |> eat(~r/^#/, :hash, nil)
+    |> discard(~r/^#/, :hash)
     |> eat(~r/^[A-Za-z0-9_\-]+/, :element_id)
   end
 
@@ -281,7 +281,7 @@ defmodule Expug.Tokenizer do
   """
   def attribute_separator(state) do
     state
-    |> eat(~r/^,?/, :comma, nil)
+    |> discard(~r/^,?/, :comma)
   end
 
   @doc """
@@ -308,29 +308,29 @@ defmodule Expug.Tokenizer do
 
   def attribute_equal(state) do
     state
-    |> eat(~r/=/, :eq, nil)
+    |> discard(~r/=/, :eq)
   end
 
   @doc "Matches whitespace; no tokens emitted"
   def whitespace(state) do
     state
-    |> eat(~r/^[ \t]+/, :whitespace, nil)
+    |> discard(~r/^[ \t]+/, :whitespace)
   end
 
   @doc "Matches whitespace or newline; no tokens emitted"
   def whitespace_or_newline(state) do
     state
-    |> eat(~r/^[ \t\n]+/, :whitespace_or_newline, nil)
+    |> discard(~r/^[ \t\n]+/, :whitespace_or_newline)
   end
 
   def optional_whitespace(state) do
     state
-    |> eat(~r/^[ \t]*/, :whitespace, nil)
+    |> discard(~r/^[ \t]*/, :whitespace)
   end
 
   def optional_whitespace_or_newline(state) do
     state
-    |> eat(~r/^[ \t\n]*/, :whitespace_or_newline, nil)
+    |> discard(~r/^[ \t\n]*/, :whitespace_or_newline)
   end
 
   @doc "Matches `=`"
@@ -355,7 +355,7 @@ defmodule Expug.Tokenizer do
 
   def line_comment(state) do
     state
-    |> eat(~r/^-\s*(?:#|\/\/)/, :line_comment, nil)
+    |> discard(~r/^-\s*(?:#|\/\/)/, :line_comment)
     |> optional_whitespace()
     |> eat(~r/^[^\n]*/, :line_comment)
     |> optional(&subindent_block/1)
@@ -369,7 +369,7 @@ defmodule Expug.Tokenizer do
 
   def subindent(state, level) do
     state
-    |> eat(~r/^[ \t]{#{level}}/, :whitespace, nil)
+    |> discard(~r/^[ \t]{#{level}}/, :whitespace)
     |> eat(~r/^[^\n]*/, :subindent)
   end
 
@@ -387,7 +387,7 @@ defmodule Expug.Tokenizer do
 
   def html_comment(state) do
     state
-    |> eat(~r[^//], :html_comment, nil)
+    |> discard(~r[^//], :html_comment)
     |> optional_whitespace()
     |> eat(~r/^[^\n$]*/, :html_comment)
     |> optional(&subindent_block/1)
@@ -395,21 +395,21 @@ defmodule Expug.Tokenizer do
 
   def buffered_text(state) do
     state
-    |> eat(~r/^=/, :eq, nil)
+    |> discard(~r/^=/, :eq)
     |> optional_whitespace()
     |> eat(~r/^[^\n$]+/, :buffered_text)
   end
 
   def raw_text(state) do
     state
-    |> eat(~r/^\|/, :pipe, nil)
+    |> discard(~r/^\|/, :pipe)
     |> optional_whitespace()
     |> eat(~r/^[^\n]+/, :raw_text)
   end
 
   def statement(state) do
     state
-    |> eat(~r/^\-/, :dash, nil)
+    |> discard(~r/^\-/, :dash)
     |> optional_whitespace()
     |> eat(~r/^[^\n$]+/, :statement)
   end

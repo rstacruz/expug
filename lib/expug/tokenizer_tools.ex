@@ -11,8 +11,8 @@ defmodule Expug.TokenizerTools do
 
         def document(state)
           state
-          |> eat(~r/^doctype /, nil)    # consumes text
-          |> eat(~r/^[a-z+]/, :doctype) # consumes text and creates a token
+          |> discard(%r/^doctype /, :doctype_prelude)
+          |> eat(%r/^[a-z0-9]+/, :doctype_value)
         end
       end
 
@@ -43,7 +43,7 @@ defmodule Expug.TokenizerTools do
 
       def doctype(state)
         state
-        |> eat(%r/^doctype/, :doctype, nil)
+        |> discard(%r/^doctype/, :doctype_prelude)
         |> whitespace()
         |> eat(%r/^[a-z0-9]+/, :doctype_value)
       end
@@ -200,7 +200,10 @@ defmodule Expug.TokenizerTools do
   @doc """
   Consumes a token.
 
-  See `eat/4`.
+      state
+      |> eat(~r/[a-z]+/, :key)
+      |> discard(~r/\s*=\s*/, :equal)
+      |> eat(~r/[a-z]+/, :value)
   """
   def eat(state, expr, token_name) do
     eat(state, expr, token_name, &([{&3, token_name, &2} | &1]))
@@ -209,9 +212,12 @@ defmodule Expug.TokenizerTools do
   @doc """
   Consumes a token, but doesn't push it to the State.
 
-  See `eat/4`.
+      state
+      |> eat(~r/[a-z]+/, :key)
+      |> discard(~r/\s*=\s*/, :equal)
+      |> eat(~r/[a-z]+/, :value)
   """
-  def eat(state, expr, token_name, nil) do
+  def discard(state, expr, token_name) do
     eat state, expr, token_name, fn state, _, _ -> state end
   end
 
@@ -227,10 +233,7 @@ defmodule Expug.TokenizerTools do
   * `token_name` (atom, optional) - token name.
   * `reducer` (function, optional) - a function.
 
-  You may pass `nil` as the 4th parameter. This discards the token (ie, doesn't
-  push it to the State).
-
-      eat state, ~r/.../, :document, nil  # discard it
+  ## Reducers
 
   If `reducer` is a function, `tokens` is transformed using that function.
 
@@ -239,6 +242,13 @@ defmodule Expug.TokenizerTools do
       # &1 == tokens in current State
       # &2 == matched String
       # &3 == position
+
+  ## Also see
+
+  `discard/3` will consume a token, but not push it to the State.
+
+      state
+      |> discard(~r/\s+/, :whitespace)  # discard it
   """
   def eat(%{tokens: doc, source: source, position: pos} = state, expr, token_name, fun) do
     remainder = String.slice(source, pos..-1)
