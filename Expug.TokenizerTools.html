@@ -84,8 +84,8 @@
 
   def document(state)
     state
-    |&gt; eat(~r/^doctype /, nil)    # consumes text
-    |&gt; eat(~r/^[a-z+]/, :doctype) # consumes text and creates a token
+    |&gt; discard(%r/^doctype /, :doctype_prelude)
+    |&gt; eat(%r/^[a-z0-9]+/, :doctype_value)
   end
 end</code></pre>
 <h2>The state</h2>
@@ -105,7 +105,7 @@ Roughly this translates to “parse error in position <em>pos</em>, expected to 
 <p><a href="#eat/3"><code class="inline">eat/3</code></a> will normally be wrapped into functions for most token types.</p>
 <pre><code class="elixir">def doctype(state)
   state
-  |&gt; eat(%r/^doctype/, :doctype, nil)
+  |&gt; discard(%r/^doctype/, :doctype_prelude)
   |&gt; whitespace()
   |&gt; eat(%r/^[a-z0-9]+/, :doctype_value)
 end
@@ -140,10 +140,28 @@ end</code></pre>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
+    <a href="#append/2">append(state, expr)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Like <a href="#eat/4"><code class="inline">eat/4</code></a>, but instead of creating a token, it appends to the last token</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#convert_positions/2">convert_positions(doc, source)</a>
   </div>
   
     <div class="summary-synopsis"><p>Converts numeric positions into <code class="inline">{line, col}</code> tuples</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#discard/3">discard(state, expr, token_name)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Consumes a token, but doesn’t push it to the State</p>
 </div>
   
 </div>
@@ -171,15 +189,6 @@ end</code></pre>
   </div>
   
     <div class="summary-synopsis"><p>Consumes a token</p>
-</div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#eat_string/2">eat_string(state, expr)</a>
-  </div>
-  
-    <div class="summary-synopsis"><p>Like <a href="#eat/4"><code class="inline">eat/4</code></a>, but instead of creating a token, it appends to the last token</p>
 </div>
   
 </div>
@@ -294,14 +303,38 @@ end</code></pre>
             </a>
             Functions
           </h1>
-          <div class="detail" id="convert_positions/2">
+          <div class="detail" id="append/2">
+  <div class="detail-header">
+    <a href="#append/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">append(state, expr)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L295" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Like <a href="#eat/4"><code class="inline">eat/4</code></a>, but instead of creating a token, it appends to the last token.</p>
+<p>Useful alongside <code class="inline">start_empty()</code>.</p>
+<pre><code class="elixir">state
+|&gt; start_empty(:quoted_string)
+|&gt; append(~r/^&quot;/)
+|&gt; append(~r/[^&quot;]+/)
+|&gt; append(~r/^&quot;/)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="convert_positions/2">
   <div class="detail-header">
     <a href="#convert_positions/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
     <span class="signature">convert_positions(doc, source)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L312" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L322" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -323,6 +356,28 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
   { {2, 1}, :indent, &quot;  &quot; },
   { {2, 3}, :element_name, &quot;body&quot; }
 ]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="discard/3">
+  <div class="detail-header">
+    <a href="#discard/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">discard(state, expr, token_name)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L220" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Consumes a token, but doesn’t push it to the State.</p>
+<pre><code class="elixir">state
+|&gt; eat(~r/[a-z]+/, :key)
+|&gt; discard(~r/ *= */, :equal)
+|&gt; eat(~r/[a-z]+/, :value)</code></pre>
 
   </section>
 </div>
@@ -352,7 +407,7 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
     </a>
     <span class="signature">eat(state, expr, token_name)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L205" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L208" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -360,7 +415,10 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
   
   <section class="docstring">
     <p>Consumes a token.</p>
-<p>See <a href="#eat/4"><code class="inline">eat/4</code></a>.</p>
+<pre><code class="elixir">state
+|&gt; eat(~r/[a-z]+/, :key)
+|&gt; discard(~r/ *= */, :equal)
+|&gt; eat(~r/[a-z]+/, :value)</code></pre>
 
   </section>
 </div>
@@ -371,7 +429,7 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
     </a>
     <span class="signature">eat(state, expr, token_name, fun)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L214" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L253" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -391,39 +449,17 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
 <li><code class="inline">reducer</code> (function, optional) - a function.
 </li>
 </ul>
-<p>You may pass <code class="inline">nil</code> as the 4th parameter. This discards the token (ie, doesn’t
-push it to the State).</p>
-<pre><code class="elixir">eat state, ~r/.../, :document, nil  # discard it</code></pre>
+<h2>Reducers</h2>
 <p>If <code class="inline">reducer</code> is a function, <code class="inline">tokens</code> is transformed using that function.</p>
 <pre><code class="elixir">eat state, ~r/.../, :document, &amp;[{&amp;3, :document, &amp;2} | &amp;1]
 
 # &amp;1 == tokens in current State
 # &amp;2 == matched String
 # &amp;3 == position</code></pre>
-
-  </section>
-</div>
-<div class="detail" id="eat_string/2">
-  <div class="detail-header">
-    <a href="#eat_string/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">eat_string(state, expr)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L285" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-  </div>
-  
-  <section class="docstring">
-    <p>Like <a href="#eat/4"><code class="inline">eat/4</code></a>, but instead of creating a token, it appends to the last token.</p>
-<p>Useful alongside <code class="inline">start_empty()</code>.</p>
+<h2>Also see</h2>
+<p><a href="#discard/3"><code class="inline">discard/3</code></a> will consume a token, but not push it to the State.</p>
 <pre><code class="elixir">state
-|&gt; start_empty(:quoted_string)
-|&gt; eat_string(~r/^&quot;/)
-|&gt; eat_string(~r/[^&quot;]+/)
-|&gt; eat_string(~r/^&quot;/)</code></pre>
+|&gt; discard(~r/ +/, :whitespace)  # discard it</code></pre>
 
   </section>
 </div>
@@ -603,7 +639,7 @@ that happened. Returns a list of atoms of the expected tokens.</p>
     </a>
     <span class="signature">start_empty(state, token_name)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L268" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/tokenizer_tools.ex#L278" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -615,9 +651,9 @@ that happened. Returns a list of atoms of the expected tokens.</p>
 <code class="inline">start_empty()</code> can make your code more readable.</p>
 <pre><code class="elixir">state
 |&gt; start_empty(:quoted_string)
-|&gt; eat_string(~r/^&quot;/)
-|&gt; eat_string(~r/[^&quot;]+/)
-|&gt; eat_string(~r/^&quot;/)</code></pre>
+|&gt; append(~r/^&quot;/)
+|&gt; append(~r/[^&quot;]+/)
+|&gt; append(~r/^&quot;/)</code></pre>
 
   </section>
 </div>
