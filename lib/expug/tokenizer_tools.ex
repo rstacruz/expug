@@ -145,7 +145,7 @@ defmodule Expug.TokenizerTools do
       fun.(state)
     catch
       {:parse_error, _, [nil | _]} ->
-        # These are eat_string errors, don't bother with it
+        # These are append errors, don't bother with it
         state
 
       {:parse_error, err_pos, expected} ->
@@ -261,9 +261,9 @@ defmodule Expug.TokenizerTools do
 
       state
       |> start_empty(:quoted_string)
-      |> eat_string(~r/^"/)
-      |> eat_string(~r/[^"]+/)
-      |> eat_string(~r/^"/)
+      |> append(~r/^"/)
+      |> append(~r/[^"]+/)
+      |> append(~r/^"/)
   """
   def start_empty(%State{position: pos} = state, token_name) do
     token = {pos, token_name, ""}
@@ -278,11 +278,11 @@ defmodule Expug.TokenizerTools do
 
       state
       |> start_empty(:quoted_string)
-      |> eat_string(~r/^"/)
-      |> eat_string(~r/[^"]+/)
-      |> eat_string(~r/^"/)
+      |> append(~r/^"/)
+      |> append(~r/[^"]+/)
+      |> append(~r/^"/)
   """
-  def eat_string(state, expr) do
+  def append(state, expr) do
     # parse_error will trip here; the `nil` token name ensures parse errors
     # will not make it to the document.
     state
