@@ -207,7 +207,7 @@ iex&gt; with tokens &lt;- Expug.Tokenizer.tokenize(source),
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#valueify/1">valueify(values)</a>
+    <a href="#valueify/2">valueify(key, values)</a>
   </div>
   
 </div>
@@ -254,10 +254,10 @@ iex&gt; with tokens &lt;- Expug.Tokenizer.tokenize(source),
 #&quot; class=\&quot;a b\&quot;&quot;
 
 iex&gt; Expug.Builder.attributes(%{ &quot;src&quot; =&gt; [{:eval, &quot;@image&quot;}] })
-&quot; src=&lt;%= raw(Expug.Runtime.attr_value(@image)) %&gt;&quot;
+&quot;&lt;%= raw(Expug.Runtime.attr(\&quot;src\&quot;, @image)) %&gt;&quot;
 
 iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&quot;}, {:eval, &quot;@b&quot;}] })
-&quot; class=&lt;%= raw(Expug.Runtime.attr_value(Enum.join([@a, @b], \&quot; \&quot;))) %&gt;&quot;</code></pre>
+&quot;&lt;%= raw(Expug.Runtime.attr(\&quot;class\&quot;, Enum.join([@a, @b], \&quot; \&quot;))) %&gt;&quot;</code></pre>
 
   </section>
 </div>
@@ -454,12 +454,12 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
 
   </section>
 </div>
-<div class="detail" id="valueify/1">
+<div class="detail" id="valueify/2">
   <div class="detail-header">
-    <a href="#valueify/1" class="detail-link" title="Link to this function">
+    <a href="#valueify/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">valueify(values)</span>
+    <span class="signature">valueify(key, values)</span>
       
       <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/builder.ex#L182" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>

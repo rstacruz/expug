@@ -98,7 +98,7 @@ be caught here.</p>
 <a href="http://devdocs.io/phoenix/phoenix_html/phoenix.html#raw/1">Phoenix.HTML</a>.
 You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1</code> would do.</p>
 <pre><code class="iex elixir">iex&gt; Expug.to_eex!(~s[div(role=&quot;alert&quot;)= @message])
-&quot;&lt;div role=&lt;%= raw(Expug.Runtime.attr_value(\&quot;alert\&quot;)) %&gt;&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;%= @message %&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;/div&gt;\n&quot;</code></pre>
+&quot;&lt;div&lt;%= raw(Expug.Runtime.attr(\&quot;role\&quot;, \&quot;alert\&quot;)) %&gt;&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;%= @message %&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;/div&gt;\n&quot;</code></pre>
 <h2>Internal notes</h2>
 <p><a href="Expug.html#to_eex/2"><code class="inline">Expug.to_eex/2</code></a> pieces together 4 steps into a pipeline:</p>
 <ul>
