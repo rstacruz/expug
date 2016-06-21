@@ -2,12 +2,11 @@ defmodule StringifierTest do
   use ExUnit.Case
 
   def build(source) do
-    with \
-      tokens <- Expug.Tokenizer.tokenize(source),
-      ast <- Expug.Compiler.compile(tokens),
-      lines <- Expug.Builder.build(ast) do
-      Expug.Stringifier.stringify(lines)
-    end
+    source
+    |> Expug.Tokenizer.tokenize()
+    |> Expug.Compiler.compile()
+    |> Expug.Builder.build()
+    |> Expug.Stringifier.stringify()
   end
 
   test "nesting" do
@@ -83,7 +82,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div class=<%= raw(Expug.Runtime.attr_value(Enum.join(["foo", "bar"], " "))) %>></div>
+    <div <%= raw(Expug.Runtime.attr("class", Enum.join(["foo", "bar"], " "))) %>></div>
     """
   end
 
@@ -93,7 +92,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div id=<%= raw(Expug.Runtime.attr_value(Enum.join(["a", "b"], " "))) %>></div>
+    <div <%= raw(Expug.Runtime.attr("id", Enum.join(["a", "b"], " "))) %>></div>
     """
   end
 
@@ -106,7 +105,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div role=<%= raw(Expug.Runtime.attr_value("hi")) %>></div>
+    <div <%= raw(Expug.Runtime.attr("role", "hi")) %>></div>
     <%
 
     %><div></div>
@@ -120,7 +119,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div id=<%= raw(Expug.Runtime.attr_value("foo")) %> role=<%= raw(Expug.Runtime.attr_value("hi")) %>></div>
+    <div <%= raw(Expug.Runtime.attr("id", "foo")) %> <%= raw(Expug.Runtime.attr("role", "hi")) %>></div>
     """
   end
 
@@ -130,7 +129,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div svg:src=<%= raw(Expug.Runtime.attr_value("hi")) %>></div>
+    <div <%= raw(Expug.Runtime.attr("svg:src", "hi")) %>></div>
     """
   end
 

@@ -33,7 +33,7 @@ defmodule Expug do
   You don't need Phoenix.HTML however; a binding with `raw/1` would do.
 
       iex> Expug.to_eex!(~s[div(role="alert")= @message])
-      "<div role=<%= raw(Expug.Runtime.attr_value(\"alert\")) %>><%= \"\\n\" %><%= @message %><%= \"\\n\" %></div>\n"
+      "<div <%= raw(Expug.Runtime.attr(\"role\", \"alert\")) %>><%= \"\\n\" %><%= @message %><%= \"\\n\" %></div>\n"
 
   ## Internal notes
   

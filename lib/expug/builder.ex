@@ -166,28 +166,28 @@ defmodule Expug.Builder do
       #" class=\"a b\""
 
       iex> Expug.Builder.attributes(%{ "src" => [{:eval, "@image"}] })
-      " src=<%= raw(Expug.Runtime.attr_value(@image)) %>"
+      " <%= raw(Expug.Runtime.attr(\"src\", @image)) %>"
 
       iex> Expug.Builder.attributes(%{ "class" => [{:eval, "@a"}, {:eval, "@b"}] })
-      " class=<%= raw(Expug.Runtime.attr_value(Enum.join([@a, @b], \" \"))) %>"
+      " <%= raw(Expug.Runtime.attr(\"class\", Enum.join([@a, @b], \" \"))) %>"
   """
   def attributes(nil), do: ""
 
   def attributes(%{} = attributes) do
     Enum.reduce attributes, "", fn {key, values}, acc ->
-      acc <> " #{key}=" <> valueify(values)
+      acc <> " " <> valueify(key, values)
     end
   end
 
-  def valueify([{:eval, value}]) do
-    "<%= raw(Expug.Runtime.attr_value(#{value})) %>"
+  def valueify(key, [{:eval, value}]) do
+    "<%= raw(Expug.Runtime.attr(#{inspect(key)}, #{value})) %>"
   end
 
-  def valueify([{:text, value}]) do
-    Expug.Runtime.attr_value(value)
+  def valueify(key, [{:text, value}]) do
+    Expug.Runtime.attr(key, value)
   end
 
-  def valueify(values) when length(values) > 1 do
+  def valueify(key, values) when length(values) > 1 do
     inside = Enum.reduce values, "", fn
       {:eval, value}, acc ->
         acc |> str_join(value, ", ")
@@ -195,7 +195,7 @@ defmodule Expug.Builder do
         acc |> str_join(Expug.Runtime.attr_value(value), ", ")
     end
 
-    "<%= raw(Expug.Runtime.attr_value(Enum.join([#{inside}], \" \"))) %>"
+    "<%= raw(Expug.Runtime.attr(#{inspect(key)}, Enum.join([#{inside}], \" \"))) %>"
   end
 
   def str_join(left, str, sep \\ " ")
