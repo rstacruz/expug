@@ -49,7 +49,7 @@ defmodule BuilderTest do
     eex = build("div(id=foo)")
     assert eex == %{
       :lines => 1,
-      1 => ["<div <%= raw(Expug.Runtime.attr(\"id\", foo)) %>></div>"]
+      1 => ["<div<%= raw(Expug.Runtime.attr(\"id\", foo)) %>></div>"]
     }
   end
 
@@ -155,7 +155,7 @@ defmodule BuilderTest do
     assert eex == %{
       :lines => 1,
       1 => [
-        "<div <%= raw(Expug.Runtime.attr(\"role\", \"main\")) %>>",
+        "<div<%= raw(Expug.Runtime.attr(\"role\", \"main\")) %>>",
         "<%= @hello %>",
         "</div>"
       ]

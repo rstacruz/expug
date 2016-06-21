@@ -82,7 +82,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div <%= raw(Expug.Runtime.attr("class", Enum.join(["foo", "bar"], " "))) %>></div>
+    <div<%= raw(Expug.Runtime.attr("class", Enum.join(["foo", "bar"], " "))) %>></div>
     """
   end
 
@@ -92,7 +92,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div <%= raw(Expug.Runtime.attr("id", Enum.join(["a", "b"], " "))) %>></div>
+    <div<%= raw(Expug.Runtime.attr("id", Enum.join(["a", "b"], " "))) %>></div>
     """
   end
 
@@ -105,7 +105,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div <%= raw(Expug.Runtime.attr("role", "hi")) %>></div>
+    <div<%= raw(Expug.Runtime.attr("role", "hi")) %>></div>
     <%
 
     %><div></div>
@@ -119,7 +119,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div <%= raw(Expug.Runtime.attr("id", "foo")) %> <%= raw(Expug.Runtime.attr("role", "hi")) %>></div>
+    <div<%= raw(Expug.Runtime.attr("id", "foo")) %><%= raw(Expug.Runtime.attr("role", "hi")) %>></div>
     """
   end
 
@@ -129,7 +129,7 @@ defmodule StringifierTest do
     """)
 
     assert eex == ~S"""
-    <div <%= raw(Expug.Runtime.attr("svg:src", "hi")) %>></div>
+    <div<%= raw(Expug.Runtime.attr("svg:src", "hi")) %>></div>
     """
   end
 

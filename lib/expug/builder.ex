@@ -166,16 +166,16 @@ defmodule Expug.Builder do
       #" class=\"a b\""
 
       iex> Expug.Builder.attributes(%{ "src" => [{:eval, "@image"}] })
-      " <%= raw(Expug.Runtime.attr(\"src\", @image)) %>"
+      "<%= raw(Expug.Runtime.attr(\"src\", @image)) %>"
 
       iex> Expug.Builder.attributes(%{ "class" => [{:eval, "@a"}, {:eval, "@b"}] })
-      " <%= raw(Expug.Runtime.attr(\"class\", Enum.join([@a, @b], \" \"))) %>"
+      "<%= raw(Expug.Runtime.attr(\"class\", Enum.join([@a, @b], \" \"))) %>"
   """
   def attributes(nil), do: ""
 
   def attributes(%{} = attributes) do
     Enum.reduce attributes, "", fn {key, values}, acc ->
-      acc <> " " <> valueify(key, values)
+      acc <> valueify(key, values)
     end
   end
 

@@ -14,7 +14,15 @@ defmodule Expug.Runtime do
     inspect("#{str}") # TODO: encodeURIComponent
   end
 
+  def attr(key, true) do
+    " " <> key
+  end
+
+  def attr(_key, false) do
+    ""
+  end
+
   def attr(key, value) do
-    key <> "=" <> attr_value(value)
+    " " <> key <> "=" <> attr_value(value)
   end
 end
