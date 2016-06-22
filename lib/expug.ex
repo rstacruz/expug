@@ -1,7 +1,7 @@
 defmodule Expug do
   @moduledoc ~S"""
   Expug compiles templates to an eex template.
-  
+
   `to_eex/2` turns an Expug source into an EEx template.
 
       iex> source = "div\n  | Hello"
@@ -36,7 +36,7 @@ defmodule Expug do
       "<div<%= raw(Expug.Runtime.attr(\"role\", \"alert\")) %>><%= \"\\n\" %><%= @message %><%= \"\\n\" %></div>\n"
 
   ## Internal notes
-  
+
   `Expug.to_eex/2` pieces together 4 steps into a pipeline:
 
   - `tokenize/2` - turns source into tokens.
@@ -59,7 +59,7 @@ defmodule Expug do
 
   @doc ~S"""
   Compiles an Expug template to an EEx template.
-  
+
   Returns `{:ok, result}`, where `result` is an EEx string. On error, it will
   return `{:error, ...}`.
   """
