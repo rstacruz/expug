@@ -147,6 +147,22 @@ defmodule StringifierTest do
   end
 
   @tag :pending
+  @tag :next
+  test "empty strings" do
+    eex = build("")
+
+    assert eex == ""
+  end
+
+  @tag :pending
+  @tag :next
+  test "empty attributes" do
+    eex = build("div( )")
+
+    assert eex == "<div></div>"
+  end
+
+  @tag :pending
   test "illegal nesting inside |" do
     eex = build("""
     | hi
