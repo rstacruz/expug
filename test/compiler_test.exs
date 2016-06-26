@@ -391,4 +391,51 @@ defmodule ExpugCompilerTest do
       }]
     } == ast
   end
+
+  test "try ... catch ... end" do
+    tokens = tokenize("= try do\n  div\n- catch ->\n  span")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "try do",
+        token: {{1, 3}, :buffered_text, "try do"},
+        children: [%{
+          type: :element,
+          name: "div",
+          token: {{2, 3}, :element_name, "div"}
+        }],
+      }, %{
+        type: :statement,
+        value: "catch ->",
+        close: "end",
+        token: {{3, 3}, :statement, "catch ->"},
+        children: [%{
+          type: :element,
+          name: "span",
+          token: {{4, 3}, :element_name, "span"}
+        }],
+      }]
+    } == ast
+  end
+
+  test "try ... end" do
+    tokens = tokenize("= try do\n  div")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "try do",
+        close: "end",
+        token: {{1, 3}, :buffered_text, "try do"},
+        children: [%{
+          type: :element,
+          name: "div",
+          token: {{2, 3}, :element_name, "div"}
+        }],
+      }]
+    } == ast
+  end
 end
