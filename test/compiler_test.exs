@@ -344,4 +344,117 @@ defmodule ExpugCompilerTest do
       }]
     } == ast
   end
+
+  test "if ... end" do
+    tokens = tokenize("= if @x do\n  div")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "if @x do",
+        close: "end",
+        token: {{1, 3}, :buffered_text, "if @x do"},
+        children: [%{
+          type: :element,
+          name: "div",
+          token: {{2, 3}, :element_name, "div"}
+        }],
+      }]
+    } == ast
+  end
+
+  test "if ... else ... end" do
+    tokens = tokenize("= if @x do\n  div\n- else\n  span")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "if @x do",
+        token: {{1, 3}, :buffered_text, "if @x do"},
+        children: [%{
+          type: :element,
+          name: "div",
+          token: {{2, 3}, :element_name, "div"}
+        }],
+      }, %{
+        type: :statement,
+        value: "else",
+        close: "end",
+        token: {{3, 3}, :statement, "else"},
+        children: [%{
+          type: :element,
+          name: "span",
+          token: {{4, 3}, :element_name, "span"}
+        }],
+      }]
+    } == ast
+  end
+
+  test "try ... catch ... end" do
+    tokens = tokenize("= try do\n  div\n- catch ->\n  span")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "try do",
+        token: {{1, 3}, :buffered_text, "try do"},
+        children: [%{
+          type: :element,
+          name: "div",
+          token: {{2, 3}, :element_name, "div"}
+        }],
+      }, %{
+        type: :statement,
+        value: "catch ->",
+        close: "end",
+        token: {{3, 3}, :statement, "catch ->"},
+        children: [%{
+          type: :element,
+          name: "span",
+          token: {{4, 3}, :element_name, "span"}
+        }],
+      }]
+    } == ast
+  end
+
+  test "try ... end" do
+    tokens = tokenize("= try do\n  div")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "try do",
+        close: "end",
+        token: {{1, 3}, :buffered_text, "try do"},
+        children: [%{
+          type: :element,
+          name: "div",
+          token: {{2, 3}, :element_name, "div"}
+        }],
+      }]
+    } == ast
+  end
+
+  test "cond do" do
+    tokens = tokenize("= cond do\n  div")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "cond do",
+        close: "end",
+        token: {{1, 3}, :buffered_text, "cond do"},
+        children: [%{
+          type: :element,
+          name: "div",
+          token: {{2, 3}, :element_name, "div"}
+        }],
+      }]
+    } == ast
+  end
 end
