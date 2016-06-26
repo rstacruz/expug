@@ -33,6 +33,7 @@ defmodule Expug.Transformer do
       [] # nothing can follow cond
   """
   def clause_after("if"), do: ["else"]
+  def clause_after("unless"), do: ["else"]
   def clause_after("try"), do: ["catch", "rescue", "after"]
   def clause_after("catch"), do: ["catch", "after"]
   def clause_after("rescue"), do: ["rescue", "after"]
@@ -42,7 +43,7 @@ defmodule Expug.Transformer do
   Closes all possible clauses in the given `children`.
   """
   def close_clauses(children) do
-    close_clause(children, ["if", "try"])
+    close_clause(children, ["if", "unless", "try"])
   end
 
   @doc """
