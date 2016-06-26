@@ -13,7 +13,7 @@ defmodule Expug.Stringifier do
     list = doc |> Map.to_list() |> Enum.sort()
 
     # Move the newline to the end
-    "\n" <> rest = s(list, 0, max)
+    "\n" <> rest = render_lines(list, 0, max)
     rest <> "\n"
   end
 
@@ -31,14 +31,14 @@ defmodule Expug.Stringifier do
   #     "\n<div>"
   #     "\n<span></span><%= "\n" %></div>"
   #
-  defp s([{line, elements} | rest], last, max) do
+  defp render_lines([{line, elements} | rest], last, max) do
     {padding, meat} = render_elements(elements, line, last)
     cursor = line + count_newlines(meat)
 
-    padding <> meat <> s(rest, cursor, max)
+    padding <> meat <> render_lines(rest, cursor, max)
   end
 
-  defp s([], _last, _max) do
+  defp render_lines([], _last, _max) do
     ""
   end
 
@@ -54,11 +54,13 @@ defmodule Expug.Stringifier do
       Enum.join(elements, ~S[<%= "\n" %>]) }
   end
 
-  def count_newlines(str) do
+  # Counts the amount of newlines in a string
+  defp count_newlines(str) do
     length(Regex.scan(~r/\n/, str))
   end
 
-  # Contructs `<% .. %>` padding
+  # Contructs `<% .. %>` padding. Used to fill in blank lines
+  # in the source.
   defp padding(line, last) when line - last - 1 <= 0 do
     ""
   end
@@ -67,6 +69,7 @@ defmodule Expug.Stringifier do
     "<%" <> newlines(line - last - 1) <> "%>"
   end
 
+  # Gives `n` amounts of newlines.
   def newlines(n) when n <= 0 do
     ""
   end
