@@ -22,6 +22,30 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "extra whitespaces (spaces)" do
+    output = tokenize("h1 ")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "h1"}
+    ]
+  end
+
+  test "extra whitespaces (newline)" do
+    output = tokenize("h1\n")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "h1"}
+    ]
+  end
+
+  test "extra whitespaces (newline and spaces)" do
+    output = tokenize("h1  \n  ")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "h1"}
+    ]
+  end
+
   test "xml namespace" do
     output = tokenize("html:h1")
     assert reverse(output) == [
@@ -436,7 +460,7 @@ defmodule ExpugTokenizerTest do
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
       {{2, 1}, :indent, 0},
-      {{2, 4}, :line_comment, ""}
+      {{2, 3}, :line_comment, ""}
     ]
   end
 
