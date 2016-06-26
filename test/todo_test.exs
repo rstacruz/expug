@@ -18,4 +18,7 @@ defmodule TodoTestd do
   # Lower priority:
   test "Showing HTML comments with //"
   test "Nesting HTML comments"
+  test "Self-closing tag syntax (img/)"
+  test "Block expansion (li: a)"
+  test "HTML in Pug templates"
 end

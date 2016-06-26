@@ -21,9 +21,27 @@ Expug retains most of Pug/Jade's features, adds some Elixir'isms, and drops the 
 
 - __Text attributes__ need to have double-quoted strings (`"`). Single-line strings will translate to Elixir char lists, which is likely not what you want.
 
+- __Statements with blocks__ like `= if .. do` ... `- end` should start with `=`, and end in `-`. This is the same as you would do in EEx.
+
 ## Removed
 
-- The following features are not available: `block`, `include`, `extends`.
+- The following features are not available due to the limitations of EEx:
+
+- [include](http://jade-lang.com/reference/includes) (partials)
+- [block/extends](http://jade-lang.com/reference/extends) (layouts & template inheritance)
+- [mixins](http://jade-lang.com/reference/mixins) (functions)
+
+The following syntactic sugars, are not implemented, simply because they're not idiomatic Elixir. There are other ways to accomlish them.
+
+- [case](http://jade-lang.com/reference/case/)
+- [conditionals](http://jade-lang.com/reference/conditionals)
+- [iteration](http://jade-lang.com/reference/iteration)
+
+The following are still unimplemented, but may be in the future
+
+- [filters](http://jade-lang.com/reference/case/)
+- [interpolation](http://jade-lang.com/reference/interpolation/)
+- multi-line statements (`-\n  ...`)
 
 ## The same
 
