@@ -75,7 +75,7 @@ defmodule Expug.Builder do
     |> put(node, "<% #{value} %>")
     |> put_collapse(node)
     |> children(list)
-    |> put_last_no_space("<% end %>")
+    |> add_closing(node)
   end
 
   def make(doc, %{type: :statement, value: value} = node) do
@@ -96,7 +96,16 @@ defmodule Expug.Builder do
     |> put(node, "<%= #{value} %>")
     |> put_collapse(node)
     |> children(list)
-    |> put_last_no_space("<% end %>")
+    |> add_closing(node)
+  end
+
+  def add_closing(doc, %{close: close}) do
+    doc
+    |> put_last_no_space("<% #{close} %>")
+  end
+
+  def add_closing(doc, _) do
+    doc
   end
 
   def make(doc, %{type: :buffered_text, value: value} = node) do

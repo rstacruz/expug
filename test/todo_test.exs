@@ -9,6 +9,7 @@ defmodule TodoTestd do
   # test "HTML escaping"
   # test "boolean value (`textarea(spellcheck=@spellcheck)`)"
   # test "Auto-end of `cond do` etc"
+  # test "Nesting HTML comments"
 
   # Priority:
   test "value-less attributes (`textarea(spellcheck)`)"
@@ -17,7 +18,6 @@ defmodule TodoTestd do
 
   # Lower priority:
   test "Showing HTML comments with //"
-  test "Nesting HTML comments"
   test "Self-closing tag syntax (img/)"
   test "Block expansion (li: a)"
   test "HTML in Pug templates"

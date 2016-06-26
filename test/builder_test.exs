@@ -221,7 +221,6 @@ defmodule BuilderTest do
     }
   end
 
-  @tag :pending
   test "if .. else ... end" do
     eex = build("= if @x do\n  div\n- else\n  div")
     assert eex == %{
@@ -233,16 +232,18 @@ defmodule BuilderTest do
     }
   end
 
-  @tag :pending
-  test "cond do ... -> ... end"
-
-  @tag :pending
-  test "case do ... -> ... end"
+  test "cond do ... end" do
+    eex = build("= cond do\n  div")
+    assert eex == %{
+      :lines => 2,
+      1 => ["<%= cond do %>"],
+      2 => [:collapse, "<div></div><% end %>"]
+    }
+  end
 
   @tag :pending
   test "try do ... catch ... rescue ... after ... end"
 
-  @tag :pending
   test "extra space" do
     eex = build("div\n ")
     assert eex == %{
