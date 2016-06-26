@@ -8,9 +8,9 @@ defmodule TodoTestd do
   # test "Multiline attributes"
   # test "HTML escaping"
   # test "boolean value (`textarea(spellcheck=@spellcheck)`)"
+  # test "Auto-end of `cond do` etc"
 
   # Priority:
-  test "Auto-end of `cond do` etc"
   test "value-less attributes (`textarea(spellcheck)`)"
   test "`.` raw text (like `script.`)"
   test "!= unescaped code"
