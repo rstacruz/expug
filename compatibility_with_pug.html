@@ -76,11 +76,37 @@
 <h2 id="changed"> Changed</h2><ul>
 <li><p><strong>Comments</strong> are done using <code class="inline">-#</code> as well as <code class="inline">-//</code>, following Elixir conventions. The old <code class="inline">-//</code> syntax is supported for increased compatibility with text editor syntax highlighting.</p>
 </li>
-<li><strong>Text attributes</strong> need to have double-quoted strings (<code class="inline">&quot;</code>). Single-line strings will translate to Elixir char lists, which is likely not what you want.
+<li><p><strong>Text attributes</strong> need to have double-quoted strings (<code class="inline">&quot;</code>). Single-line strings will translate to Elixir char lists, which is likely not what you want.</p>
+</li>
+<li><strong>Statements with blocks</strong> like <code class="inline">= if .. do</code> … <code class="inline">- end</code> should start with <code class="inline">=</code>, and end in <code class="inline">-</code>. This is the same as you would do in EEx.
 </li>
 </ul>
 <h2 id="removed"> Removed</h2><ul>
-<li>The following features are not available: <code class="inline">block</code>, <code class="inline">include</code>, <code class="inline">extends</code>.
+<li><p>The following features are not available due to the limitations of EEx:</p>
+</li>
+<li><a href="http://jade-lang.com/reference/includes">include</a> (partials)
+</li>
+<li><a href="http://jade-lang.com/reference/extends">block/extends</a> (layouts &amp; template inheritance)
+</li>
+<li><a href="http://jade-lang.com/reference/mixins">mixins</a> (functions)
+</li>
+</ul>
+<p>The following syntactic sugars, are not implemented, simply because they’re not idiomatic Elixir. There are other ways to accomlish them.</p>
+<ul>
+<li><a href="http://jade-lang.com/reference/case/">case</a>
+</li>
+<li><a href="http://jade-lang.com/reference/conditionals">conditionals</a>
+</li>
+<li><a href="http://jade-lang.com/reference/iteration">iteration</a>
+</li>
+</ul>
+<p>The following are still unimplemented, but may be in the future</p>
+<ul>
+<li><a href="http://jade-lang.com/reference/case/">filters</a>
+</li>
+<li><a href="http://jade-lang.com/reference/interpolation/">interpolation</a>
+</li>
+<li>multi-line statements (<code class="inline">-\n  ...</code>)
 </li>
 </ul>
 <h2 id="the-same"> The same</h2><ul>
