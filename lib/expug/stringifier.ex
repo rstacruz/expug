@@ -17,21 +17,20 @@ defmodule Expug.Stringifier do
     rest <> "\n"
   end
 
-  @doc """
-  Works on a list of `{2, ["<div>"]}` tuples.
-  Each pass works on one line.
-
-      1 => ["<div>"]
-      2 => ["<span></span>", "</div>"]
-
-  Renders:
-
-      1st pass:
-      "\n<div>"
-
-      2nd pass:
-      "\n<span></span><%= "\n" %></div>
-  """
+  # Works on a list of `{2, ["<div>"]}` tuples.
+  # Each pass works on one line.
+  #
+  #     %{
+  #       :lines => 2,
+  #       1 => ["<div>"],
+  #       2 => ["<span></span>", "</div>"]
+  #     }
+  #
+  # Renders into these in 2 passes:
+  #
+  #     "\n<div>"
+  #     "\n<span></span><%= "\n" %></div>"
+  #
   defp s([{line, elements} | rest], last, max) do
     {padding, meat} = render_elements(elements, line, last)
     cursor = line + count_newlines(meat)
@@ -56,7 +55,7 @@ defmodule Expug.Stringifier do
   end
 
   def count_newlines(str) do
-    length(Regex.scan(~r/\n/, str)) - 0
+    length(Regex.scan(~r/\n/, str))
   end
 
   # Contructs `<% .. %>` padding
