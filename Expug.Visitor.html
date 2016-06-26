@@ -83,7 +83,7 @@
 ...&gt;   ]
 ...&gt; }
 iex&gt; Expug.Visitor.visit(node, fn node -&gt;
-...&gt;   Map.update(node, :title, &quot;.&quot;, &amp;(&amp;1 &lt;&gt; &quot;.&quot;))
+...&gt;   {:ok, Map.update(node, :title, &quot;.&quot;, &amp;(&amp;1 &lt;&gt; &quot;.&quot;))}
 ...&gt; end)
 %{
    title: &quot;Hello.&quot;,
@@ -117,6 +117,15 @@ iex&gt; Expug.Visitor.visit(node, fn node -&gt;
   </div>
   
     <div class="summary-synopsis"><p>Returns a function <code class="inline">fun</code> recursively across <code class="inline">node</code> and its descendants</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#visit_children/2">visit_children(node, fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Visits all children lists recursively across <code class="inline">node</code> and its descendants</p>
 </div>
   
 </div>
@@ -156,6 +165,26 @@ iex&gt; Expug.Visitor.visit(node, fn node -&gt;
   
   <section class="docstring">
     <p>Returns a function <code class="inline">fun</code> recursively across <code class="inline">node</code> and its descendants.</p>
+
+  </section>
+</div>
+<div class="detail" id="visit_children/2">
+  <div class="detail-header">
+    <a href="#visit_children/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">visit_children(node, fun)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.0.1/lib/expug/visitor.ex#L42" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Visits all children lists recursively across <code class="inline">node</code> and its descendants.</p>
+<p>Works just like <a href="#visit/2"><code class="inline">visit/2</code></a>, but instead of operating on nodes, it operates on
+node children (lists).</p>
 
   </section>
 </div>
