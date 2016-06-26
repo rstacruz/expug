@@ -85,13 +85,13 @@ defmodule Expug.Transformer do
   @doc """
   Get the prelude of a given node
 
-      xxx> prelude(%{value: "if foo")
+      iex> Expug.Transformer.prelude(%{value: "if foo"})
       "if"
 
-      xxx> prelude(%{value: "case derp"})
+      iex> Expug.Transformer.prelude(%{value: "case derp"})
       "case"
 
-      xxx> prelude(%{value: "1 + 2"})
+      iex> Expug.Transformer.prelude(%{value: "1 + 2"})
       nil
   """
   def prelude(%{value: statement}) do
