@@ -10,7 +10,7 @@ defmodule Expug.Visitor do
       ...>   ]
       ...> }
       iex> Expug.Visitor.visit(node, fn node ->
-      ...>   Map.update(node, :title, ".", &(&1 <> "."))
+      ...>   {:ok, Map.update(node, :title, ".", &(&1 <> "."))}
       ...> end)
       %{
          title: "Hello.",
@@ -25,8 +25,12 @@ defmodule Expug.Visitor do
   Returns a function `fun` recursively across `node` and its descendants.
   """
   def visit(node, fun) do
-    node = fun.(node)
-    visit_children(node, fun)
+    {continue, node} = fun.(node)
+    if continue == :ok do
+      visit_children(node, fun)
+    else
+      node
+    end
   end
 
   @doc false
