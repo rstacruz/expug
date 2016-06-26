@@ -11,32 +11,61 @@ defmodule Expug.Stringifier do
     {max, doc} = Map.pop(doc, :lines)
     {_, doc} = Map.pop(doc, :doctype)
     list = doc |> Map.to_list() |> Enum.sort()
-    s(list, 0, max)
+
+    # Move the newline to the end
+    "\n" <> rest = s(list, 0, max)
+    rest <> "\n"
   end
 
-  def s([{line, elements} | rest], last, max) do
-    meat = Enum.join(elements, ~S[<%= "\n" %>])
-    "" <>
-    padding(line, last) <>
-    meat <>
-    "\n"
-    <> s(rest, line + count_newlines(meat), max)
+  @doc """
+  Works on a list of `{2, ["<div>"]}` tuples.
+  Each pass works on one line.
+
+      1 => ["<div>"]
+      2 => ["<span></span>", "</div>"]
+
+  Renders:
+
+      1st pass:
+      "\n<div>"
+
+      2nd pass:
+      "\n<span></span><%= "\n" %></div>
+  """
+  defp s([{line, elements} | rest], last, max) do
+    {padding, meat} = render_elements(elements, line, last)
+    cursor = line + count_newlines(meat)
+
+    padding <> meat <> s(rest, cursor, max)
   end
 
-  def s([], _last, _max) do
+  defp s([], _last, _max) do
     ""
+  end
+
+  # Renders a line. If it starts with :collapse, don't give
+  # the `\n`
+  defp render_elements([:collapse | elements], line, last) do
+    { padding(line, last - 1),
+      Enum.join(elements, ~S[<%= "\n" %>]) }
+  end
+
+  defp render_elements(elements, line, last) do
+    { "\n" <> padding(line, last),
+      Enum.join(elements, ~S[<%= "\n" %>]) }
   end
 
   def count_newlines(str) do
     length(Regex.scan(~r/\n/, str)) - 0
   end
 
-  def padding(line, last) do
-    if last + 1 == line do
-      ""
-    else
-      "<%" <> newlines(line - last - 1) <> "%>"
-    end
+  # Contructs `<% .. %>` padding
+  defp padding(line, last) when line - last - 1 <= 0 do
+    ""
+  end
+
+  defp padding(line, last) do
+    "<%" <> newlines(line - last - 1) <> "%>"
   end
 
   def newlines(n) when n <= 0 do

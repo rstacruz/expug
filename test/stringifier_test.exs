@@ -50,6 +50,7 @@ defmodule StringifierTest do
       span= @hello
     """)
 
+
     assert eex == ~S"""
     <!doctype html>
     <%
@@ -130,6 +131,18 @@ defmodule StringifierTest do
 
     assert eex == ~S"""
     <div<%= raw(Expug.Runtime.attr("svg:src", "hi")) %>></div>
+    """
+  end
+
+  test "collapsing" do
+    eex = build("""
+    = if @foo do
+      div
+    """)
+
+    assert eex == """
+    <%= if @foo do %><%
+    %><div></div><% end %>
     """
   end
 

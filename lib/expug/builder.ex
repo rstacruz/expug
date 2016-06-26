@@ -73,6 +73,7 @@ defmodule Expug.Builder do
   def make(doc, %{type: :statement, value: value, children: [_|_] = list} = node) do
     doc
     |> put(node, "<% #{value} %>")
+    |> put_collapse(node)
     |> children(list)
     |> put_last_no_space("<% end %>")
   end
@@ -93,6 +94,7 @@ defmodule Expug.Builder do
   def make(doc, %{type: :buffered_text, value: value, children: [_|_] = list} = node) do
     doc
     |> put(node, "<%= #{value} %>")
+    |> put_collapse(node)
     |> children(list)
     |> put_last_no_space("<% end %>")
   end
@@ -213,12 +215,27 @@ defmodule Expug.Builder do
 
   @doc """
   Adds a line to the end of a document.
+  Used for closing tags.
   """
   def put_last(%{lines: line} = doc, str) do
     doc
     |> Map.update(line, [str], &(&1 ++ [str]))
   end
 
+  @doc """
+  Puts a collapser on the lane after the given token.
+  Used for if...end statements.
+  """
+  def put_collapse(%{lines: max} = doc, %{token: {{line, _col}, _, _}}) do
+    doc
+    |> update_line_count(line + 1, max)
+    |> Map.update(line + 1, [:collapse], &(&1 ++ [:collapse]))
+  end
+
+  @doc """
+  Adds a line to the end of a document, but without a newline before it.
+  Used for closing `<% end %>`.
+  """
   def put_last_no_space(%{lines: line} = doc, str) do
     doc
     |> Map.update(line, [str], fn segments ->

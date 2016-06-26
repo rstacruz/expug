@@ -187,8 +187,8 @@ defmodule BuilderTest do
     eex = build("- for item <- @list do\n  div")
     assert eex == %{
       :lines => 2,
-      1 => [ "<% for item <- @list do %>" ],
-      2 => [ "<div></div><% end %>" ]
+      1 => ["<% for item <- @list do %>"],
+      2 => [:collapse, "<div></div><% end %>"]
     }
   end
 
@@ -197,8 +197,8 @@ defmodule BuilderTest do
     eex = build("- for item <- @list do\n  div")
     assert eex == %{
       :lines => 2,
-      1 => {:collapse, ["<% for item <- @list do %>"]},
-      2 => {:line, ["<div></div><% end %>"]}
+      1 => ["<% for item <- @list do %>"],
+      2 => [:collapse, "<div></div><% end %>"]
     }
   end
 
@@ -206,8 +206,8 @@ defmodule BuilderTest do
     eex = build("= for item <- @list do\n  div")
     assert eex == %{
       :lines => 2,
-      1 => [ "<%= for item <- @list do %>" ],
-      2 => [ "<div></div><% end %>" ]
+      1 => ["<%= for item <- @list do %>"],
+      2 => [:collapse, "<div></div><% end %>"]
     }
   end
 
@@ -227,9 +227,9 @@ defmodule BuilderTest do
     assert eex == %{
       :lines => 4,
       1 => ["<%= if @x do %>"],
-      2 => ["<div></div>"],
+      2 => [:collapse, "<div></div>"],
       3 => ["<% else %>"],
-      4 => ["<div></div><% end %>"]
+      4 => [:collapse, "<div></div><% end %>"]
     }
   end
 
