@@ -3,7 +3,7 @@ defmodule Expug.Mixfile do
 
   @version "0.0.1"
   @description """
-  Indented shorthand templates for HTML.
+  Indented shorthand templates for HTML. (pre-release)
   """
 
   def project do
