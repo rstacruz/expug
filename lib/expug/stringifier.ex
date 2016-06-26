@@ -12,9 +12,11 @@ defmodule Expug.Stringifier do
     {_, doc} = Map.pop(doc, :doctype)
     list = doc |> Map.to_list() |> Enum.sort()
 
-    # Move the newline to the end
-    "\n" <> rest = render_lines(list, 0, max)
-    rest <> "\n"
+    case render_lines(list, 0, max) do
+      # Move the newline to the end
+      "\n" <> rest -> rest <> "\n"
+      rest -> rest
+  end
   end
 
   # Works on a list of `{2, ["<div>"]}` tuples.

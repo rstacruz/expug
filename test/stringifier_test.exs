@@ -146,8 +146,6 @@ defmodule StringifierTest do
     """
   end
 
-  @tag :pending
-  @tag :next
   test "empty strings" do
     eex = build("")
 
@@ -180,7 +178,4 @@ defmodule StringifierTest do
 
   @tag :pending
   test "ul: li: button Hello"
-
-  @tag :pending
-  test "! (throw a proper error)"
 end

@@ -17,6 +17,7 @@ defmodule TodoTestd do
   test "!= unescaped code"
 
   # Lower priority:
+  test "Spacing between <%= for %>"
   test "Showing HTML comments with //"
   test "Self-closing tag syntax (img/)"
   test "Block expansion (li: a)"
