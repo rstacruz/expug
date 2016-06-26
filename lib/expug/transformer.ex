@@ -27,63 +27,69 @@ defmodule Expug.Transformer do
     {:ok, node}
   end
 
-  def close_statements_2(children) do
-    closify(children, ["if", "else"])
-  end
+  def clause_after("if"), do: ["else"]
+  def clause_after("try"), do: ["catch", "rescue", "after"]
+  def clause_after("catch"), do: ["catch", "after"]
+  def clause_after("rescue"), do: ["rescue", "after"]
+  def clause_after(_), do: []
 
   def close_statements_2(children) do
-    children
+    closify(children)
   end
 
   @doc """
   Given a list of `children`, close the next if
   """
-  def closify(children, statements) do
-    closify(children, statements, statements)
+  def closify(children) do
+    closify_clause(children, ["if", "try"])
   end
 
-  def closify([node | children], statements, upcoming) do
-    [next | rest] = upcoming
-
-    if statement?(node.type) and prelude(node.value) == next do
-      case closify(children, statements, rest) do
+  def closify_clause([node | children], next) do
+    pre = prelude(node)
+    if statement?(node.type) and Enum.member?(next, pre) do
+      case closify_clause(children, clause_after(pre)) do
         ^children -> # the next one is not else
           node = node |> Map.put(:close, "end")
-          [node | children]
+          [node | closify(children)]
         new_children ->
           # changed
           [node | new_children]
       end
     else
-      [node | children]
+      # Reset the chain
+      [node | closify(children)]
     end
   end
 
-  def closify([], _statements, _upcoming) do
+  def closify_clause([], _upcoming) do
     [] # The last child is `if`
   end
 
-  def closify(children, _statements, [] = _upcoming) do
+  def closify_clause(children, [] = _upcoming) do
     children # Already closed end, but there's still more
   end
 
   @doc """
-  Get the prelude of a statement
+  Get the prelude of a given node
 
-      xxx> prelude("if foo")
+      xxx> prelude(%{value: "if foo")
       "if"
 
-      xxx> prelude("case derp")
+      xxx> prelude(%{value: "case derp"})
       "case"
 
-      xxx> prelude("1 + 2")
+      xxx> prelude(%{value: "1 + 2"})
       nil
   """
-  def prelude(statement) do
+  def prelude(%{value: statement}) do
     case Regex.run(~r/\s*([a-z]+)/, statement) do
       [_, prelude] -> prelude
       _ -> nil
     end
+  end
+
+  def prelude(_) do
+    nil
   end
 
   def close_statements(node) do
