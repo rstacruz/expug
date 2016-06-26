@@ -38,6 +38,7 @@ defmodule Expug.Compiler do
 
     try do
       {node, _tokens} = document({node, tokens})
+      node = Expug.Transformer.transform(node)
       node
     catch
       {:compile_error, type, [{pos, token, _} | _]} ->

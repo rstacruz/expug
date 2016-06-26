@@ -344,4 +344,42 @@ defmodule ExpugCompilerTest do
       }]
     } == ast
   end
+
+  test "if ... end" do
+    tokens = tokenize("= if @x do\n  div")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "if @x do",
+        close: "end",
+        token: {{1, 3}, :buffered_text, "if @x do"},
+        children: [%{
+          type: :element,
+          name: "div",
+          token: {{2, 3}, :element_name, "div"}
+        }],
+      }]
+    } == ast
+  end
+
+  test "if ... end" do
+    tokens = tokenize("= if @x do\n  div")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "if @x do",
+        close: "end",
+        token: {{1, 3}, :buffered_text, "if @x do"},
+        children: [%{
+          type: :element,
+          name: "div",
+          token: {{2, 3}, :element_name, "div"}
+        }],
+      }]
+    } == ast
+  end
 end
