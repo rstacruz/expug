@@ -27,19 +27,34 @@ defmodule Expug.Visitor do
   def visit(node, fun) do
     {continue, node} = fun.(node)
     if continue == :ok do
-      visit_children(node, fun)
+      visit_recurse(node, fun)
     else
       node
     end
   end
 
-  @doc false
-  defp visit_children(%{children: children} = node, fun) do
+  @doc """
+  Visits all children lists recursively across `node` and its descendants.
+
+  Works just like `visit/2`, but instead of operating on nodes, it operates on
+  node children (lists).
+  """
+  def visit_children(node, fun) do
+    visit node, fn
+      %{children: children} = node ->
+        children = fun.(children)
+        node = put_in(node.children, children)
+        {:ok, node}
+      node ->
+        {:ok, node}
+    end
+  end
+
+  defp visit_recurse(%{children: children} = node, fun) do
     Map.put(node, :children, (for c <- children, do: visit(c, fun)))
   end
 
-  @doc false
-  defp visit_children(node, _) do
+  defp visit_recurse(node, _) do
     node
   end
 end

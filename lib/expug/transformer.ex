@@ -17,55 +17,68 @@ defmodule Expug.Transformer do
   """
   def transform(node) do
     node
-    |> Visitor.visit(&close_statements/1)
+    |> Visitor.visit_children(&close_clauses/1)
   end
 
-  def close_statements(%{children: children} = node) do
-    children = close_statements_2(children)
-    node = put_in(node.children, children)
+  @doc """
+  Finds out what clauses can follow a given clause.
 
-    {:ok, node}
-  end
+      iex> Expug.Transformer.clause_after("if")
+      ["else"]
 
+      iex> Expug.Transformer.clause_after("try")
+      ["catch", "rescue", "after"]
+
+      iex> Expug.Transformer.clause_after("cond")
+      [] # nothing can follow cond
+  """
   def clause_after("if"), do: ["else"]
   def clause_after("try"), do: ["catch", "rescue", "after"]
   def clause_after("catch"), do: ["catch", "after"]
   def clause_after("rescue"), do: ["rescue", "after"]
   def clause_after(_), do: []
 
-  def close_statements_2(children) do
-    closify(children)
+  @doc """
+  Closes all possible clauses in the given `children`.
+  """
+  def close_clauses(children) do
+    close_clause(children, ["if", "try"])
   end
 
   @doc """
-  Given a list of `children`, close the next if
+  Closes all a given `next` clause in the given `children`.
   """
-  def closify(children) do
-    closify_clause(children, ["if", "try"])
-  end
-
-  def closify_clause([node | children], next) do
+  def close_clause([node | children], next) do
     pre = prelude(node)
-    if statement?(node.type) and Enum.member?(next, pre) do
-      case closify_clause(children, clause_after(pre)) do
-        ^children -> # the next one is not else
-          node = node |> Map.put(:close, "end")
-          [node | closify(children)]
-        new_children ->
-          # changed
-          [node | new_children]
-      end
-    else
-      # Reset the chain
-      [node | closify(children)]
+
+    cond do
+      # it's a multi-clause thing (eg, if-else-end, try-rescue-after-end)
+      statement?(node.type) and Enum.member?(next, pre) ->
+        case close_clause(children, clause_after(pre)) do
+          ^children -> # the next one is not else
+            node = node |> Map.put(:close, "end")
+            [node | close_clauses(children)]
+          new_children ->
+            # changed
+            [node | new_children]
+        end
+
+      # it's a single-clause thing (eg, cond do)
+      statement?(node.type) and open?(node.value) ->
+        node = node |> Map.put(:close, "end")
+        [node | close_clauses(children)]
+
+      # Else, jsut reset the chain
+      true ->
+        [node | close_clauses(children)]
     end
   end
 
-  def closify_clause([], _upcoming) do
+  def close_clause([], _upcoming) do
     [] # The last child is `if`
   end
 
-  def closify_clause(children, [] = _upcoming) do
+  def close_clause(children, [] = _upcoming) do
     children # Already closed end, but there's still more
   end
 
@@ -90,10 +103,6 @@ defmodule Expug.Transformer do
 
   def prelude(_) do
     nil
-  end
-
-  def close_statements(node) do
-    {:ok, node}
   end
 
   # Checks if a given statement is open.
