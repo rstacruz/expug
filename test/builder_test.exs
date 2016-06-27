@@ -232,6 +232,17 @@ defmodule BuilderTest do
     }
   end
 
+  test "if .. if ... end" do
+    eex = build("= if @x do\n  div\n= if @y do\n  div")
+    assert eex == %{
+      :lines => 4,
+      1 => ["<%= if @x do %>"],
+      2 => [:collapse, "<div></div><% end %>"],
+      3 => ["<%= if @y do %>"],
+      4 => [:collapse, "<div></div><% end %>"]
+    }
+  end
+
   test "cond do ... end" do
     eex = build("= cond do\n  div")
     assert eex == %{

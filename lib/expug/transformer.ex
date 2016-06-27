@@ -43,44 +43,53 @@ defmodule Expug.Transformer do
   Closes all possible clauses in the given `children`.
   """
   def close_clauses(children) do
-    close_clause(children, ["if", "unless", "try"])
+    {_, children} = close_clause(children, ["if", "unless", "try"])
+    children
   end
 
   @doc """
   Closes all a given `next` clause in the given `children`.
+
+  Returns a tuple of `{status, children}` where `:status` depicts what happened
+  on the first node given to it. `:multi` means it was matched for a multi-clause,
+  `:single` means it was matched for a single clause, `:ok` otherwise.
   """
   def close_clause([node | children], next) do
     pre = prelude(node)
 
     cond do
       # it's a multi-clause thing (eg, if-else-end, try-rescue-after-end)
+      # See if we're at `if`...
       statement?(node.type) and Enum.member?(next, pre) ->
+        # Then check if the next one is `else`...
         case close_clause(children, clause_after(pre)) do
-          ^children -> # the next one is not else
+          {:multi, children} ->
+            # the next one IS else, don't close and proceed
+            {:multi, [node | children]}
+
+          {_, children} ->
+            # the next one is not else, so close us up and proceed
             node = node |> Map.put(:close, "end")
-            [node | close_clauses(children)]
-          new_children ->
-            # changed
-            [node | new_children]
+            {:multi, [node | close_clauses(children)]}
         end
 
       # it's a single-clause thing (eg, cond do)
       statement?(node.type) and open?(node.value) ->
         node = node |> Map.put(:close, "end")
-        [node | close_clauses(children)]
+        {:single, [node | close_clauses(children)]}
 
-      # Else, jsut reset the chain
+      # Else, just reset the chain
       true ->
-        [node | close_clauses(children)]
+        {:ok, [node | close_clauses(children)]}
     end
   end
 
   def close_clause([], _upcoming) do
-    [] # The last child is `if`
+    {:ok, []} # The last child is `if`
   end
 
   def close_clause(children, [] = _upcoming) do
-    children # Already closed end, but there's still more
+    {:ok, children} # Already closed end, but there's still more
   end
 
   @doc """
