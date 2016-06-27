@@ -22,7 +22,9 @@ defmodule Expug.Builder do
 
   require Logger
 
-  @self_closable ["meta", "img", "link"]
+  # See: http://www.w3.org/TR/html5/syntax.html#void-elements
+  @void_elements ["area", "base", "br", "col", "embed", "hr", "img", "input",
+   "keygen", "link", "meta", "param", "source", "track", "wbr"]
 
   def build(ast, _opts \\ []) do
     %{lines: 0} |> make(ast)
@@ -164,7 +166,7 @@ defmodule Expug.Builder do
   end
 
   def self_closable?(node) do
-    Enum.any?(@self_closable, &(&1 == node[:name])) && true
+    Enum.any?(@void_elements, &(&1 == node[:name])) && true
   end
 
   @doc ~S"""
