@@ -101,15 +101,6 @@ defmodule Expug.Builder do
     |> add_closing(node)
   end
 
-  def add_closing(doc, %{close: close}) do
-    doc
-    |> put_last_no_space("<% #{close} %>")
-  end
-
-  def add_closing(doc, _) do
-    doc
-  end
-
   def make(doc, %{type: :buffered_text, value: value} = node) do
     doc
     |> put(node, "<%= #{value} %>")
@@ -130,6 +121,15 @@ defmodule Expug.Builder do
       node_type: type,
       position: position
     }
+  end
+
+  def add_closing(doc, %{close: close}) do
+    doc
+    |> put_last_no_space("<% #{close} %>")
+  end
+
+  def add_closing(doc, _) do
+    doc
   end
 
   @doc """
