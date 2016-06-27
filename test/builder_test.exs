@@ -243,6 +243,15 @@ defmodule BuilderTest do
     }
   end
 
+  test "form_for fn -> ... end" do
+    eex = build("= form_for @foo, fn x ->\n  div")
+    assert eex == %{
+      :lines => 2,
+      1 => ["<%= form_for @foo, fn x -> %>"],
+      2 => [:collapse, "<div></div><% end %>"],
+    }
+  end
+
   test "cond do ... end" do
     eex = build("= cond do\n  div")
     assert eex == %{

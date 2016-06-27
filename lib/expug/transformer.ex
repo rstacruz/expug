@@ -117,7 +117,8 @@ defmodule Expug.Transformer do
 
   # Checks if a given statement is open.
   defp open?(statement) do
-    has_do = Regex.run(~r/[^A-Za-z0-9]do\s*$/, statement)
+    has_do = Regex.run(~r/[^A-Za-z0-9_]do\s*$/, statement)
+    has_do = has_do || Regex.run(~r/[^A-Za-z0-9_]fn.*->$/, statement)
     has_do && true || false
   end
 end
