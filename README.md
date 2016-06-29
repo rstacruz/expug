@@ -26,7 +26,7 @@ Also see [phoenix_expug](https://github.com/rstacruz/phoenix_expug) for Phoenix 
 
 Expug lets you write HTML as indented shorthand, inspired by Haml, Slim, Pug/Jade, and so on.
 
-<iframe src='http://try-expug.herokuapp.com/try' height='400' width='100%' style='border: 0'></iframe>
+<iframe src='https://try-expug.herokuapp.com/try' height='400' width='100%' style='border: 0'></iframe>
 
 ```jade
 doctype html
