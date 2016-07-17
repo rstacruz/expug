@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.11.5">
-    <title>Syntax – expug v0.2.0</title>
+    <title>Syntax: Comments – expug v0.2.0</title>
     <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
     
     <script src="dist/sidebar_items.js"></script>
@@ -61,37 +61,17 @@
   <div id="content" class="content-inner">
 
 
-<h1>Syntax</h1>
-<p>The syntax is based on Pug (formerly known as Jade). Most of Pug’s syntax is supported.</p>
-<h2>Elements</h2>
-<p>Write elements in short CSS-like syntax. Express nesting through indentation.</p>
-<pre><code class="jade">.alert.alert-danger#error
-  a(href=&quot;google.com&quot;) Google</code></pre>
-<p>See: <a href="elements.html">Elements</a></p>
-<h2>Code</h2>
-<p>Use <code class="inline">=</code> and <code class="inline">-</code> to run Elixir code.</p>
-<pre><code class="jade">= if @user do
-  = &quot;Welcome, #{@user.name}&quot;
-- else
-  | You&#39;re not signed in.</code></pre>
-<p>See: <a href="code.html">Code</a></p>
-<h2>Text</h2>
-<p>Text nodes begin with <code class="inline">|</code>.</p>
-<pre><code class="jade">a(href=&quot;/signup&quot;)
-  | Register now</code></pre>
-<p>See: <a href="text.html">Text</a></p>
-<h2>Comments</h2>
-<pre><code class="jade">-# This is a comment
--// this, too
-
-/ this is an HTML comment</code></pre>
-<p>See: <a href="comments.html">Comments</a></p>
-<h2>Doctype</h2>
-<pre><code class="jade">doctype html</code></pre>
-<p>See: <a href="doctype.html">Doctype</a></p>
-<h2>Compatibility with Pug</h2>
-<p>Most of Pug’s syntax is supported, with a few differences.
-See: <a href="compatibility_with_pug.html">Compatibility with Pug</a></p>
+<h1>Syntax: Comments</h1>
+<p>Comments begin with <code class="inline">-#</code>.</p>
+<pre><code class="jade">-# This is a comment</code></pre>
+<p>You may nest under it, and those lines will be ignored.</p>
+<pre><code class="jade">-# everything here is ignored:
+  a(href=&quot;/&quot;)
+    | Link</code></pre>
+<p><code class="inline">-//</code> is also supported to keep consistency with Pug/Jade.</p>
+<pre><code class="jade">-// This is also a comment</code></pre>
+<p>HTML comments begin with a <code class="inline">/</code>.</p>
+<pre><code class="jade">/ This is a comment</code></pre>
 
     <footer class="footer">
       <p>
