@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.5">
+    <title>Changelog – expug v0.1.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="extras">
+
+<div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="readme.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        expug
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.1
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+<h1>Changelog</h1>
+<h2><a href="https://github.com/rstacruz/expug/compare/v0.1.1...v0.2.0" title="">v0.2.0</a></h2>
+<blockquote><p>Unreleased</p>
+</blockquote>
+<p>The new block text directive allows you to write text without Expug parsing.</p>
+<pre><code class="jade">script.
+  if (usingExpug) {
+    alert(&#39;Awesome!&#39;)
+  }</code></pre>
+<p>Added support for multiline code. Lines ending in <code class="inline">{</code>, <code class="inline">(</code>, <code class="inline">[</code> or <code class="inline">,</code> will assume to be wrapped.</p>
+<pre><code class="jade">= render App.FooView, &quot;nav.html&quot;,
+  conn: @conn,
+  action: {
+    &quot;Create new&quot;,
+    item_path(@conn, :new) }</code></pre>
+<h2><a href="https://github.com/rstacruz/expug/compare/v0.0.1...v0.1.1" title="">v0.1.1</a></h2>
+<blockquote><p>Jul 17, 2016</p>
+</blockquote>
+<p>Expug now supports <code class="inline">if do ... end</code> and other blocks.</p>
+<pre><code class="jade">= if @error do
+  .alert Uh oh! Check your form and try again.</code></pre>
+<h2><a href="https://github.com/rstacruz/expug/tree/v0.0.1" title="">v0.0.1</a></h2>
+<blockquote><p>Jul 17, 2016</p>
+</blockquote>
+<p>Initial release.</p>
+
+    <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+

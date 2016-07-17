@@ -1,0 +1,1287 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.5">
+    <title>Expug.Tokenizer – expug v0.1.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="readme.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        expug
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.1
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">expug v0.1.1</small>
+        Expug.Tokenizer
+        
+        
+          <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Tokenizes a Slim template into a list of tokens. The main entry point is
+<code class="inline">tokenize/1</code>.</p>
+<pre><code class="iex elixir">iex&gt; Expug.Tokenizer.tokenize(&quot;title= name&quot;)
+[
+  {{1, 8}, :buffered_text, &quot;name&quot;},
+  {{1, 1}, :element_name, &quot;title&quot;},
+  {{1, 1}, :indent, 0}
+]</code></pre>
+<p>Note that the tokens are reversed! It’s easier to append to the top of a list
+rather than to the end, making it more efficient.</p>
+<p>This output is the consumed next by <a href="Expug.Compiler.html"><code class="inline">Expug.Compiler</code></a>, which turns them into
+an Abstract Syntax Tree.</p>
+<h2>Token types</h2>
+<pre><code class="elixir">div.blue#box</code></pre>
+<ul>
+<li><code class="inline">:indent</code> - 0
+</li>
+<li><code class="inline">:element_name</code> - <code class="inline">&quot;div&quot;</code>
+</li>
+<li><code class="inline">:element_class</code> - <code class="inline">&quot;blue&quot;</code>
+</li>
+<li><code class="inline">:element_id</code> - <code class="inline">&quot;box&quot;</code>
+</li>
+</ul>
+<pre><code class="elixir">div(name=&quot;en&quot;)</code></pre>
+<ul>
+<li><code class="inline">:attribute_open</code> - <code class="inline">&quot;(&quot;</code>
+</li>
+<li><code class="inline">:attribute_key</code> - <code class="inline">&quot;name&quot;</code>
+</li>
+<li><code class="inline">:attribute_value</code> - <code class="inline">&quot;\&quot;en\&quot;&quot;</code>
+</li>
+<li><code class="inline">:attribute_close</code> - <code class="inline">&quot;)&quot;</code>
+</li>
+</ul>
+<pre><code class="elixir">div= hello</code></pre>
+<ul>
+<li><code class="inline">:buffered_text</code> - <code class="inline">hello</code>
+</li>
+</ul>
+<pre><code class="elixir">div hello</code></pre>
+<ul>
+<li><code class="inline">:raw_text</code> - <code class="inline">&quot;hello&quot;</code>
+</li>
+</ul>
+<pre><code class="elixir">| Hello there</code></pre>
+<ul>
+<li><code class="inline">:raw_text</code> - <code class="inline">&quot;Hello there&quot;</code>
+</li>
+</ul>
+<pre><code class="elixir">= Hello there</code></pre>
+<ul>
+<li><code class="inline">:buffered_text</code> - <code class="inline">&quot;Hello there&quot;</code>
+</li>
+</ul>
+<pre><code class="elixir">- foo = bar</code></pre>
+<ul>
+<li><code class="inline">:statement</code> - <code class="inline">foo = bar</code>
+</li>
+</ul>
+<pre><code class="elixir">doctype html5</code></pre>
+<ul>
+<li><code class="inline">:doctype</code> - <code class="inline">html5</code>
+</li>
+</ul>
+<pre><code class="elixir">-# comment
+  more comments</code></pre>
+<ul>
+<li><code class="inline">:line_comment</code> - <code class="inline">comment</code>
+</li>
+<li><code class="inline">:subindent</code> - <code class="inline">more comments</code>
+</li>
+</ul>
+<h2>Also see</h2>
+<ul>
+<li><a href="Expug.TokenizerTools.html"><code class="inline">Expug.TokenizerTools</code></a> has the functions used by this tokenizer.
+</li>
+<li><a href="Expug.Compiler.html"><code class="inline">Expug.Compiler</code></a> uses the output of this tokenizer to build an AST.
+</li>
+<li><a href="Expug.ExpressionTokenizer.html"><code class="inline">Expug.ExpressionTokenizer</code></a> is used to tokenize expressions.
+</li>
+</ul>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#attribute/1">attribute(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">foo=&#39;val&#39;</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#attribute_brace/1">attribute_brace(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#attribute_bracket/1">attribute_bracket(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#attribute_equal/1">attribute_equal(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#attribute_key/1">attribute_key(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#attribute_list/1">attribute_list(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">foo=&#39;val&#39; bar=&#39;val&#39;</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#attribute_paren/1">attribute_paren(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#attribute_separator/1">attribute_separator(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches an optional comma in between attributes</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#attribute_value/1">attribute_value(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#attributes_block/1">attributes_block(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">[name=&#39;foo&#39; ...]</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#block_text/1">block_text(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#buffered_text/1">buffered_text(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#doctype/1">doctype(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">doctype html</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#document/1">document(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches an entire document</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#element/1">element(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">div.foo[id=&quot;name&quot;]= Hello world</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#element_class/1">element_class(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">.foo</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#element_class_or_id/1">element_class_or_id(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">.foo</code> or <code class="inline">#id</code> (just one)</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#element_class_or_id_list/1">element_class_or_id_list(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">.foo.bar#baz</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#element_descriptor/1">element_descriptor(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">div</code>, <code class="inline">div.foo</code> <code class="inline">div.foo.bar#baz</code>, etc</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#element_descriptor_full/1">element_descriptor_full(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">div.foo.bar#baz</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#element_id/1">element_id(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">#id</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#element_name/1">element_name(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">title</code> in <code class="inline">title= hello</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#element_or_text/1">element_or_text(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches an HTML element, text node, or, you know… the basic statements.
+I don’t know what to call this</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_indent/1">get_indent(list)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_next_indent/1">get_next_indent(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the next indentation level after some newlines.
+Infers the last indentation level based on <code class="inline">doc</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_next_indent/2">get_next_indent(state, level)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the next indentation level after some newlines</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#html_comment/1">html_comment(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#indent/1">indent(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches an indentation. Gives a token that looks like <code class="inline">{_, :indent, 2}</code>
+where the last number is the number of spaces/tabs</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#line_comment/1">line_comment(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#newlines/1">newlines(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches any number of blank newlines. Whitespaces are accounted for</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#optional_whitespace/1">optional_whitespace(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#optional_whitespace_or_newline/1">optional_whitespace_or_newline(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#raw_text/1">raw_text(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#sole_buffered_text/1">sole_buffered_text(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches <code class="inline">=</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#sole_raw_text/1">sole_raw_text(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches text</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#statement/1">statement(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#subindent/2">subindent(state, level)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#subindent_block/1">subindent_block(state)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#tokenize/2">tokenize(source, opts \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Tokenizes a string.
+Returns a list of tokens. Each token is in the format <code class="inline">{position, token, value}</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#whitespace/1">whitespace(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches whitespace; no tokens emitted</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#whitespace_or_newline/1">whitespace_or_newline(state)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Matches whitespace or newline; no tokens emitted</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="attribute/1">
+  <div class="detail-header">
+    <a href="#attribute/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">attribute(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L295" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">foo=&#39;val&#39;</code></p>
+
+  </section>
+</div>
+<div class="detail" id="attribute_brace/1">
+  <div class="detail-header">
+    <a href="#attribute_brace/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">attribute_brace(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L261" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="attribute_bracket/1">
+  <div class="detail-header">
+    <a href="#attribute_bracket/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">attribute_bracket(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L245" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="attribute_equal/1">
+  <div class="detail-header">
+    <a href="#attribute_equal/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">attribute_equal(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L314" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="attribute_key/1">
+  <div class="detail-header">
+    <a href="#attribute_key/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">attribute_key(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L304" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="attribute_list/1">
+  <div class="detail-header">
+    <a href="#attribute_list/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">attribute_list(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L272" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">foo=&#39;val&#39; bar=&#39;val&#39;</code></p>
+
+  </section>
+</div>
+<div class="detail" id="attribute_paren/1">
+  <div class="detail-header">
+    <a href="#attribute_paren/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">attribute_paren(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L253" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="attribute_separator/1">
+  <div class="detail-header">
+    <a href="#attribute_separator/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">attribute_separator(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L287" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches an optional comma in between attributes.</p>
+<pre><code class="elixir">div(id=a class=b)
+div(id=a, class=b)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="attribute_value/1">
+  <div class="detail-header">
+    <a href="#attribute_value/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">attribute_value(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L309" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="attributes_block/1">
+  <div class="detail-header">
+    <a href="#attributes_block/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">attributes_block(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L235" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">[name=&#39;foo&#39; ...]</code></p>
+
+  </section>
+</div>
+<div class="detail" id="block_text/1">
+  <div class="detail-header">
+    <a href="#block_text/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">block_text(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L369" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="buffered_text/1">
+  <div class="detail-header">
+    <a href="#buffered_text/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">buffered_text(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L407" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="doctype/1">
+  <div class="detail-header">
+    <a href="#doctype/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">doctype(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L116" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">doctype html</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="document/1">
+  <div class="detail-header">
+    <a href="#document/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">document(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L104" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches an entire document.</p>
+
+  </section>
+</div>
+<div class="detail" id="element/1">
+  <div class="detail-header">
+    <a href="#element/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">element(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L164" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">div.foo[id=&quot;name&quot;]= Hello world</code></p>
+
+  </section>
+</div>
+<div class="detail" id="element_class/1">
+  <div class="detail-header">
+    <a href="#element_class/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">element_class(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L217" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">.foo</code></p>
+
+  </section>
+</div>
+<div class="detail" id="element_class_or_id/1">
+  <div class="detail-header">
+    <a href="#element_class_or_id/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">element_class_or_id(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L209" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">.foo</code> or <code class="inline">#id</code> (just one)</p>
+
+  </section>
+</div>
+<div class="detail" id="element_class_or_id_list/1">
+  <div class="detail-header">
+    <a href="#element_class_or_id_list/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">element_class_or_id_list(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L201" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">.foo.bar#baz</code></p>
+
+  </section>
+</div>
+<div class="detail" id="element_descriptor/1">
+  <div class="detail-header">
+    <a href="#element_descriptor/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">element_descriptor(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L180" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">div</code>, <code class="inline">div.foo</code> <code class="inline">div.foo.bar#baz</code>, etc</p>
+
+  </section>
+</div>
+<div class="detail" id="element_descriptor_full/1">
+  <div class="detail-header">
+    <a href="#element_descriptor_full/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">element_descriptor_full(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L192" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">div.foo.bar#baz</code></p>
+
+  </section>
+</div>
+<div class="detail" id="element_id/1">
+  <div class="detail-header">
+    <a href="#element_id/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">element_id(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L226" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">#id</code></p>
+
+  </section>
+</div>
+<div class="detail" id="element_name/1">
+  <div class="detail-header">
+    <a href="#element_name/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">element_name(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L356" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">title</code> in <code class="inline">title= hello</code></p>
+
+  </section>
+</div>
+<div class="detail" id="element_or_text/1">
+  <div class="detail-header">
+    <a href="#element_or_text/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">element_or_text(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L128" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches an HTML element, text node, or, you know… the basic statements.
+I don’t know what to call this.</p>
+
+  </section>
+</div>
+<div class="detail" id="get_indent/1">
+  <div class="detail-header">
+    <a href="#get_indent/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_indent(list)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L387" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="get_next_indent/1">
+  <div class="detail-header">
+    <a href="#get_next_indent/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_next_indent(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L437" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Returns the next indentation level after some newlines.
+Infers the last indentation level based on <code class="inline">doc</code>.</p>
+<pre><code class="iex elixir">iex&gt; source = &quot;-#\n  span&quot;
+iex&gt; doc = [{0, :indent, 0}]
+iex&gt; Expug.Tokenizer.get_next_indent(%{tokens: doc, source: source, position: 2}, 0)
+2</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="get_next_indent/2">
+  <div class="detail-header">
+    <a href="#get_next_indent/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_next_indent(state, level)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L453" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Returns the next indentation level after some newlines.</p>
+<pre><code class="iex elixir">iex&gt; source = &quot;-#\n  span&quot;
+iex&gt; Expug.Tokenizer.get_next_indent(%{tokens: [], source: source, position: 2}, 0)
+2
+
+iex&gt; source = &quot;-#\n\n\n  span&quot;
+iex&gt; Expug.Tokenizer.get_next_indent(%{tokens: [], source: source, position: 2}, 0)
+2</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="html_comment/1">
+  <div class="detail-header">
+    <a href="#html_comment/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">html_comment(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L399" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="indent/1">
+  <div class="detail-header">
+    <a href="#indent/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">indent(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L156" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches an indentation. Gives a token that looks like <code class="inline">{_, :indent, 2}</code>
+where the last number is the number of spaces/tabs.</p>
+<p>Doesn’t really care if you use spaces or tabs; a tab is treated like a single
+space.</p>
+
+  </section>
+</div>
+<div class="detail" id="line_comment/1">
+  <div class="detail-header">
+    <a href="#line_comment/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">line_comment(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L361" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="newlines/1">
+  <div class="detail-header">
+    <a href="#newlines/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">newlines(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L144" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches any number of blank newlines. Whitespaces are accounted for.</p>
+
+  </section>
+</div>
+<div class="detail" id="optional_whitespace/1">
+  <div class="detail-header">
+    <a href="#optional_whitespace/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">optional_whitespace(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L331" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="optional_whitespace_or_newline/1">
+  <div class="detail-header">
+    <a href="#optional_whitespace_or_newline/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">optional_whitespace_or_newline(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L336" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="raw_text/1">
+  <div class="detail-header">
+    <a href="#raw_text/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">raw_text(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L414" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="sole_buffered_text/1">
+  <div class="detail-header">
+    <a href="#sole_buffered_text/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">sole_buffered_text(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L342" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches <code class="inline">=</code></p>
+
+  </section>
+</div>
+<div class="detail" id="sole_raw_text/1">
+  <div class="detail-header">
+    <a href="#sole_raw_text/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">sole_raw_text(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L349" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches text</p>
+
+  </section>
+</div>
+<div class="detail" id="statement/1">
+  <div class="detail-header">
+    <a href="#statement/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">statement(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L421" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="subindent/2">
+  <div class="detail-header">
+    <a href="#subindent/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">subindent(state, level)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L381" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="subindent_block/1">
+  <div class="detail-header">
+    <a href="#subindent_block/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">subindent_block(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L375" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="tokenize/2">
+  <div class="detail-header">
+    <a href="#tokenize/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">tokenize(source, opts \\ [])</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L96" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Tokenizes a string.
+Returns a list of tokens. Each token is in the format <code class="inline">{position, token, value}</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="whitespace/1">
+  <div class="detail-header">
+    <a href="#whitespace/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">whitespace(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L320" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches whitespace; no tokens emitted</p>
+
+  </section>
+</div>
+<div class="detail" id="whitespace_or_newline/1">
+  <div class="detail-header">
+    <a href="#whitespace_or_newline/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">whitespace_or_newline(state)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.1.1/lib/expug/tokenizer.ex#L326" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Matches whitespace or newline; no tokens emitted</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+

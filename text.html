@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.5">
+    <title>Syntax: Text – expug v0.1.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="extras">
+
+<div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="readme.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        expug
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.1
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+<h1>Syntax: Text</h1>
+<h2 id="piped-text"> Piped text</h2><p>The simplest way of adding plain text to templates is to prefix the line with a <code class="inline">|</code> character.</p>
+<pre><code class="jade">| Plain text can include &lt;strong&gt;html&lt;/strong&gt;
+p
+  | It must always be on its own line</code></pre>
+<h2 id="inline-in-a-tag"> Inline in a Tag</h2><p>Since it’s a common use case, you can put text in a tag just by adding it inline after a space.</p>
+<pre><code class="jade">p Plain text can include &lt;strong&gt;html&lt;/strong&gt;</code></pre>
+<h2 id="block-text"> Block text</h2><p>Often you might want large blocks of text within a tag. A good example is with inline scripts or styles. To do this, just add a <code class="inline">.</code> after the tag (with no preceding space):</p>
+<pre><code class="jade">script.
+  if (usingExpug)
+    console.log(&#39;you are awesome&#39;)
+  else
+    console.log(&#39;use expug&#39;)</code></pre>
+<!-- Based on http://jade-lang.com/reference/plain-text/ -->
+    <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+

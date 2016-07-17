@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.5">
+    <title>Syntax: Elements – expug v0.1.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="extras">
+
+<div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="readme.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        expug
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.1
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+<h1>Syntax: Elements</h1>
+<p>Elements are just lines.</p>
+<pre><code class="jade">div</code></pre>
+<h2 id="class-names-and-id-s"> Class names and ID's</h2><p>You may add <code class="inline">.classes</code> and <code class="inline">#id</code>s after an element name.</p>
+<pre><code class="jade">p.alert
+div#box</code></pre>
+<p>If you do, the element name is optional.</p>
+<pre><code class="jade">#box
+.alert</code></pre>
+<p>You may chain them as much as you need to.</p>
+<pre><code class="jade">.alert.alert-danger#error</code></pre>
+<h2 id="attributes"> Attributes</h2><p>Enclose attributes in <code class="inline">(...)</code> after an element name.</p>
+<pre><code class="jade">a(href=&quot;google.com&quot;) Google
+a(class=&quot;button&quot; href=&quot;google.com&quot;) Google
+.box(style=&quot;display: none&quot;)</code></pre>
+<p>The attribute values are Elixir expressions.</p>
+<pre><code class="jade">script(src=static_path(@conn, &quot;/js/app.js&quot;))</code></pre>
+<h2 id="text"> Text</h2><p>Text after the classes/attributes are shown as plain text. See <a href="text.html">text</a>.</p>
+<pre><code class="jade">a(href=&quot;google.com&quot;) Google</code></pre>
+<p>You may also use <code class="inline">|</code> for plain text with other elements.</p>
+<pre><code class="jade">div
+  | Welcome, new user!
+  a(href=&quot;/signup&quot;) Register</code></pre>
+<h2 id="nesting"> Nesting</h2><p>Nest elements by indentation.</p>
+<pre><code class="jade">ul
+  li
+    a(href=&quot;/&quot;) Home
+  li
+    a(href=&quot;/about&quot;) About</code></pre>
+
+    <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+
