@@ -1,5 +1,5 @@
 ## [v0.2.0]
-> Jul 17, 2016
+> Unreleased
 
 The new block text directive allows you to write text without Expug parsing.
 
@@ -8,6 +8,16 @@ script.
   if (usingExpug) {
     alert('Awesome!')
   }
+```
+
+Added support for multiline code. Lines ending in `{`, `(`, `[` or `,` will assume to be wrapped.
+
+```jade
+= render App.FooView, "nav.html",
+  conn: @conn,
+  action: {
+    "Create new",
+    item_path(@conn, :new) }
 ```
 
 [v0.2.0]: https://github.com/rstacruz/expug/compare/v0.1.1...v0.2.0
