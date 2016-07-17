@@ -40,7 +40,7 @@ body
 
 Also see:
 
-- [Comparison with Pug](docs/compatibility_with_pug.md)
+- [Comparison with Pug](docs/misc/compatibility_with_pug.md)
 - [Jade language reference](http://jade-lang.com/reference/) (jade-lang.com)
 
 ## Prior art

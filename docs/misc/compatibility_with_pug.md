@@ -1,4 +1,4 @@
-# Compatibility with Pug
+# Misc: Compatibility with Pug
 
 Expug retains most of Pug/Jade's features, adds some Elixir'isms, and drops the features that don't make sense.
 

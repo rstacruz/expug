@@ -185,4 +185,32 @@ defmodule StringifierTest do
 
   @tag :pending
   test "ul: li: button Hello"
+
+  test "multiline" do
+    eex = build("""
+    - render(
+      @conn)
+    div
+    """)
+
+    assert eex == ~S"""
+    <% render(
+      @conn) %>
+    <div></div>
+    """
+  end
+
+  test "multiline =" do
+    eex = build("""
+    = render(
+      @conn)
+    div
+    """)
+
+    assert eex == ~S"""
+    <%= render(
+      @conn) %>
+    <div></div>
+    """
+  end
 end
