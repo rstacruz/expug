@@ -36,7 +36,8 @@ Also see [phoenix_expug](https://github.com/rstacruz/phoenix_expug) for Phoenix 
 
 ## Docs
 
-- [Syntax](syntax.html)
+- [Hexdocs home](https://hexdocs.pm/expug)
+- [Syntax](https://hexdocs.pm/expug/syntax.html)
 
 ## Thanks
 
