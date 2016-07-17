@@ -39,6 +39,27 @@ a(href="/signup")
 
 See: [Text](text.html)
 
+Comments
+--------
+
+```jade
+-# This is a comment
+-// this, too
+
+/ this is an HTML comment
+```
+
+See: [Comments](comments.html)
+
+Doctype
+-------
+
+```jade
+doctype html
+```
+
+See: [Doctype](doctype.html)
+
 Compatibility with Pug
 ----------------------
 

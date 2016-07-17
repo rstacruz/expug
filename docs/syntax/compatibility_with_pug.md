@@ -25,23 +25,27 @@ Expug retains most of Pug/Jade's features, adds some Elixir'isms, and drops the 
 
 ## Removed
 
-- The following features are not available due to the limitations of EEx:
+The following features are not available due to the limitations of EEx.
 
 - [include](http://jade-lang.com/reference/includes) (partials)
 - [block/extends](http://jade-lang.com/reference/extends) (layouts & template inheritance)
 - [mixins](http://jade-lang.com/reference/mixins) (functions)
 
-The following syntactic sugars, are not implemented, simply because they're not idiomatic Elixir. There are other ways to accomlish them.
+The following syntactic sugars, are not implemented, simply because they're not idiomatic Elixir. There are other ways to accomplish them.
 
 - [case](http://jade-lang.com/reference/case/)
 - [conditionals](http://jade-lang.com/reference/conditionals)
 - [iteration](http://jade-lang.com/reference/iteration)
 
-The following are still unimplemented, but may be in the future
+The following are still unimplemented, but may be in the future.
 
 - [filters](http://jade-lang.com/reference/case/)
 - [interpolation](http://jade-lang.com/reference/interpolation/)
 - multi-line statements (`-\n  ...`)
+
+The following are unimplemented, just because I don't want to implement them.
+
+- Doctype shorthands are limited to only `html` and `xml`. The [XHTML shorthands](http://jade-lang.com/reference/doctype/) were not implemented to discourage their use.
 
 ## The same
 
