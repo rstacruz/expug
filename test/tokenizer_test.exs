@@ -256,6 +256,24 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "- statement multiline" do
+    output = tokenize("- text,\n  foo")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 3}, :statement, "text,\n  foo"}
+    ]
+  end
+
+  test "- statement multiline (2)" do
+    output = tokenize("- text(\n  foo)\ndiv")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 3}, :statement, "text(\n  foo)"},
+      {{3, 1}, :indent, 0},
+      {{3, 1}, :element_name, "div"}
+    ]
+  end
+
   test "doctype" do
     output = tokenize("doctype html5")
     assert reverse(output) == [

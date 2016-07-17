@@ -408,7 +408,7 @@ defmodule Expug.Tokenizer do
     state
     |> discard(~r/^=/, :eq)
     |> optional_whitespace()
-    |> eat(~r/^[^\n$]+/, :buffered_text)
+    |> eat(~r/^(?:[,\[\(\{]\s*\n|[^\n$])+/, :buffered_text)
   end
 
   def raw_text(state) do
@@ -422,7 +422,7 @@ defmodule Expug.Tokenizer do
     state
     |> discard(~r/^\-/, :dash)
     |> optional_whitespace()
-    |> eat(~r/^[^\n$]+/, :statement)
+    |> eat(~r/^(?:[,\[\(\{]\s*\n|[^\n$])+/, :statement)
   end
 
   @doc ~S"""
