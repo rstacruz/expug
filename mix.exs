@@ -48,10 +48,9 @@ defmodule Expug.Mixfile do
     [
       source_ref: "v#{@version}",
       main: "readme",
-      extras: [
-        Path.wildcard("*.md") |
+      extras:
+        Path.wildcard("*.md") ++
         Path.wildcard("docs/**/*.md")
-      ]
     ]
   end
 end

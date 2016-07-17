@@ -1,4 +1,4 @@
-# New line preservation
+# Misc: Line number preservation
 
 Eex has no provisions for source maps, so we'll have to emulate this by outputing EEx that matches line numbers *exactly* with the source `.pug` files.
 
