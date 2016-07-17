@@ -171,14 +171,16 @@ defmodule StringifierTest do
   @tag :pending
   test "-// comment nesting"
 
-  @tag :pending
   test "script." do
     eex = build("""
     script.
       alert("hi")
     """)
 
-    assert eex == ""
+    assert eex == ~S"""
+    <script>
+    alert("hi")<%= "\n" %></script>
+    """
   end
 
   @tag :pending
