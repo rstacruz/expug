@@ -152,12 +152,10 @@ defmodule StringifierTest do
     assert eex == ""
   end
 
-  @tag :pending
-  @tag :next
   test "empty attributes" do
     eex = build("div( )")
 
-    assert eex == "<div></div>"
+    assert eex == "<div></div>\n"
   end
 
   @tag :pending

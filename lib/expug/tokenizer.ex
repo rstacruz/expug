@@ -244,6 +244,7 @@ defmodule Expug.Tokenizer do
   def attribute_bracket(state) do
     state
     |> eat(~r/^\[/, :attribute_open)
+    |> optional_whitespace()
     |> optional(&attribute_list/1)
     |> eat(~r/^\]/, :attribute_close)
   end
@@ -251,6 +252,7 @@ defmodule Expug.Tokenizer do
   def attribute_paren(state) do
     state
     |> eat(~r/^\(/, :attribute_open)
+    |> optional_whitespace()
     |> optional(&attribute_list/1)
     |> eat(~r/^\)/, :attribute_close)
   end
@@ -258,6 +260,7 @@ defmodule Expug.Tokenizer do
   def attribute_brace(state) do
     state
     |> eat(~r/^\{/, :attribute_open)
+    |> optional_whitespace()
     |> optional(&attribute_list/1)
     |> eat(~r/^\}/, :attribute_close)
   end
