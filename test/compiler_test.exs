@@ -468,7 +468,7 @@ defmodule ExpugCompilerTest do
         name: "script",
         token: {{1, 1}, :element_name, "script"},
         children: [%{
-          type: :free_text,
+          type: :block_text,
           value: "alert('hello')",
           token: {{2, 3}, :subindent, "alert('hello')"}
         }],

@@ -112,7 +112,7 @@ defmodule Expug.Compiler do
       :element_class
       :element_id
       [:attribute_open [...] :attribute_close]
-      [:buffered_text | :raw_text | :free_text]
+      [:buffered_text | :raw_text | :block_text]
   """
   def statement({node, [{_, :line_comment, _} | [{_, :subindent, _} | _] = tokens]}, _depths) do
     # Pretend to be an element and capture stuff into it; discard it afterwards.
@@ -202,10 +202,10 @@ defmodule Expug.Compiler do
         node = add_child(node, child)
         element({node, rest}, parent, depths)
 
-      [{_, :free_text, _} | rest] ->
+      [{_, :block_text, _} | rest] ->
         t = hd(rest)
         {rest, lines} = subindent_capture(rest)
-        child = %{type: :free_text, value: lines, token: t}
+        child = %{type: :block_text, value: lines, token: t}
         node = add_child(node, child)
         element({node, rest}, parent, depths)
 

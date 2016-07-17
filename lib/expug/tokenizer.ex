@@ -169,7 +169,7 @@ defmodule Expug.Tokenizer do
       |> one_of([
         &sole_buffered_text/1,
         &sole_raw_text/1,
-        &free_text/1
+        &block_text/1
       ])
     end)
   end
@@ -366,9 +366,9 @@ defmodule Expug.Tokenizer do
     |> optional(&subindent_block/1)
   end
 
-  def free_text(state) do
+  def block_text(state) do
     state
-    |> eat(~r/\./, :free_text)
+    |> eat(~r/\./, :block_text)
     |> subindent_block()
   end
 

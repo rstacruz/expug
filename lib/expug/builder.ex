@@ -111,7 +111,7 @@ defmodule Expug.Builder do
     |> put(node, "<%= raw(#{value}) %>")
   end
 
-  def make(doc, %{type: :free_text, value: value} = node) do
+  def make(doc, %{type: :block_text, value: value} = node) do
     doc
     |> put(node, value)
   end

@@ -227,7 +227,7 @@ defmodule ExpugTokenizerTest do
       assert %{
         type: :parse_error,
         position: {2, 4},
-        expected: [:eq, :whitespace, :free_text, :attribute_open]
+        expected: [:eq, :whitespace, :block_text, :attribute_open]
       } = output
     end
   end
@@ -553,7 +553,7 @@ defmodule ExpugTokenizerTest do
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "script"},
-      {{1, 7}, :free_text, "."},
+      {{1, 7}, :block_text, "."},
       {{2, 3}, :subindent, "hello"}
     ]
   end
@@ -564,7 +564,7 @@ defmodule ExpugTokenizerTest do
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "script"},
       {{1, 8}, :element_class, "box"},
-      {{1, 11}, :free_text, "."},
+      {{1, 11}, :block_text, "."},
       {{2, 3}, :subindent, "hello"}
     ]
   end
@@ -579,7 +579,7 @@ defmodule ExpugTokenizerTest do
       {{1, 12}, :attribute_key, "id"},
       {{1, 15}, :attribute_value, "\"foo\""},
       {{1, 20}, :attribute_close, ")"},
-      {{1, 21}, :free_text, "."},
+      {{1, 21}, :block_text, "."},
       {{2, 3}, :subindent, "hello"}
     ]
   end
@@ -589,7 +589,7 @@ defmodule ExpugTokenizerTest do
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "script"},
-      {{1, 7}, :free_text, "."},
+      {{1, 7}, :block_text, "."},
       {{2, 3}, :subindent, "hello"},
       {{3, 3}, :subindent, "  world"}
     ]
@@ -600,7 +600,7 @@ defmodule ExpugTokenizerTest do
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "script"},
-      {{1, 7}, :free_text, "."},
+      {{1, 7}, :block_text, "."},
       {{2, 3}, :subindent, "hello"},
       {{3, 3}, :subindent, "  world"},
       {{4, 1}, :indent, 0},
