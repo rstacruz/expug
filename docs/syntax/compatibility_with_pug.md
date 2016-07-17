@@ -15,6 +15,15 @@ Expug retains most of Pug/Jade's features, adds some Elixir'isms, and drops the 
   )= get_text "Submit"
   ```
 
+- __Multiline codeb blocks__ are also supported. See [code](code.html) for rules on how this works.
+
+  ```jade
+  = render(
+    App.MyView,
+    "index.html",
+    conn: @conn)
+  ```
+
 ## Changed
 
 - __Comments__ are done using `-#` as well as `-//`, following Elixir conventions. The old `-//` syntax is supported for increased compatibility with text editor syntax highlighting.
