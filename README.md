@@ -34,10 +34,17 @@ end
 
 Also see [phoenix_expug](https://github.com/rstacruz/phoenix_expug) for Phoenix integration.
 
-## Docs
+## Syntax
 
-- [Hexdocs home](https://hexdocs.pm/expug)
-- [Syntax](https://hexdocs.pm/expug/syntax.html)
+Use CSS-like selectors for elements, and express your nesting through indentations.
+
+```jade
+ul.links
+  li
+    a(href="/") This is a link
+```
+
+Read more: [Syntax](https://hexdocs.pm/expug/syntax.html)
 
 ## Thanks
 
