@@ -168,7 +168,8 @@ defmodule Expug.Tokenizer do
     |> optional(fn s -> s
       |> one_of([
         &sole_buffered_text/1,
-        &sole_raw_text/1
+        &sole_raw_text/1,
+        &free_text/1
       ])
     end)
   end
@@ -363,6 +364,12 @@ defmodule Expug.Tokenizer do
     |> optional_whitespace()
     |> eat(~r/^[^\n]*/, :line_comment)
     |> optional(&subindent_block/1)
+  end
+
+  def free_text(state) do
+    state
+    |> eat(~r/\./, :free_text)
+    |> subindent_block()
   end
 
   def subindent_block(state) do

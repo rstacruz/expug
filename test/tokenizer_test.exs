@@ -227,7 +227,7 @@ defmodule ExpugTokenizerTest do
       assert %{
         type: :parse_error,
         position: {2, 4},
-        expected: [:eq, :whitespace, :attribute_open]
+        expected: [:eq, :whitespace, :free_text, :attribute_open]
       } = output
     end
   end
@@ -545,6 +545,66 @@ defmodule ExpugTokenizerTest do
       {{2, 1}, :attribute_key, "b"},
       {{2, 3}, :attribute_value, "2"},
       {{2, 4}, :attribute_close, ")"}
+    ]
+  end
+
+  test "script." do
+    output = tokenize("script.\n  hello")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "script"},
+      {{1, 7}, :free_text, "."},
+      {{2, 3}, :subindent, "hello"}
+    ]
+  end
+
+  test "script. with class" do
+    output = tokenize("script.box.\n  hello")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "script"},
+      {{1, 8}, :element_class, "box"},
+      {{1, 11}, :free_text, "."},
+      {{2, 3}, :subindent, "hello"}
+    ]
+  end
+
+  test "script. with class and attributes" do
+    output = tokenize("script.box(id=\"foo\").\n  hello")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "script"},
+      {{1, 8}, :element_class, "box"},
+      {{1, 11}, :attribute_open, "("},
+      {{1, 12}, :attribute_key, "id"},
+      {{1, 15}, :attribute_value, "\"foo\""},
+      {{1, 20}, :attribute_close, ")"},
+      {{1, 21}, :free_text, "."},
+      {{2, 3}, :subindent, "hello"}
+    ]
+  end
+
+  test "script. multiline" do
+    output = tokenize("script.\n  hello\n    world")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "script"},
+      {{1, 7}, :free_text, "."},
+      {{2, 3}, :subindent, "hello"},
+      {{3, 3}, :subindent, "  world"}
+    ]
+  end
+
+  test "script. multiline with sibling" do
+    output = tokenize("script.\n  hello\n    world\ndiv")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "script"},
+      {{1, 7}, :free_text, "."},
+      {{2, 3}, :subindent, "hello"},
+      {{3, 3}, :subindent, "  world"},
+      {{4, 1}, :indent, 0},
+      {{4, 1}, :element_name, "div"}
     ]
   end
 

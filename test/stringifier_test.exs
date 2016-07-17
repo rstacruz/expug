@@ -152,7 +152,7 @@ defmodule StringifierTest do
     assert eex == ""
   end
 
-  test "empty attributes" do
+  test "empty space attributes" do
     eex = build("div( )")
 
     assert eex == "<div></div>\n"
