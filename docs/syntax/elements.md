@@ -71,3 +71,17 @@ ul
   li
     a(href="/about") About
 ```
+
+## Multiline
+
+Attributes may span multiple lines. Expug tries to intelligently figure out what you mean by balancing `(` `[` `{` `"` `'` pairs.
+
+```jade
+a(
+  href=page_path(
+    @conn,
+    "index.html"
+  )
+)= "View list of pages"
+```
+
