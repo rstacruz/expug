@@ -172,7 +172,14 @@ defmodule StringifierTest do
   test "-// comment nesting"
 
   @tag :pending
-  test "script."
+  test "script." do
+    eex = build("""
+    script.
+      alert("hi")
+    """)
+
+    assert eex == ""
+  end
 
   @tag :pending
   test "ul: li: button Hello"

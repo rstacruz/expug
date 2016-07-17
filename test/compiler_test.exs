@@ -457,4 +457,23 @@ defmodule ExpugCompilerTest do
       }]
     } == ast
   end
+
+  test "script." do
+    tokens = tokenize("script.\n  alert('hello')")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "script",
+        token: {{1, 1}, :element_name, "script"},
+        children: [%{
+          type: :free_text,
+          value: "alert('hello')",
+          token: {{2, 3}, :subindent, "alert('hello')"}
+        }],
+      }]
+    } == ast
+  end
+
 end
