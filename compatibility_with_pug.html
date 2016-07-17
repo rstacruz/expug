@@ -73,6 +73,14 @@
       get_classname(@button)
     )
   )= get_text &quot;Submit&quot;</code></pre>
+<ul>
+<li><strong>Multiline codeb blocks</strong> are also supported. See <a href="code.html">code</a> for rules on how this works.
+</li>
+</ul>
+<pre><code class="jade">  = render(
+    App.MyView,
+    &quot;index.html&quot;,
+    conn: @conn)</code></pre>
 <h2 id="changed"> Changed</h2><ul>
 <li><p><strong>Comments</strong> are done using <code class="inline">-#</code> as well as <code class="inline">-//</code>, following Elixir conventions. The old <code class="inline">-//</code> syntax is supported for increased compatibility with text editor syntax highlighting.</p>
 </li>
