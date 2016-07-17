@@ -13,7 +13,8 @@ defmodule TodoTestd do
 
   # Priority:
   test "value-less attributes (`textarea(spellcheck)`)"
-  test "`.` raw text (like `script.`)"
+  # test "`.` raw text (like `script.`)"
+  # test "multiline"
   test "!= unescaped code"
 
   # Lower priority:
