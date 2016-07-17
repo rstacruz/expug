@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.11.5">
-    <title>Expug – expug v0.2.0</title>
+    <title>Syntax – expug v0.2.0</title>
     <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
     
     <script src="dist/sidebar_items.js"></script>
@@ -61,34 +61,28 @@
   <div id="content" class="content-inner">
 
 
-<h1>Expug</h1>
-<blockquote><p>Indented shorthand HTML templates for Elixir</p>
-</blockquote>
-<p>Expug is a template language based on <a href="http://www.pug-lang.com/" title="">Pug</a> (formerly known as <a href="http://jade-lang.com/" title="">Jade</a>).
-It lets you write HTML as indented shorthand, inspired by Haml, Slim, Pug/Jade, and so on.</p>
-<iframe src='https://try-expug.herokuapp.com/try?code=doctype%20html%0Ahtml%0A%20%20head%0A%20%20%20%20meta(charset%3D%22utf-8%22)%0A%20%20%20%20title%20Hello%0A%20%20body%0A%20%20%20%20a.button(href%3D%40link)%0A%20%20%20%20%20%20%7C%20This%20is%20a%20link' height='400' width='100%' style='border: 0'></iframe><pre><code class="jade">doctype html
-html
-  meta(charset=&quot;utf-8&quot;)
-  title Hello, world!
-body
-  a(href=@link)
-    | This is a link</code></pre>
-<p><a href="https://travis-ci.org/rstacruz/expug" title="See test builds"><img src="https://travis-ci.org/rstacruz/expug.svg?branch=master" alt="Status"/></a></p>
-<h2 id="installation"> Installation</h2><p>Add expug to your list of dependencies in <code class="inline">mix.exs</code>:</p>
-<pre><code class="elixir">def deps do
-  [{:expug, &quot;~&gt; 0.2&quot;}]
-end</code></pre>
-<p>Also see <a href="https://github.com/rstacruz/phoenix_expug">phoenix_expug</a> for Phoenix integration.</p>
-<h2 id="docs"> Docs</h2><ul>
-<li><a href="syntax.html">Syntax</a>
-</li>
-</ul>
-<h2 id="thanks"> Thanks</h2><p><strong>expug</strong> © 2016+, Rico Sta. Cruz. Released under the <a href="http://mit-license.org/" title="">MIT</a> License.<br>
-Authored and maintained by Rico Sta. Cruz with help from contributors (<a href="http://github.com/rstacruz/expug/contributors" title="">list</a>).</p>
-<blockquote><p><a href="http://ricostacruz.com">ricostacruz.com</a> &nbsp;&middot;&nbsp;
-GitHub <a href="https://github.com/rstacruz">@rstacruz</a> &nbsp;&middot;&nbsp;
-Twitter <a href="https://twitter.com/rstacruz">@rstacruz</a></p>
-</blockquote>
+<h1>Syntax</h1>
+<p>The syntax is based on Pug (formerly known as Jade). Most of Pug’s syntax is supported.</p>
+<h2>Elements</h2>
+<p>Write elements in short CSS-like syntax. Express nesting through indentation.</p>
+<pre><code class="jade">.alert.alert-danger#error
+  a(href=&quot;google.com&quot;) Google</code></pre>
+<p>See: <a href="elements.html">Elements</a></p>
+<h2>Code</h2>
+<p>Use <code class="inline">=</code> and <code class="inline">-</code> to run Elixir code.</p>
+<pre><code class="jade">= if @user do
+  = &quot;Welcome, #{@user.name}&quot;
+- else
+  | You&#39;re not signed in.</code></pre>
+<p>See: <a href="code.html">Code</a></p>
+<h2>Text</h2>
+<p>Text nodes begin with <code class="inline">|</code>.</p>
+<pre><code class="jade">a(href=&quot;/signup&quot;)
+  | Register now</code></pre>
+<p>See: <a href="text.html">Text</a></p>
+<h2>Compatibility with Pug</h2>
+<p>Most of Pug’s syntax is supported, with a few differences.
+See: <a href="compatibility_with_pug.html">Compatibility with Pug</a></p>
 
     <footer class="footer">
       <p>

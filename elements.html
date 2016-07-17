@@ -90,6 +90,13 @@ a(class=&quot;button&quot; href=&quot;google.com&quot;) Google
     a(href=&quot;/&quot;) Home
   li
     a(href=&quot;/about&quot;) About</code></pre>
+<h2 id="multiline"> Multiline</h2><p>Attributes may span multiple lines. Expug tries to intelligently figure out what you mean by balancing <code class="inline">(</code> <code class="inline">[</code> <code class="inline">{</code> <code class="inline">&quot;</code> <code class="inline">&#39;</code> pairs.</p>
+<pre><code class="jade">a(
+  href=page_path(
+    @conn,
+    &quot;index.html&quot;
+  )
+)= &quot;View list of pages&quot;</code></pre>
 
     <footer class="footer">
       <p>
