@@ -168,7 +168,8 @@ defmodule Expug.Tokenizer do
     |> optional(fn s -> s
       |> one_of([
         &sole_buffered_text/1,
-        &sole_raw_text/1
+        &sole_raw_text/1,
+        &block_text/1
       ])
     end)
   end
@@ -244,6 +245,7 @@ defmodule Expug.Tokenizer do
   def attribute_bracket(state) do
     state
     |> eat(~r/^\[/, :attribute_open)
+    |> optional_whitespace()
     |> optional(&attribute_list/1)
     |> eat(~r/^\]/, :attribute_close)
   end
@@ -251,6 +253,7 @@ defmodule Expug.Tokenizer do
   def attribute_paren(state) do
     state
     |> eat(~r/^\(/, :attribute_open)
+    |> optional_whitespace()
     |> optional(&attribute_list/1)
     |> eat(~r/^\)/, :attribute_close)
   end
@@ -258,6 +261,7 @@ defmodule Expug.Tokenizer do
   def attribute_brace(state) do
     state
     |> eat(~r/^\{/, :attribute_open)
+    |> optional_whitespace()
     |> optional(&attribute_list/1)
     |> eat(~r/^\}/, :attribute_close)
   end
@@ -360,6 +364,12 @@ defmodule Expug.Tokenizer do
     |> optional_whitespace()
     |> eat(~r/^[^\n]*/, :line_comment)
     |> optional(&subindent_block/1)
+  end
+
+  def block_text(state) do
+    state
+    |> eat(~r/\./, :block_text)
+    |> subindent_block()
   end
 
   def subindent_block(state) do

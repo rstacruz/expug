@@ -36,12 +36,12 @@ defmodule ExpugTest do
     assert %{
       type: :parse_error,
       position: {2, 4},
-      expected: [:eq, :whitespace, :attribute_open]
+      expected: [:eq, :whitespace, :block_text, :attribute_open]
     } = output
   end
 
   test "bang, parse error" do
-    msg = "parse error, expected one of: eq, whitespace, attribute_open on line 2 col 4"
+    msg = "parse error, expected one of: eq, whitespace, block_text, attribute_open on line 2 col 4"
     assert_raise Expug.Error, msg, fn ->
       Expug.to_eex!("hello\nhuh?")
     end

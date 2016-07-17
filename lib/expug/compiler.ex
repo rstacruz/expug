@@ -112,7 +112,7 @@ defmodule Expug.Compiler do
       :element_class
       :element_id
       [:attribute_open [...] :attribute_close]
-      [:solo_buffered_text | :solo_raw_text]
+      [:buffered_text | :raw_text | :block_text]
   """
   def statement({node, [{_, :line_comment, _} | [{_, :subindent, _} | _] = tokens]}, _depths) do
     # Pretend to be an element and capture stuff into it; discard it afterwards.
@@ -202,6 +202,13 @@ defmodule Expug.Compiler do
         node = add_child(node, child)
         element({node, rest}, parent, depths)
 
+      [{_, :block_text, _} | rest] ->
+        t = hd(rest)
+        {rest, lines} = subindent_capture(rest)
+        child = %{type: :block_text, value: lines, token: t}
+        node = add_child(node, child)
+        element({node, rest}, parent, depths)
+
       [{_, :attribute_open, _} | rest] ->
         {attr_list, rest} = attribute({node[:attributes] || %{}, rest})
         node = Map.put(node, :attributes, attr_list)
@@ -256,5 +263,15 @@ defmodule Expug.Compiler do
 
   def subindent({node, rest}) do
      {node, rest}
+  end
+
+  def subindent_capture(tokens, lines \\ [])
+  def subindent_capture([{_, :subindent, line} | rest], lines) do
+    lines = lines ++ line
+    subindent_capture(rest, lines)
+  end
+
+  def subindent_capture(rest, lines) do
+    {rest, lines}
   end
 end

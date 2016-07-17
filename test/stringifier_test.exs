@@ -152,12 +152,10 @@ defmodule StringifierTest do
     assert eex == ""
   end
 
-  @tag :pending
-  @tag :next
-  test "empty attributes" do
+  test "empty space attributes" do
     eex = build("div( )")
 
-    assert eex == "<div></div>"
+    assert eex == "<div></div>\n"
   end
 
   @tag :pending
@@ -173,8 +171,17 @@ defmodule StringifierTest do
   @tag :pending
   test "-// comment nesting"
 
-  @tag :pending
-  test "script."
+  test "script." do
+    eex = build("""
+    script.
+      alert("hi")
+    """)
+
+    assert eex == ~S"""
+    <script>
+    alert("hi")<%= "\n" %></script>
+    """
+  end
 
   @tag :pending
   test "ul: li: button Hello"
