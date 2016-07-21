@@ -11,7 +11,15 @@ defmodule Expug.Runtime do
   Quotes a given `str` for use as an HTML attribute.
   """
   def attr_value(str) do
-    inspect("#{str}") # TODO: encodeURIComponent
+    "\"#{attr_value_escape(str)}\""
+  end
+
+  def attr_value_escape(str) do
+    str
+    |> String.replace("&", "&amp;")
+    |> String.replace("\"", "&quot;")
+    |> String.replace("<", "&lt;")
+    |> String.replace(">", "&gt;")
   end
 
   def attr(key, true) do
@@ -19,6 +27,10 @@ defmodule Expug.Runtime do
   end
 
   def attr(_key, false) do
+    ""
+  end
+
+  def attr(_key, nil) do
     ""
   end
 
