@@ -1,5 +1,36 @@
 # Changelog
 
+## [v0.3.0]
+> Jul 21, 2016
+
+[#3] - Attribute values are now escaped properly. This means you can now properly do:
+
+```jade
+- json = "{\"hello\":\"world\"}"
+div(data-value=json)
+```
+
+```html
+<div data-value="{&quot;hello&quot;:&quot;world&quot;}">
+```
+
+`nil` values are also now properly handled, along with boolean values.
+
+```jade
+textarea(spellcheck=nil)
+textarea(spellcheck=true)
+textarea(spellcheck=false)
+```
+
+```html
+<textarea></textarea>
+<textarea spellcheck></textarea>
+<textarea></textarea>
+```
+
+[#3]: https://github.com/rstacruz/expug/issues/3
+[v0.3.0]: https://github.com/rstacruz/expug/compare/v0.2.0...v0.3.0
+
 ## [v0.2.0]
 > Jul 17, 2016
 
