@@ -53,6 +53,14 @@ defmodule BuilderTest do
     }
   end
 
+  test "value-less attributes" do
+    eex = build("div(src)")
+    assert eex == %{
+      :lines => 1,
+      1 => ["<div<%= raw(Expug.Runtime.attr(\"src\", true)) %>></div>"]
+    }
+  end
+
   test "with buffered text" do
     eex = build("div= hola()")
     assert eex == %{

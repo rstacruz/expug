@@ -290,9 +290,17 @@ defmodule Expug.Tokenizer do
   end
 
   @doc """
-  Matches `foo='val'`
+  Matches `foo='val'` or `foo`
   """
   def attribute(state) do
+    state
+    |> one_of([
+      &attribute_key_value/1,
+      &attribute_key/1
+    ])
+  end
+
+  def attribute_key_value(state) do
     state
     |> attribute_key()
     |> optional_whitespace()

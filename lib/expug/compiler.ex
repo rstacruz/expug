@@ -226,7 +226,13 @@ defmodule Expug.Compiler do
     case tokens do
       [{_, :attribute_key, key}, {_, :attribute_value, value} | rest] ->
         attr_list = add_attribute(attr_list, key, {:eval, value})
-        attribute({attr_list, rest})
+        {attr_list, rest}
+        |> attribute()
+
+      [{_, :attribute_key, key} | rest] ->
+        attr_list = add_attribute(attr_list, key, {:eval, true})
+        {attr_list, rest}
+        |> attribute()
 
       [{_, :attribute_close, _} | rest] ->
         {attr_list, rest}

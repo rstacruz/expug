@@ -238,6 +238,21 @@ defmodule ExpugCompilerTest do
     } = ast
   end
 
+  test "value-less attributes" do
+    tokens = tokenize("div(src)")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        attributes: %{
+          "src" => [{:eval, true}]
+        }
+      }]
+    } = ast
+  end
+
   test "start with class" do
     tokens = tokenize(".hello")
     ast = compile(tokens)

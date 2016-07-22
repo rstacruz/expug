@@ -51,4 +51,11 @@ defmodule EexEvalTest do
 
     assert eex == "<div></div>\n"
   end
+
+  test "value-less attributes" do
+    eex = build("div(spellcheck)",
+      assigns: %{}, raw: &(&1))
+
+    assert eex == "<div spellcheck></div>\n"
+  end
 end
