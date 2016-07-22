@@ -12,7 +12,7 @@ defmodule TodoTestd do
   # test "Nesting HTML comments"
 
   # Priority:
-  test "value-less attributes (`textarea(spellcheck)`)"
+  # test "value-less attributes (`textarea(spellcheck)`)"
   # test "`.` raw text (like `script.`)"
   # test "multiline"
   test "!= unescaped code"

@@ -1,5 +1,22 @@
 # Changelog
 
+## [v0.4.0]
+> Jul 23, 2016
+
+Value-less boolean attributes are now supported.
+
+```jade
+textarea(spellcheck)
+```
+
+You can now change the `raw` helper in case you're not using Phoenix. The `raw_helper` (which defaults to `"raw"` as Phoenix uses) is used on unfiltered text (such as `!= text`).
+
+```ex
+Expug.to_eex!("div= \"Hello\"", raw_helper: "")
+```
+
+[v0.4.0]: https://github.com/rstacruz/expug/compare/v0.3.0...v0.4.0
+
 ## [v0.3.0]
 > Jul 21, 2016
 
