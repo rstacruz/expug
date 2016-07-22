@@ -277,7 +277,7 @@ You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1
     </a>
     <span class="signature">to_eex(source, opts \\ [])</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug.ex#L66" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug.ex#L72" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -287,6 +287,14 @@ You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1
     <p>Compiles an Expug template to an EEx template.</p>
 <p>Returns <code class="inline">{:ok, result}</code>, where <code class="inline">result</code> is an EEx string. On error, it will
 return <code class="inline">{:error, ...}</code>.</p>
+<h2>Options</h2>
+<p>All options are optional.</p>
+<ul>
+<li><code class="inline">attr_helper</code> (String) - the attribute helper to use (default: <code class="inline">&quot;Expug.Runtime.attr&quot;</code>)
+</li>
+<li><code class="inline">raw_helper</code> (String) - the raw helper to use (default: <code class="inline">&quot;raw&quot;</code>)
+</li>
+</ul>
 
   </section>
 </div>
@@ -297,7 +305,7 @@ return <code class="inline">{:error, ...}</code>.</p>
     </a>
     <span class="signature">to_eex!(source, opts \\ [])</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug.ex#L84" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug.ex#L90" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     

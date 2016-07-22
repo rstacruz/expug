@@ -114,13 +114,13 @@ iex&gt; with tokens &lt;- Expug.Tokenizer.tokenize(source),
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#add_closing/2">add_closing(doc, arg2)</a>
+    <a href="#add_closing/3">add_closing(doc, node, suffix \\ &quot;&quot;)</a>
   </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#attributes/1">attributes(attributes)</a>
+    <a href="#attributes/2">attributes(doc, attributes)</a>
   </div>
   
     <div class="summary-synopsis"><p>Stringifies an attributes map</p>
@@ -228,7 +228,7 @@ Used for closing <code class="inline">&lt;% end %&gt;</code></p>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#valueify/2">valueify(key, values)</a>
+    <a href="#valueify/3">valueify(doc, key, values)</a>
   </div>
   
 </div>
@@ -253,14 +253,14 @@ Used for closing <code class="inline">&lt;% end %&gt;</code></p>
             </a>
             Functions
           </h1>
-          <div class="detail" id="add_closing/2">
+          <div class="detail" id="add_closing/3">
   <div class="detail-header">
-    <a href="#add_closing/2" class="detail-link" title="Link to this function">
+    <a href="#add_closing/3" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">add_closing(doc, arg2)</span>
+    <span class="signature">add_closing(doc, node, suffix \\ &quot;&quot;)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L131" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L158" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -270,14 +270,14 @@ Used for closing <code class="inline">&lt;% end %&gt;</code></p>
     
   </section>
 </div>
-<div class="detail" id="attributes/1">
+<div class="detail" id="attributes/2">
   <div class="detail-header">
-    <a href="#attributes/1" class="detail-link" title="Link to this function">
+    <a href="#attributes/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">attributes(attributes)</span>
+    <span class="signature">attributes(doc, attributes)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L192" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L222" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -285,17 +285,21 @@ Used for closing <code class="inline">&lt;% end %&gt;</code></p>
   
   <section class="docstring">
     <p>Stringifies an attributes map.</p>
-<pre><code class="iex elixir">iex&gt; Expug.Builder.attributes(%{ &quot;src&quot; =&gt; [{:text, &quot;image.jpg&quot;}] })
+<pre><code class="iex elixir">iex&gt; doc = %{options: %{}}
+iex&gt; Expug.Builder.attributes(doc, %{ &quot;src&quot; =&gt; [{:text, &quot;image.jpg&quot;}] })
 &quot; src=\&quot;image.jpg\&quot;&quot;
 
-#iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:text, &quot;a&quot;}, {:text, &quot;b&quot;}] })
+#iex&gt; doc = %{options: %{}}
+#iex&gt; Expug.Builder.attributes(doc, %{ &quot;class&quot; =&gt; [{:text, &quot;a&quot;}, {:text, &quot;b&quot;}] })
 #&quot; class=\&quot;a b\&quot;&quot;
 
-iex&gt; Expug.Builder.attributes(%{ &quot;src&quot; =&gt; [{:eval, &quot;@image&quot;}] })
-&quot;&lt;%= raw(Expug.Runtime.attr(\&quot;src\&quot;, @image)) %&gt;&quot;
+iex&gt; doc = %{options: %{attr_helper: &quot;attr&quot;, raw_helper: &quot;raw&quot;}}
+iex&gt; Expug.Builder.attributes(doc, %{ &quot;src&quot; =&gt; [{:eval, &quot;@image&quot;}] })
+&quot;&lt;%= raw(attr(\&quot;src\&quot;, @image)) %&gt;&quot;
 
-iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&quot;}, {:eval, &quot;@b&quot;}] })
-&quot;&lt;%= raw(Expug.Runtime.attr(\&quot;class\&quot;, Enum.join([@a, @b], \&quot; \&quot;))) %&gt;&quot;</code></pre>
+iex&gt; doc = %{options: %{attr_helper: &quot;attr&quot;, raw_helper: &quot;raw&quot;}}
+iex&gt; Expug.Builder.attributes(doc, %{ &quot;class&quot; =&gt; [{:eval, &quot;@a&quot;}, {:eval, &quot;@b&quot;}] })
+&quot;&lt;%= raw(attr(\&quot;class\&quot;, Enum.join([@a, @b], \&quot; \&quot;))) %&gt;&quot;</code></pre>
 
   </section>
 </div>
@@ -306,7 +310,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">build(ast, opts \\ [])</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L29" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L34" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -323,7 +327,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">children(doc, list)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L143" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L169" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -341,7 +345,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">element(doc, node)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L157" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L183" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -359,7 +363,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">make(doc, node)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L36" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L45" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -377,7 +381,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">put(doc, map, str)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L226" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L258" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -395,7 +399,7 @@ iex&gt; Expug.Builder.attributes(%{ &quot;class&quot; =&gt; [{:eval, &quot;@a&qu
     </a>
     <span class="signature">put_collapse(doc, map)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L245" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L277" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -414,7 +418,7 @@ Used for if…end statements.</p>
     </a>
     <span class="signature">put_last(doc, str)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L236" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L268" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -433,7 +437,7 @@ Used for closing tags.</p>
     </a>
     <span class="signature">put_last_no_space(doc, str)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L255" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L287" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -452,7 +456,7 @@ Used for closing <code class="inline">&lt;% end %&gt;</code>.</p>
     </a>
     <span class="signature">self_closable?(node)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L173" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L199" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -469,7 +473,7 @@ Used for closing <code class="inline">&lt;% end %&gt;</code>.</p>
     </a>
     <span class="signature">self_closing_element(doc, node)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L161" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L187" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -486,7 +490,7 @@ Used for closing <code class="inline">&lt;% end %&gt;</code>.</p>
     </a>
     <span class="signature">str_join(left, str, sep \\ &quot; &quot;)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L219" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L251" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -503,7 +507,7 @@ Used for closing <code class="inline">&lt;% end %&gt;</code>.</p>
     </a>
     <span class="signature">update_line_count(doc, line, max)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L265" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L297" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -514,14 +518,14 @@ Used for closing <code class="inline">&lt;% end %&gt;</code>.</p>
 
   </section>
 </div>
-<div class="detail" id="valueify/2">
+<div class="detail" id="valueify/3">
   <div class="detail-header">
-    <a href="#valueify/2" class="detail-link" title="Link to this function">
+    <a href="#valueify/3" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">valueify(key, values)</span>
+    <span class="signature">valueify(doc, key, values)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L200" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.3.0/lib/expug/builder.ex#L230" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     

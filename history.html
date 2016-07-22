@@ -62,6 +62,13 @@
 
 
 <h1>Changelog</h1>
+<h2><a href="https://github.com/rstacruz/expug/compare/v0.3.0...v0.4.0" title="">v0.4.0</a></h2>
+<blockquote><p>Jul 23, 2016</p>
+</blockquote>
+<p>Value-less boolean attributes are now supported.</p>
+<pre><code class="jade">textarea(spellcheck)</code></pre>
+<p>You can now change the <code class="inline">raw</code> helper in case you’re not using Phoenix. The <code class="inline">raw_helper</code> (which defaults to <code class="inline">&quot;raw&quot;</code> as Phoenix uses) is used on unfiltered text (such as <code class="inline">!= text</code>).</p>
+<pre><code class="ex">Expug.to_eex!(&quot;div= \&quot;Hello\&quot;&quot;, raw_helper: &quot;&quot;)</code></pre>
 <h2><a href="https://github.com/rstacruz/expug/compare/v0.2.0...v0.3.0" title="">v0.3.0</a></h2>
 <blockquote><p>Jul 21, 2016</p>
 </blockquote>
