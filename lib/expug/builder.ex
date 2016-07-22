@@ -26,8 +26,17 @@ defmodule Expug.Builder do
   @void_elements ["area", "base", "br", "col", "embed", "hr", "img", "input",
    "keygen", "link", "meta", "param", "source", "track", "wbr"]
 
-  def build(ast, _opts \\ []) do
-    %{lines: 0} |> make(ast)
+  @defaults %{
+    attr_helper: "Expug.Runtime.attr",
+    raw_helper: "raw"
+  }
+
+  def build(ast, opts \\ []) do
+    opts = Enum.into(opts, @defaults)
+
+    %{lines: 0, options: opts, doctype: nil}
+    |> make(ast)
+    |> Map.delete(:options)
   end
 
   @doc """
@@ -154,12 +163,12 @@ defmodule Expug.Builder do
   Builds an element opening tag.
   """
 
-  def element(_doc, node) do
-    "<" <> node[:name] <> attributes(node[:attributes]) <> ">"
+  def element(doc, node) do
+    "<" <> node[:name] <> attributes(doc, node[:attributes]) <> ">"
   end
 
   def self_closing_element(doc, node) do
-    tag = node[:name] <> attributes(node[:attributes])
+    tag = node[:name] <> attributes(doc, node[:attributes])
     cond do
       doc[:doctype] == :xml ->
         "<#{tag} />"
@@ -177,35 +186,41 @@ defmodule Expug.Builder do
   @doc ~S"""
   Stringifies an attributes map.
 
-      iex> Expug.Builder.attributes(%{ "src" => [{:text, "image.jpg"}] })
+      iex> doc = %{options: %{}}
+      iex> Expug.Builder.attributes(doc, %{ "src" => [{:text, "image.jpg"}] })
       " src=\"image.jpg\""
 
-      #iex> Expug.Builder.attributes(%{ "class" => [{:text, "a"}, {:text, "b"}] })
+      #iex> doc = %{options: %{}}
+      #iex> Expug.Builder.attributes(doc, %{ "class" => [{:text, "a"}, {:text, "b"}] })
       #" class=\"a b\""
 
-      iex> Expug.Builder.attributes(%{ "src" => [{:eval, "@image"}] })
-      "<%= raw(Expug.Runtime.attr(\"src\", @image)) %>"
+      iex> doc = %{options: %{attr_helper: "attr", raw_helper: "raw"}}
+      iex> Expug.Builder.attributes(doc, %{ "src" => [{:eval, "@image"}] })
+      "<%= raw(attr(\"src\", @image)) %>"
 
-      iex> Expug.Builder.attributes(%{ "class" => [{:eval, "@a"}, {:eval, "@b"}] })
-      "<%= raw(Expug.Runtime.attr(\"class\", Enum.join([@a, @b], \" \"))) %>"
+      iex> doc = %{options: %{attr_helper: "attr", raw_helper: "raw"}}
+      iex> Expug.Builder.attributes(doc, %{ "class" => [{:eval, "@a"}, {:eval, "@b"}] })
+      "<%= raw(attr(\"class\", Enum.join([@a, @b], \" \"))) %>"
   """
-  def attributes(nil), do: ""
+  def attributes(_doc, nil), do: ""
 
-  def attributes(%{} = attributes) do
+  def attributes(doc, %{} = attributes) do
     Enum.reduce attributes, "", fn {key, values}, acc ->
-      acc <> valueify(key, values)
+      acc <> valueify(doc, key, values)
     end
   end
 
-  def valueify(key, [{:eval, value}]) do
-    "<%= raw(Expug.Runtime.attr(#{inspect(key)}, #{value})) %>"
+  def valueify(doc, key, [{:eval, value}]) do
+    %{options: %{attr_helper: attr, raw_helper: raw}} = doc
+    "<%= #{raw}(#{attr}(#{inspect(key)}, #{value})) %>"
   end
 
-  def valueify(key, [{:text, value}]) do
+  def valueify(_doc, key, [{:text, value}]) do
     Expug.Runtime.attr(key, value)
   end
 
-  def valueify(key, values) when length(values) > 1 do
+  def valueify(doc, key, values) when length(values) > 1 do
+    %{options: %{attr_helper: attr, raw_helper: raw}} = doc
     inside = Enum.reduce values, "", fn
       {:eval, value}, acc ->
         acc |> str_join(value, ", ")
@@ -213,7 +228,7 @@ defmodule Expug.Builder do
         acc |> str_join(Expug.Runtime.attr_value(value), ", ")
     end
 
-    "<%= raw(Expug.Runtime.attr(#{inspect(key)}, Enum.join([#{inside}], \" \"))) %>"
+    "<%= #{raw}(#{attr}(#{inspect(key)}, Enum.join([#{inside}], \" \"))) %>"
   end
 
   def str_join(left, str, sep \\ " ")

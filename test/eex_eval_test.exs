@@ -3,11 +3,7 @@ defmodule EexEvalTest do
 
   def build(source, bindings \\ [], opts \\ []) do
     source
-    |> Expug.Tokenizer.tokenize()
-    |> Expug.Compiler.compile()
-    |> Expug.Builder.build()
-    |> Expug.Stringifier.stringify()
-    |> String.replace(~r/raw\(/, "raw.(")
+    |> Expug.to_eex!(raw_helper: "raw.")
     |> EEx.eval_string(bindings, opts)
   end
 

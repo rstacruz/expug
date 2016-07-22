@@ -62,6 +62,12 @@ defmodule Expug do
 
   Returns `{:ok, result}`, where `result` is an EEx string. On error, it will
   return `{:error, ...}`.
+
+  ## Options
+  All options are optional.
+
+  * `attr_helper` (String) - the attribute helper to use (default: `"Expug.Runtime.attr"`)
+  * `raw_helper` (String) - the raw helper to use (default: `"raw"`)
   """
   def to_eex(source, opts \\ []) do
     try do
