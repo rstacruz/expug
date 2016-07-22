@@ -16,6 +16,14 @@ Buffered code starts with `=` and outputs the result of evaluating the Elixir ex
 p= "Hello, #{name}"
 ```
 
+## Unescaped code
+
+Buffered code may be unescaped by using `!=`. This skips the HTML escaping.
+
+```jade
+div!= markdown_to_html(@article.body) |> sanitize()
+```
+
 ## Conditionals and Loops
 
 For `if`, `cond`, `try`, `for`, an `end` statement is automatically inferred.
