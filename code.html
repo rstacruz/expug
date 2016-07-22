@@ -68,6 +68,8 @@
 div(id=&quot;name-#{name}&quot;)</code></pre>
 <h2 id="bufferred-code"> Bufferred code</h2><p>Buffered code starts with <code class="inline">=</code> and outputs the result of evaluating the Elixir expression in the template. For security, it is first HTML escaped.</p>
 <pre><code class="jade">p= &quot;Hello, #{name}&quot;</code></pre>
+<h2 id="unescaped-code"> Unescaped code</h2><p>Buffered code may be unescaped by using <code class="inline">!=</code>. This skips the HTML escaping.</p>
+<pre><code class="jade">div!= markdown_to_html(@article.body) |&gt; sanitize()</code></pre>
 <h2 id="conditionals-and-loops"> Conditionals and Loops</h2><p>For <code class="inline">if</code>, <code class="inline">cond</code>, <code class="inline">try</code>, <code class="inline">for</code>, an <code class="inline">end</code> statement is automatically inferred.</p>
 <pre><code class="jade">= if assigns.name do
   = &quot;Hello, #{@name}&quot;</code></pre>
