@@ -15,12 +15,12 @@ defmodule TodoTestd do
   # test "value-less attributes (`textarea(spellcheck)`)"
   # test "`.` raw text (like `script.`)"
   # test "multiline"
-  test "!= unescaped code"
+  # test "!= unescaped code"
+  test "Block expansion (li: a)"
+  test "HTML in Pug templates"
 
   # Lower priority:
   test "Spacing between <%= for %>"
   test "Showing HTML comments with //"
   test "Self-closing tag syntax (img/)"
-  test "Block expansion (li: a)"
-  test "HTML in Pug templates"
 end
