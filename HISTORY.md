@@ -9,6 +9,12 @@ Value-less boolean attributes are now supported.
 textarea(spellcheck)
 ```
 
+Unescaped text (`!=`) is now supported.
+
+```jade
+div!= markdown_to_html(@article.body) |> sanitize()
+```
+
 You can now change the `raw` helper in case you're not using Phoenix. The `raw_helper` (which defaults to `"raw"` as Phoenix uses) is used on unfiltered text (such as `!= text`).
 
 ```ex
