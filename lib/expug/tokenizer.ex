@@ -43,6 +43,12 @@ defmodule Expug.Tokenizer do
     - `:buffered_text` - `hello`
 
   ```
+  div!= hello
+  ```
+
+    - `:unescaped_text` - `hello`
+
+  ```
   div hello
   ```
 
@@ -132,6 +138,7 @@ defmodule Expug.Tokenizer do
       &line_comment/1,   # `-# hello`
       &html_comment/1,   # `// hello`
       &buffered_text/1,  # `= hello`
+      &unescaped_text/1, # `!= hello`
       &raw_text/1,       # `| hello`
       &statement/1,      # `- hello`
       &element/1         # `div.blue hello`
@@ -168,6 +175,7 @@ defmodule Expug.Tokenizer do
     |> optional(fn s -> s
       |> one_of([
         &sole_buffered_text/1,
+        &sole_unescaped_text/1,
         &sole_raw_text/1,
         &block_text/1
       ])
@@ -353,6 +361,13 @@ defmodule Expug.Tokenizer do
     |> buffered_text()
   end
 
+  @doc "Matches `!=`"
+  def sole_unescaped_text(state) do
+    state
+    |> optional_whitespace()
+    |> unescaped_text()
+  end
+
   @doc "Matches text"
   def sole_raw_text(state) do
     state
@@ -417,6 +432,13 @@ defmodule Expug.Tokenizer do
     |> discard(~r/^=/, :eq)
     |> optional_whitespace()
     |> eat(~r/^(?:[,\[\(\{]\s*\n|[^\n$])+/, :buffered_text)
+  end
+
+  def unescaped_text(state) do
+    state
+    |> discard(~r/^!=/, :bang_eq)
+    |> optional_whitespace()
+    |> eat(~r/^(?:[,\[\(\{]\s*\n|[^\n$])+/, :unescaped_text)
   end
 
   def raw_text(state) do

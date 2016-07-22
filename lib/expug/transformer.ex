@@ -8,7 +8,9 @@ defmodule Expug.Transformer do
   # Helper for later
   defmacrop statement?(type) do
     quote do
-      unquote(type) == :buffered_text or unquote(type) == :statement
+      unquote(type) == :buffered_text or
+      unquote(type) == :unescaped_text or
+      unquote(type) == :statement
     end
   end
 
@@ -65,17 +67,22 @@ defmodule Expug.Transformer do
         case close_clause(children, clause_after(pre)) do
           {:multi, children} ->
             # the next one IS else, don't close and proceed
+            node = node |> Map.put(:open, true)
             {:multi, [node | children]}
 
           {_, children} ->
             # the next one is not else, so close us up and proceed
-            node = node |> Map.put(:close, "end")
+            node = node
+            |> Map.put(:open, true)
+            |> Map.put(:close, "end")
             {:multi, [node | close_clauses(children)]}
         end
 
       # it's a single-clause thing (eg, cond do)
       statement?(node.type) and open?(node.value) ->
-        node = node |> Map.put(:close, "end")
+        node = node
+        |> Map.put(:open, true)
+        |> Map.put(:close, "end")
         {:single, [node | close_clauses(children)]}
 
       # Else, just reset the chain

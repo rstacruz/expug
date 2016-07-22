@@ -69,6 +69,22 @@ defmodule BuilderTest do
     }
   end
 
+  test "with unescaped text" do
+    eex = build("div!= hola()")
+    assert eex == %{
+      :lines => 1,
+      1 => ["<div>", "<%= raw(hola()) %>", "</div>"]
+    }
+  end
+
+  test "unescaped text only" do
+    eex = build("!= hola()")
+    assert eex == %{
+      :lines => 1,
+      1 => ["<%= raw(hola()) %>"]
+    }
+  end
+
   test "nesting" do
     eex = build("""
     doctype html
@@ -197,6 +213,15 @@ defmodule BuilderTest do
       :lines => 2,
       1 => ["<% for item <- @list do %>"],
       2 => [:collapse, "<div></div><% end %>"]
+    }
+  end
+
+  test "unescaped with body" do
+    eex = build("!= for item <- @list do\n  div")
+    assert eex == %{
+      :lines => 2,
+      1 => ["<%= raw(for item <- @list do %>"],
+      2 => [:collapse, "<div></div><% end) %>"]
     }
   end
 

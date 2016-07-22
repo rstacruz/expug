@@ -80,6 +80,15 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "title!= name" do
+    output = tokenize("title!= name")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "title"},
+      {{1, 9}, :unescaped_text, "name"}
+    ]
+  end
+
   test "| name $200" do
     output = tokenize("| name $200")
     assert reverse(output) == [
@@ -227,7 +236,7 @@ defmodule ExpugTokenizerTest do
       assert %{
         type: :parse_error,
         position: {2, 4},
-        expected: [:eq, :whitespace, :block_text, :attribute_open]
+        expected: [:eq, :bang_eq, :whitespace, :block_text, :attribute_open]
       } = output
     end
   end

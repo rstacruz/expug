@@ -115,9 +115,27 @@ defmodule Expug.Builder do
     |> put(node, "<%= #{value} %>")
   end
 
-  def make(doc, %{type: :unescaped_text, value: value} = node) do
+  # Handle `!= for item <- list do` (has children)
+  def make(doc, %{type: :unescaped_text, value: value, children: [_|_] = list} = node) do
+    %{options: %{raw_helper: raw}} = doc
     doc
-    |> put(node, "<%= raw(#{value}) %>")
+    |> put(node, "<%= #{raw}(#{value} %>")
+    |> put_collapse(node)
+    |> children(list)
+    |> add_closing(node, ")")
+  end
+
+  # Handle `!= @hello`
+  def make(doc, %{type: :unescaped_text, value: value} = node) do
+    %{options: %{raw_helper: raw}} = doc
+    case node[:open] do
+      true ->
+        doc
+        |> put(node, "<%= #{raw}(#{value} %>")
+      _ ->
+        doc
+        |> put(node, "<%= #{raw}(#{value}) %>")
+    end
   end
 
   def make(doc, %{type: :block_text, value: value} = node) do
@@ -137,14 +155,13 @@ defmodule Expug.Builder do
     }
   end
 
-  def add_closing(doc, %{close: close}) do
+  def add_closing(doc, node, suffix \\ "")
+  def add_closing(doc, %{close: close}, suffix) do
     doc
-    |> put_last_no_space("<% #{close} %>")
+    |> put_last_no_space("<% #{close}#{suffix} %>")
   end
 
-  def add_closing(doc, _) do
-    doc
-  end
+  def add_closing(doc, _, _), do: doc
 
   @doc """
   Builds a list of nodes.

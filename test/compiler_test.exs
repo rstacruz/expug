@@ -342,6 +342,37 @@ defmodule ExpugCompilerTest do
     } == ast
   end
 
+  test "unescaped text only" do
+    tokens = tokenize("!= hi")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :unescaped_text,
+        value: "hi",
+        token: {{1, 4}, :unescaped_text, "hi"}
+      }]
+    } == ast
+  end
+
+  test "unescaped text with element" do
+    tokens = tokenize("div!= hi")
+    ast = compile(tokens)
+    assert ast == %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        token: {{1, 1}, :element_name, "div"},
+        children: [%{
+          type: :unescaped_text,
+          value: "hi",
+          token: {{1, 7}, :unescaped_text, "hi"}
+        }]
+      }]
+    }
+  end
+
   test "statement with children" do
     tokens = tokenize("- hi\n  div")
     ast = compile(tokens)
@@ -368,6 +399,7 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :buffered_text,
         value: "if @x do",
+        open: true,
         close: "end",
         token: {{1, 3}, :buffered_text, "if @x do"},
         children: [%{
@@ -387,6 +419,7 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :buffered_text,
         value: "if @x do",
+        open: true,
         token: {{1, 3}, :buffered_text, "if @x do"},
         children: [%{
           type: :element,
@@ -396,6 +429,7 @@ defmodule ExpugCompilerTest do
       }, %{
         type: :statement,
         value: "else",
+        open: true,
         close: "end",
         token: {{3, 3}, :statement, "else"},
         children: [%{
@@ -415,6 +449,7 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :buffered_text,
         value: "try do",
+        open: true,
         token: {{1, 3}, :buffered_text, "try do"},
         children: [%{
           type: :element,
@@ -424,6 +459,7 @@ defmodule ExpugCompilerTest do
       }, %{
         type: :statement,
         value: "catch ->",
+        open: true,
         close: "end",
         token: {{3, 3}, :statement, "catch ->"},
         children: [%{
@@ -443,6 +479,7 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :buffered_text,
         value: "try do",
+        open: true,
         close: "end",
         token: {{1, 3}, :buffered_text, "try do"},
         children: [%{
@@ -462,6 +499,7 @@ defmodule ExpugCompilerTest do
       children: [%{
         type: :buffered_text,
         value: "cond do",
+        open: true,
         close: "end",
         token: {{1, 3}, :buffered_text, "cond do"},
         children: [%{
