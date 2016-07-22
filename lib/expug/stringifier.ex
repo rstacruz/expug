@@ -9,7 +9,9 @@ defmodule Expug.Stringifier do
 
   def stringify(%{} = doc, _opts \\ []) do
     {max, doc} = Map.pop(doc, :lines)
-    {_, doc} = Map.pop(doc, :doctype)
+    doc = doc
+    |> Map.delete(:doctype)
+    |> Map.delete(:options)
     list = doc |> Map.to_list() |> Enum.sort()
 
     case render_lines(list, 0, max) do
