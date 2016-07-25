@@ -6,14 +6,17 @@ There's [calliope] and [slime] that brings Haml and Slim to Elixir, respectively
 
 ## Pug/Jade syntax!
 
-The Pug syntax is something I personally find more sensible than Slim.
+The Pug syntax is something I personally find more sensible than Slim, and less noisy than Haml.
 
 ```
 # Expug
-p.alert(align="center")
+p.alert(align="center") Hello!
 
 # HAML
-%p.alert{align: "center"}
+%p.alert{align: "center"} Hello!
+
+# Slime
+p.alert align="center" Hello!
 ```
 
 Expug tries to infer what you mean based on balanced parentheses. In contrast, you're forced to use `"#{...}"` in slime.
