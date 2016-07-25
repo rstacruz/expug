@@ -28,7 +28,7 @@ Add expug to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:expug, "~> 0.5"}]
+  [{:expug, "~> 0.6"}]
 end
 ```
 
