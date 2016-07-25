@@ -16,11 +16,11 @@ defmodule TodoTestd do
   # test "`.` raw text (like `script.`)"
   # test "multiline"
   # test "!= unescaped code"
+  # test "Showing HTML comments with //"
   test "Block expansion (li: a)"
   test "HTML in Pug templates"
 
   # Lower priority:
   test "Spacing between <%= for %>"
-  test "Showing HTML comments with //"
   test "Self-closing tag syntax (img/)"
 end
