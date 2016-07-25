@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.11.5">
-    <title>Syntax: Comments – expug v0.5.0</title>
+    <title>Syntax: Comments – expug v0.6.0</title>
     <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
     
     <script src="dist/sidebar_items.js"></script>
@@ -28,7 +28,7 @@
         expug
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.5.0
+        v0.6.0
       </h2>
     </div>
     
@@ -62,16 +62,16 @@
 
 
 <h1>Syntax: Comments</h1>
-<p>Comments begin with <code class="inline">-#</code>.</p>
-<pre><code class="jade">-# This is a comment</code></pre>
+<p>Comments begin with <code class="inline">//-</code>.</p>
+<pre><code class="jade">//- This is a comment</code></pre>
 <p>You may nest under it, and those lines will be ignored.</p>
-<pre><code class="jade">-# everything here is ignored:
+<pre><code class="jade">//- everything here is ignored:
   a(href=&quot;/&quot;)
     | Link</code></pre>
-<p><code class="inline">-//</code> is also supported to keep consistency with Pug/Jade.</p>
-<pre><code class="jade">-// This is also a comment</code></pre>
+<p><code class="inline">-#</code> is also supported to keep consistency with Elixir.</p>
+<pre><code class="jade">-# This is also a comment</code></pre>
 <h2>HTML comments</h2>
-<p>HTML comments begin with <code class="inline">//</code>. They will be rendered as <code class="inline">&lt;!-- ... --&gt;</code>.</p>
+<p>HTML comments begin with <code class="inline">//</code> (no hyphen). They will be rendered as <code class="inline">&lt;!-- ... --&gt;</code>.</p>
 <pre><code class="jade">// This is a comment</code></pre>
 <h2>Also see</h2>
 <ul>
