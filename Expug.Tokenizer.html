@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.11.5">
-    <title>Expug.Tokenizer – expug v0.4.0</title>
+    <title>Expug.Tokenizer – expug v0.5.0</title>
     <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
     
     <script src="dist/sidebar_items.js"></script>
@@ -28,7 +28,7 @@
         expug
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.4.0
+        v0.5.0
       </h2>
     </div>
     
@@ -62,11 +62,11 @@
 
 
       <h1>
-        <small class="visible-xs">expug v0.4.0</small>
+        <small class="visible-xs">expug v0.5.0</small>
         Expug.Tokenizer
         
         
-          <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L1" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L1" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
@@ -148,6 +148,14 @@ an Abstract Syntax Tree.</p>
   more comments</code></pre>
 <ul>
 <li><code class="inline">:line_comment</code> - <code class="inline">comment</code>
+</li>
+<li><code class="inline">:subindent</code> - <code class="inline">more comments</code>
+</li>
+</ul>
+<pre><code class="elixir">// comment
+  more comments</code></pre>
+<ul>
+<li><code class="inline">:html_comment</code> - <code class="inline">comment</code>
 </li>
 <li><code class="inline">:subindent</code> - <code class="inline">more comments</code>
 </li>
@@ -551,7 +559,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">attribute(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L303" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L311" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -569,7 +577,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">attribute_brace(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L269" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L277" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -586,7 +594,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">attribute_bracket(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L253" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L261" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -603,7 +611,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">attribute_equal(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L330" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L338" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -620,7 +628,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">attribute_key(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L320" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L328" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -637,7 +645,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">attribute_key_value(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L311" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L319" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -654,7 +662,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">attribute_list(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L280" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L288" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -672,7 +680,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">attribute_paren(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L261" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L269" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -689,7 +697,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">attribute_separator(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L295" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L303" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -709,7 +717,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">attribute_value(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L325" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L333" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -726,7 +734,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">attributes_block(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L243" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L251" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -744,7 +752,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">block_text(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L392" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L400" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -761,7 +769,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">buffered_text(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L430" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L438" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -778,7 +786,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">doctype(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L122" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L130" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -796,7 +804,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">document(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L110" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L118" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -814,7 +822,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">element(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L171" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L179" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -832,7 +840,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">element_class(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L225" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L233" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -850,7 +858,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">element_class_or_id(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L217" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L225" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -868,7 +876,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">element_class_or_id_list(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L209" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L217" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -886,7 +894,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">element_descriptor(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L188" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L196" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -904,7 +912,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">element_descriptor_full(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L200" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L208" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -922,7 +930,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">element_id(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L234" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L242" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -940,7 +948,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">element_name(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L379" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L387" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -958,7 +966,7 @@ div(id=a, class=b)</code></pre>
     </a>
     <span class="signature">element_or_text(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L134" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L142" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -977,7 +985,7 @@ I don’t know what to call this.</p>
     </a>
     <span class="signature">get_indent(list)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L410" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L418" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -994,7 +1002,7 @@ I don’t know what to call this.</p>
     </a>
     <span class="signature">get_next_indent(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L467" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L475" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1017,7 +1025,7 @@ iex&gt; Expug.Tokenizer.get_next_indent(%{tokens: doc, source: source, position:
     </a>
     <span class="signature">get_next_indent(state, level)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L483" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L491" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1042,7 +1050,7 @@ iex&gt; Expug.Tokenizer.get_next_indent(%{tokens: [], source: source, position: 
     </a>
     <span class="signature">html_comment(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L422" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L430" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1059,7 +1067,7 @@ iex&gt; Expug.Tokenizer.get_next_indent(%{tokens: [], source: source, position: 
     </a>
     <span class="signature">indent(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L163" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L171" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1080,7 +1088,7 @@ space.</p>
     </a>
     <span class="signature">line_comment(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L384" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L392" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1097,7 +1105,7 @@ space.</p>
     </a>
     <span class="signature">newlines(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L151" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L159" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1115,7 +1123,7 @@ space.</p>
     </a>
     <span class="signature">optional_whitespace(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L347" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L355" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1132,7 +1140,7 @@ space.</p>
     </a>
     <span class="signature">optional_whitespace_or_newline(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L352" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L360" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1149,7 +1157,7 @@ space.</p>
     </a>
     <span class="signature">raw_text(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L444" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L452" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1166,7 +1174,7 @@ space.</p>
     </a>
     <span class="signature">sole_buffered_text(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L358" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L366" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1184,7 +1192,7 @@ space.</p>
     </a>
     <span class="signature">sole_raw_text(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L372" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L380" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1202,7 +1210,7 @@ space.</p>
     </a>
     <span class="signature">sole_unescaped_text(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L365" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L373" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1220,7 +1228,7 @@ space.</p>
     </a>
     <span class="signature">statement(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L451" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L459" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1237,7 +1245,7 @@ space.</p>
     </a>
     <span class="signature">subindent(state, level)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L404" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L412" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1254,7 +1262,7 @@ space.</p>
     </a>
     <span class="signature">subindent_block(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L398" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L406" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1271,7 +1279,7 @@ space.</p>
     </a>
     <span class="signature">tokenize(source, opts \\ [])</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L102" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L110" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1290,7 +1298,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">unescaped_text(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L437" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L445" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1307,7 +1315,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">whitespace(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L336" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L344" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -1325,7 +1333,7 @@ Returns a list of tokens. Each token is in the format <code class="inline">{posi
     </a>
     <span class="signature">whitespace_or_newline(state)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.4.0/lib/expug/tokenizer.ex#L342" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.5.0/lib/expug/tokenizer.ex#L350" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
