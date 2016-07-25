@@ -62,13 +62,40 @@
 
 
 <h1>Misc: Prior art</h1>
+<blockquote><p>a.k.a., “Why should I use Expug over other template engines?”</p>
+</blockquote>
 <p>There’s <a href="https://github.com/nurugger07/calliope" title="">calliope</a> and <a href="https://github.com/slime-lang/slime" title="">slime</a> that brings Haml and Slim to Elixir, respectively. Expug offers a bit more:</p>
-<h2 id="pug-jade-syntax-"> Pug/Jade syntax!</h2><p>Pug/Jade’s syntax is something I personally find more sensible than Slim.</p>
-<pre><code class="elixir">p.alert(align=&quot;center&quot;)      # Expug
+<h2 id="pug-jade-syntax-"> Pug/Jade syntax!</h2><p>The Pug syntax is something I personally find more sensible than Slim, and less noisy than Haml.</p>
+<pre><code class="elixir"># Expug
+p.alert(align=&quot;center&quot;) Hello!
 
-%p.alert{align: &quot;center&quot;}    # HAML</code></pre>
+# HAML
+%p.alert{align: &quot;center&quot;} Hello!
+
+# Slime
+p.alert align=&quot;center&quot; Hello!</code></pre>
+<p>Expug tries to infer what you mean based on balanced parentheses. In contrast, you’re forced to use <code class="inline">&quot;#{...}&quot;</code> in slime.</p>
+<pre><code class="elixir"># Expug
+script(src=static_path(@conn, &quot;/js/app.js&quot;) type=&quot;text/javascript&quot;)
+#          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# Slime
+script[src=&quot;#{static_path(@conn, &quot;/js/app.js&quot;)}&quot; type=&quot;text/javascript&quot;]</code></pre>
+<p>Also notice that you’re forced to use <code class="inline">[</code> in Slime if your attributes have <code class="inline">(</code> in it. Expug doesn’t have this restriction.</p>
+<pre><code class="elixir"># Slime
+a(href=&quot;/&quot;)
+a(href=&quot;/link&quot;)
+a[href=&quot;/link&quot; onclick=&quot;alert(&#39;Are you sure?&#39;)&quot;]</code></pre>
+<p>Slime has optional braces, which leads to a lot of confusion. In Expug, parentheses are required.</p>
+<pre><code class="elixir"># Slime
+strong This is bold text.
+strong color=&quot;blue&quot; This is also valid, but confusing.
+
+# Expug
+strong(color=&quot;blue&quot;) Easier and less confusing!</code></pre>
 <h2 id="true-multilines"> True multilines</h2><p>Expug has a non-line-based tokenizer that can figure out multiline breaks.</p>
-<pre><code class="elixir">= render App.UserView,
+<pre><code class="elixir"># Expug
+= render App.UserView,
   &quot;show.html&quot;,
   conn: @conn
 
@@ -76,6 +103,12 @@ div(
   style=&quot;font-weight: bold&quot;
   role=&quot;alert&quot;
 )</code></pre>
+<p>Using brace-matching, Expug’s parser can reliably figure out what you mean.</p>
+<pre><code class="elixir"># Expug
+script(
+  src=static_path(
+    @conn,
+    &quot;/js/app.js&quot;))</code></pre>
 <h2 id="correct-line-number-errors"> Correct line number errors</h2><p>Errors in Expug will always map to the correct source line numbers.</p>
 <blockquote><p>CompileError in show.html.pug (line 2):<br>
 assign @xyz not available in eex template.</p>
