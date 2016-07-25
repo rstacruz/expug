@@ -529,4 +529,21 @@ defmodule ExpugCompilerTest do
     } == ast
   end
 
+  test "comment in the middle" do
+    tokens = tokenize("div\n//- hi\nh1")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        token: {{1, 1}, :element_name, "div"}
+      }, %{
+        type: :element,
+        name: "h1",
+        token: {{3, 1}, :element_name, "h1"}
+      }]
+    } == ast
+  end
+
 end

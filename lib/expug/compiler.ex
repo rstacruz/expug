@@ -124,9 +124,12 @@ defmodule Expug.Compiler do
     {node, tokens}
   end
 
+  def statement({node, [{_, :html_comment, _} | [{_, :subindent, _} | _] = tokens]}, _depths) do
+    subindent({node, tokens})
+  end
+
   def statement({node, [{_, :html_comment, _} | tokens]}, depths) do
     # TODO: render
-    {_, tokens} = indent({node, tokens}, depths)
     {node, tokens}
   end
 
