@@ -46,6 +46,10 @@ ul.links
 
 Read more: [Syntax](https://hexdocs.pm/expug/syntax.html)
 
+## Why should I use it?
+
+Read on [this comparison](https://hexdocs.pm/expug/prior_art.html) to see how Expug compares to other similar libraries.
+
 ## Thanks
 
 **expug** © 2016+, Rico Sta. Cruz. Released under the [MIT] License.<br>
