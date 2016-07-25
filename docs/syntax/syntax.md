@@ -43,8 +43,8 @@ Comments
 --------
 
 ```jade
--# This is a comment
--// this, too
+//- This is a comment
+-# this, too
 
 // this is an HTML comment
 ```
