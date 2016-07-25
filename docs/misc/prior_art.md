@@ -1,5 +1,7 @@
 # Misc: Prior art
 
+> a.k.a., "Why should I use Expug over other template engines?"
+
 There's [calliope] and [slime] that brings Haml and Slim to Elixir, respectively. Expug offers a bit more:
 
 ## Pug/Jade syntax!
