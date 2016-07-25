@@ -4,19 +4,54 @@ There's [calliope] and [slime] that brings Haml and Slim to Elixir, respectively
 
 ## Pug/Jade syntax!
 
-Pug/Jade's syntax is something I personally find more sensible than Slim.
+The Pug syntax is something I personally find more sensible than Slim.
 
 ```
-p.alert(align="center")      # Expug
+# Expug
+p.alert(align="center")
 
-%p.alert{align: "center"}    # HAML
+# HAML
+%p.alert{align: "center"}
 ```
+
+Expug tries to infer what you mean based on balanced parentheses. In contrast, you're forced to use `"#{...}"` in slime.
+
+```
+# Expug
+script(src=static_path(@conn, "/js/app.js") type="text/javascript")
+#          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# Slime
+script[src="#{static_path(@conn, "/js/app.js")}" type="text/javascript"]
+```
+
+Also notice that you're forced to use `[` in Slime if your attributes have `(` in it. Expug doesn't have this restriction.
+
+```
+# Slime
+a(href="/")
+a(href="/link")
+a[href="/link" onclick="alert('Are you sure?')"]
+```
+
+Slime has optional braces, which leads to a lot of confusion. In Expug, parentheses are required.
+
+```
+# Slime
+strong This is bold text.
+string color="blue" This is also valid, but confusing.
+
+# Expug
+string(color="blue") Easier and less confusing!
+```
+
 
 ## True multilines
 
 Expug has a non-line-based tokenizer that can figure out multiline breaks.
 
 ```
+# Expug
 = render App.UserView,
   "show.html",
   conn: @conn
@@ -25,6 +60,16 @@ div(
   style="font-weight: bold"
   role="alert"
 )
+```
+
+Using brace-matching, Expug's parser can reliably figure out what you mean.
+
+```
+# Expug
+script(
+  src=static_path(
+    @conn,
+    "/js/app.js"))
 ```
 
 ## Correct line number errors
