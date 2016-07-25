@@ -131,17 +131,6 @@ defmodule Expug.Compiler do
     {node, tokens}
   end
 
-  def html_comment({node, [{_, :subindent, value} | tokens]}) do
-    node = node
-    |> Map.update(:value, value, &(&1 <> "\n#{value}"))
-    {node, tokens}
-    |> html_comment()
-  end
-
-  def html_comment({node, tokens}) do
-    {node, tokens}
-  end
-
   def statement({node, [{_, :element_name, _} = t | _] = tokens}, depths) do
     add_element(node, t, tokens, depths)
   end
@@ -180,6 +169,17 @@ defmodule Expug.Compiler do
 
   def statement({_node, tokens}, _depths) do
      throw {:compile_error, :unexpected_token, tokens}
+  end
+
+  def html_comment({node, [{_, :subindent, value} | tokens]}) do
+    node = node
+    |> Map.update(:value, value, &(&1 <> "\n#{value}"))
+    {node, tokens}
+    |> html_comment()
+  end
+
+  def html_comment({node, tokens}) do
+    {node, tokens}
   end
 
   def add_element(node, t, tokens, depth) do
