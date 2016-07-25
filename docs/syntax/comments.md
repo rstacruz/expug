@@ -20,8 +20,16 @@ You may nest under it, and those lines will be ignored.
 -// This is also a comment
 ```
 
-HTML comments begin with a `/`.
+HTML comments
+-------------
+
+HTML comments begin with `//`. They will be rendered as `<!-- ... -->`.
 
 ```jade
-/ This is a comment
+// This is a comment
 ```
+
+Also see
+--------
+
+- <http://jade-lang.com/reference/comments/>

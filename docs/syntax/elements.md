@@ -84,4 +84,3 @@ a(
   )
 )= "View list of pages"
 ```
-

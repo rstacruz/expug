@@ -23,4 +23,5 @@ defmodule TodoTestd do
   # Lower priority:
   test "Spacing between <%= for %>"
   test "Self-closing tag syntax (img/)"
+  test "Filters"
 end

@@ -46,7 +46,7 @@ Comments
 -# This is a comment
 -// this, too
 
-/ this is an HTML comment
+// this is an HTML comment
 ```
 
 See: [Comments](comments.html)
