@@ -542,12 +542,12 @@ defmodule ExpugTokenizerTest do
   end
 
   test "// comments, with trailing" do
-    output = tokenize("div\n//- ...\nh1")
+    output = tokenize("div\n// ...\nh1")
     assert reverse(output) == [
       {{1, 1}, :indent, 0},
       {{1, 1}, :element_name, "div"},
       {{2, 1}, :indent, 0},
-      {{2, 3}, :html_comment, "- ..."},
+      {{2, 4}, :html_comment, "..."},
       {{3, 1}, :indent, 0},
       {{3, 1}, :element_name, "h1"}
     ]
