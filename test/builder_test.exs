@@ -285,6 +285,39 @@ defmodule BuilderTest do
     }
   end
 
+  test "// comment" do
+    eex = build("// hi")
+    assert eex == %{
+      :lines => 1,
+      1 => ["<!-- hi -->"],
+    }
+  end
+
+  test "// comment, multiline" do
+    eex = build("// hi\n  world")
+    assert eex == %{
+      :lines => 1,
+      1 => ["<!-- hi\nworld -->"],
+    }
+  end
+
+  test "// comment, multiline, empty first line" do
+    eex = build("//\n  world")
+    assert eex == %{
+      :lines => 1,
+      1 => ["<!-- \nworld -->"],
+    }
+  end
+
+  test "// comment, multiline, with stuff after" do
+    eex = build("//\n  world\ndiv")
+    assert eex == %{
+      :lines => 3,
+      1 => ["<!-- \nworld -->"],
+      3 => ["<div></div>"]
+    }
+  end
+
   test "cond do ... end" do
     eex = build("= cond do\n  div")
     assert eex == %{

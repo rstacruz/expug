@@ -115,6 +115,11 @@ defmodule Expug.Builder do
     |> put(node, "<%= #{value} %>")
   end
 
+  def make(doc, %{type: :html_comment, value: value} = node) do
+    doc
+    |> put(node, "<!-- #{value} -->")
+  end
+
   # Handle `!= for item <- list do` (has children)
   def make(doc, %{type: :unescaped_text, value: value, children: [_|_] = list} = node) do
     %{options: %{raw_helper: raw}} = doc

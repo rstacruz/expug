@@ -539,9 +539,34 @@ defmodule ExpugCompilerTest do
         name: "div",
         token: {{1, 1}, :element_name, "div"}
       }, %{
+        type: :html_comment,
+        value: "- hi",
+        token: {{2, 3}, :html_comment, "- hi"}
+      }, %{
         type: :element,
         name: "h1",
         token: {{3, 1}, :element_name, "h1"}
+      }]
+    } == ast
+  end
+
+  test "multiline comment in the middle" do
+    tokens = tokenize("div\n//- hi\n  yo\nh1")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        token: {{1, 1}, :element_name, "div"}
+      }, %{
+        type: :html_comment,
+        value: "- hi\nyo",
+        token: {{2, 3}, :html_comment, "- hi"}
+      }, %{
+        type: :element,
+        name: "h1",
+        token: {{4, 1}, :element_name, "h1"}
       }]
     } == ast
   end

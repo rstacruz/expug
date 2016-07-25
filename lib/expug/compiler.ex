@@ -124,12 +124,21 @@ defmodule Expug.Compiler do
     {node, tokens}
   end
 
-  def statement({node, [{_, :html_comment, _} | [{_, :subindent, _} | _] = tokens]}, _depths) do
-    subindent({node, tokens})
+  def statement({node, [{_, :html_comment, value} = t | tokens]}, depths) do
+    child = %{type: :html_comment, value: value, token: t}
+    {child, tokens} = html_comment({child, tokens})
+    node = add_child(node, child)
+    {node, tokens}
   end
 
-  def statement({node, [{_, :html_comment, _} | tokens]}, depths) do
-    # TODO: render
+  def html_comment({node, [{_, :subindent, value} | tokens]}) do
+    node = node
+    |> Map.update(:value, value, &(&1 <> "\n#{value}"))
+    {node, tokens}
+    |> html_comment()
+  end
+
+  def html_comment({node, tokens}) do
     {node, tokens}
   end
 
