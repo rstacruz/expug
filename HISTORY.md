@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.5.0]
+> Jul 25, 2016
+
+HTML comments are now supported. They are just like `-//` comments, but they will render as `<!-- ... -->`.
+
+```jade
+// This is a comment
+  (Anything below it will be part of the comment)
+```
+
+[v0.5.0]: https://github.com/rstacruz/expug/compare/v0.4.0...v0.5.0
+
 ## [v0.4.0]
 > Jul 23, 2016
 
