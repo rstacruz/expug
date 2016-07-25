@@ -41,10 +41,10 @@ Slime has optional braces, which leads to a lot of confusion. In Expug, parenthe
 ```
 # Slime
 strong This is bold text.
-string color="blue" This is also valid, but confusing.
+strong color="blue" This is also valid, but confusing.
 
 # Expug
-string(color="blue") Easier and less confusing!
+strong(color="blue") Easier and less confusing!
 ```
 
 
