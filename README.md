@@ -2,6 +2,8 @@
 
 > Indented shorthand HTML templates for Elixir
 
+<p><iframe src="https://ghbtns.com/github-btn.html?user=rstacruz&repo=expug&type=star&count=true&size=large" frameborder="0" scrolling="0" width="180px" height="30px"></iframe></p>
+
 Expug is a template language based on [Pug][] (formerly known as [Jade][]).
 It lets you write HTML as indented shorthand, inspired by Haml, Slim, Pug/Jade, and so on.
 
@@ -61,3 +63,5 @@ Authored and maintained by Rico Sta. Cruz with help from contributors ([list][co
 
 [MIT]: http://mit-license.org/
 [contributors]: http://github.com/rstacruz/expug/contributors
+
+<p><iframe src="https://ghbtns.com/github-btn.html?user=rstacruz&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe></p>
