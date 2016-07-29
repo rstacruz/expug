@@ -17,9 +17,9 @@ defmodule TodoTestd do
   # test "multiline"
   # test "!= unescaped code"
   # test "Showing HTML comments with //"
+  # test "space at the beginning"
   test "Block expansion (li: a)"
   test "HTML in Pug templates"
-  test "space at the beginning"
 
   # Lower priority:
   test "Spacing between <%= for %>"
