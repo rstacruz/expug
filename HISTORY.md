@@ -1,5 +1,19 @@
 # Changelog
 
+## [v0.7.0]
+> Jul 29, 2016
+
+Support improved multiline. Write `=`, `!=` or `-` immediately followed by a newline. All text indented inside it will be treated as part of an Elixir expression.
+
+```jade
+=
+  render App.MyView, "index.html",
+  [conn: @conn] ++
+  assigns
+```
+
+[v0.7.0]: https://github.com/rstacruz/expug/compare/v0.6.0...v0.7.0
+
 ## [v0.6.0]
 > Jul 25, 2016
 

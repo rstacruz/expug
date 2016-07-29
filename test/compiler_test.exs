@@ -609,4 +609,22 @@ defmodule ExpugCompilerTest do
       }]
     } == ast
   end
+
+  test "full multiline = with div" do
+    tokens = tokenize("div=\n  ab\n  cd")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :element,
+        name: "div",
+        token: {{1, 1}, :element_name, "div"},
+        children: [%{
+          type: :buffered_text,
+          value: "\nab\ncd",
+          token: {{1, 5}, :buffered_text, ""}
+        }]
+      }]
+    } == ast
+  end
 end
