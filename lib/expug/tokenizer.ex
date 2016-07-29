@@ -440,16 +440,46 @@ defmodule Expug.Tokenizer do
 
   def buffered_text(state) do
     state
+    |> one_of([
+      &one_line_buffered_text/1,
+      &multiline_buffered_text/1
+    ])
+  end
+
+  def one_line_buffered_text(state) do
+    state
     |> discard(~r/^=/, :eq)
     |> optional_whitespace()
     |> eat(~r/^(?:[,\[\(\{]\s*\n|[^\n$])+/, :buffered_text)
   end
 
+  def multiline_buffered_text(state) do
+    state
+    |> discard(~r/^=/, :eq)
+    |> start_empty(:buffered_text)
+    |> subindent_block()
+  end
+
   def unescaped_text(state) do
+    state
+    |> one_of([
+      &one_line_unescaped_text/1,
+      &multiline_unescaped_text/1
+    ])
+  end
+
+  def one_line_unescaped_text(state) do
     state
     |> discard(~r/^!=/, :bang_eq)
     |> optional_whitespace()
     |> eat(~r/^(?:[,\[\(\{]\s*\n|[^\n$])+/, :unescaped_text)
+  end
+
+  def multiline_unescaped_text(state) do
+    state
+    |> discard(~r/^!=/, :bang_eq)
+    |> start_empty(:unescaped_text)
+    |> subindent_block()
   end
 
   def raw_text(state) do
@@ -461,9 +491,24 @@ defmodule Expug.Tokenizer do
 
   def statement(state) do
     state
+    |> one_of([
+      &one_line_statement/1,
+      &multiline_statement/1
+    ])
+  end
+
+  def one_line_statement(state) do
+    state
     |> discard(~r/^\-/, :dash)
     |> optional_whitespace()
     |> eat(~r/^(?:[,\[\(\{]\s*\n|[^\n$])+/, :statement)
+  end
+
+  def multiline_statement(state) do
+    state
+    |> discard(~r/^\-/, :dash)
+    |> start_empty(:statement)
+    |> subindent_block()
   end
 
   @doc ~S"""

@@ -51,3 +51,13 @@ If a line ends in one of these characters: `,` `(` `{` `[`, the next line is con
   "index.html",
   conn: @conn
 ```
+
+You may also force multiline by starting a line with `=` immediately followed by a newline. Any text indented after this will be treated as an Elixir expression, regardless of what each line ends in.
+
+```jade
+=
+  render App.PageView,
+  "index.html",
+  [conn: @conn] ++
+  assigns
+```

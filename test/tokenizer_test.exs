@@ -573,6 +573,16 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "= full multiline" do
+    output = tokenize("=\n  ab\n  cd")
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 2}, :buffered_text, ""},
+      {{2, 3}, :subindent, "ab"},
+      {{3, 3}, :subindent, "cd"}
+    ]
+  end
+
   test "separating attributes with newlines" do
     output = tokenize("div(a=1\nb=2)")
     assert reverse(output) == [

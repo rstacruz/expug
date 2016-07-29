@@ -571,4 +571,42 @@ defmodule ExpugCompilerTest do
     }
   end
 
+  test "full multiline =" do
+    tokens = tokenize("=\n  ab\n  cd")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :buffered_text,
+        value: "\nab\ncd",
+        token: {{1, 2}, :buffered_text, ""}
+      }]
+    } == ast
+  end
+
+  test "full multiline !=" do
+    tokens = tokenize("!=\n  ab\n  cd")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :unescaped_text,
+        value: "\nab\ncd",
+        token: {{1, 3}, :unescaped_text, ""}
+      }]
+    } == ast
+  end
+
+  test "full multiline -" do
+    tokens = tokenize("-\n  ab\n  cd")
+    ast = compile(tokens)
+    assert %{
+      type: :document,
+      children: [%{
+        type: :statement,
+        value: "\nab\ncd",
+        token: {{1, 2}, :statement, ""}
+      }]
+    } == ast
+  end
 end

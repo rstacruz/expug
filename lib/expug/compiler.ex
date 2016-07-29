@@ -126,7 +126,7 @@ defmodule Expug.Compiler do
 
   def statement({node, [{_, :html_comment, value} = t | tokens]}, depths) do
     child = %{type: :html_comment, value: value, token: t}
-    {child, tokens} = html_comment({child, tokens})
+    {child, tokens} = append_subindent({child, tokens})
     node = add_child(node, child)
     {node, tokens}
   end
@@ -151,18 +151,21 @@ defmodule Expug.Compiler do
 
   def statement({node, [{_, :buffered_text, value} = t | tokens]}, _depth) do
     child = %{type: :buffered_text, value: value, token: t}
+    {child, tokens} = append_subindent({child, tokens})
     node = add_child(node, child)
     {node, tokens}
   end
 
   def statement({node, [{_, :unescaped_text, value} = t | tokens]}, _depth) do
     child = %{type: :unescaped_text, value: value, token: t}
+    {child, tokens} = append_subindent({child, tokens})
     node = add_child(node, child)
     {node, tokens}
   end
 
   def statement({node, [{_, :statement, value} = t | tokens]}, _depth) do
     child = %{type: :statement, value: value, token: t}
+    {child, tokens} = append_subindent({child, tokens})
     node = add_child(node, child)
     {node, tokens}
   end
@@ -171,14 +174,17 @@ defmodule Expug.Compiler do
      throw {:compile_error, :unexpected_token, tokens}
   end
 
-  def html_comment({node, [{_, :subindent, value} | tokens]}) do
+  @doc """
+  Consumes `:subindent` tokens and adds them to the `value` of `node`.
+  """
+  def append_subindent({node, [{_, :subindent, value} | tokens]}) do
     node = node
     |> Map.update(:value, value, &(&1 <> "\n#{value}"))
     {node, tokens}
-    |> html_comment()
+    |> append_subindent()
   end
 
-  def html_comment({node, tokens}) do
+  def append_subindent({node, tokens}) do
     {node, tokens}
   end
 
