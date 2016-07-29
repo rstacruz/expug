@@ -21,17 +21,17 @@ defmodule Expug.Error do
     }
   end
 
-  def repeat_string(times, string \\ " ") do
-    1..times |> Enum.reduce("", fn _, acc -> acc <> string end)
-  end
-
   def exception(err) do
     %Expug.Error{
       message: "Error #{inspect(err)}"
     }
   end
 
-  def exception_message(:parse_error, %{expected: expected}) do
+  def repeat_string(times, string \\ " ") do
+    1..times |> Enum.reduce("", fn _, acc -> acc <> string end)
+  end
+
+  def exception_message(:parse_error, %{expected: _expected}) do
     {
       "Parse error",
       """

@@ -128,7 +128,7 @@ defmodule Expug.Compiler do
     {node, tokens}
   end
 
-  def statement({node, [{_, :html_comment, value} = t | tokens]}, depths) do
+  def statement({node, [{_, :html_comment, value} = t | tokens]}, _depths) do
     child = %{type: :html_comment, value: value, token: t}
     {child, tokens} = append_subindent({child, tokens})
     node = add_child(node, child)
