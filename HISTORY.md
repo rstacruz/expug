@@ -12,6 +12,8 @@ Support improved multiline. Write `=`, `!=` or `-` immediately followed by a new
   assigns
 ```
 
+Error messages have been improved.
+
 [v0.7.0]: https://github.com/rstacruz/expug/compare/v0.6.0...v0.7.0
 
 ## [v0.6.0]

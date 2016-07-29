@@ -41,7 +41,21 @@ defmodule ExpugTest do
   end
 
   test "bang, parse error" do
-    msg = "parse error, expected one of: eq, bang_eq, whitespace, block_text, attribute_open on line 2 col 4"
+    msg = """
+    Parse error on line 2
+
+        huh?
+           ^
+
+    Expug encountered a character it didn't expect.
+    Expected one of:
+
+    * eq
+    * bang_eq
+    * whitespace
+    * block_text
+    * attribute_open
+    """
     assert_raise Expug.Error, msg, fn ->
       Expug.to_eex!("hello\nhuh?")
     end

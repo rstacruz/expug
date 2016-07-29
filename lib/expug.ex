@@ -92,6 +92,7 @@ defmodule Expug do
       {:ok, eex} ->
         eex
       {:error, err} ->
+        err = err |> Map.put(:source, source)
         raise Expug.Error.exception(err)
     end
   end
