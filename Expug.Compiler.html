@@ -140,6 +140,15 @@ give you an element, or a text node, or whatever.</p>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#append_subindent/1">append_subindent(arg)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Consumes <code class="inline">:subindent</code> tokens and adds them to the <code class="inline">value</code> of <code class="inline">node</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#attribute/1">attribute(arg)</a>
   </div>
   
@@ -173,12 +182,6 @@ give you an element, or a text node, or whatever.</p>
     <div class="summary-synopsis"><p>Parses an element.
 Returns a <code class="inline">%{type: :element}</code> node</p>
 </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#html_comment/1">html_comment(arg)</a>
-  </div>
   
 </div>
 <div class="summary-row">
@@ -243,7 +246,7 @@ Can consume these</p>
     </a>
     <span class="signature">add_attribute(list, key, value)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L268" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L276" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -260,7 +263,7 @@ Can consume these</p>
     </a>
     <span class="signature">add_child(node, child)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L282" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L290" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -284,7 +287,7 @@ iex&gt; src = %{children: [%{type: :a}]}
     </a>
     <span class="signature">add_element(node, t, tokens, depth)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L185" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L191" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -294,6 +297,24 @@ iex&gt; src = %{children: [%{type: :a}]}
     
   </section>
 </div>
+<div class="detail" id="append_subindent/1">
+  <div class="detail-header">
+    <a href="#append_subindent/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">append_subindent(arg)</span>
+      
+      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L180" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Consumes <code class="inline">:subindent</code> tokens and adds them to the <code class="inline">value</code> of <code class="inline">node</code>.</p>
+
+  </section>
+</div>
 <div class="detail" id="attribute/1">
   <div class="detail-header">
     <a href="#attribute/1" class="detail-link" title="Link to this function">
@@ -301,7 +322,7 @@ iex&gt; src = %{children: [%{type: :a}]}
     </a>
     <span class="signature">attribute(arg)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L248" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L256" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -356,7 +377,7 @@ iex&gt; src = %{children: [%{type: :a}]}
     </a>
     <span class="signature">element(arg, parent, depths)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L196" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L202" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -366,23 +387,6 @@ iex&gt; src = %{children: [%{type: :a}]}
     <p>Parses an element.
 Returns a <code class="inline">%{type: :element}</code> node.</p>
 
-  </section>
-</div>
-<div class="detail" id="html_comment/1">
-  <div class="detail-header">
-    <a href="#html_comment/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">html_comment(arg)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L174" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-  </div>
-  
-  <section class="docstring">
-    
   </section>
 </div>
 <div class="detail" id="indent/2">
@@ -434,7 +438,7 @@ Can consume these:</p>
     </a>
     <span class="signature">subindent(arg)</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L289" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L297" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -452,7 +456,7 @@ Can consume these:</p>
     </a>
     <span class="signature">subindent_capture(tokens, lines \\ [])</span>
       
-      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L297" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/rstacruz/expug/blob/v0.6.0/lib/expug/compiler.ex#L305" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     

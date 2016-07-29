@@ -82,6 +82,12 @@ div(id=&quot;name-#{name}&quot;)</code></pre>
 <pre><code class="jade">= render App.PageView,
   &quot;index.html&quot;,
   conn: @conn</code></pre>
+<p>You may also force multiline by starting a line with <code class="inline">=</code> immediately followed by a newline. Any text indented after this will be treated as an Elixir expression, regardless of what each line ends in.</p>
+<pre><code class="jade">=
+  render App.PageView,
+  &quot;index.html&quot;,
+  [conn: @conn] ++
+  assigns</code></pre>
 
     <footer class="footer">
       <p>
