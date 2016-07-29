@@ -22,7 +22,7 @@ defmodule Expug.Error do
   end
 
   def repeat_string(times, string \\ " ") do
-    1..times |> Enum.reduce("", fn n, acc -> acc <> string end)
+    1..times |> Enum.reduce("", fn _, acc -> acc <> string end)
   end
 
   def exception(err) do
@@ -36,9 +36,6 @@ defmodule Expug.Error do
       "Parse error",
       """
       Expug encountered a character it didn't expect.
-      Expected one of:
-
-      * #{Enum.join(expected, "\n* ")}
       """
     }
   end

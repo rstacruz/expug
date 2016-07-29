@@ -44,20 +44,41 @@ defmodule ExpugTest do
     msg = """
     Parse error on line 2
 
-        huh?
+        div<color=@blue>
            ^
 
     Expug encountered a character it didn't expect.
-    Expected one of:
-
-    * eq
-    * bang_eq
-    * whitespace
-    * block_text
-    * attribute_open
     """
     assert_raise Expug.Error, msg, fn ->
-      Expug.to_eex!("hello\nhuh?")
+      Expug.to_eex!("hello\ndiv<color=@blue>")
+    end
+  end
+
+  test "bang, parse error (2)" do
+    msg = """
+    Parse error on line 1
+
+        div(a!)
+           ^
+
+    Expug encountered a character it didn't expect.
+    """
+    assert_raise Expug.Error, msg, fn ->
+      Expug.to_eex!("div(a!)")
+    end
+  end
+
+  test "bang, parse error (3)" do
+    msg = """
+    Parse error on line 1
+
+        div=
+           ^
+
+    Expug encountered a character it didn't expect.
+    """
+    assert_raise Expug.Error, msg, fn ->
+      Expug.to_eex!("div=")
     end
   end
 
