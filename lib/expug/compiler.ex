@@ -223,11 +223,13 @@ defmodule Expug.Compiler do
 
       [{_, :buffered_text, value} = t | rest] ->
         child = %{type: :buffered_text, value: value, token: t}
+        {child, rest} = append_subindent({child, rest})
         node = add_child(node, child)
         element({node, rest}, parent, depths)
 
       [{_, :unescaped_text, value} = t | rest] ->
         child = %{type: :unescaped_text, value: value, token: t}
+        {child, rest} = append_subindent({child, rest})
         node = add_child(node, child)
         element({node, rest}, parent, depths)
 
