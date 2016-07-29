@@ -70,6 +70,10 @@ defmodule Expug.Compiler do
   """
   def indent({node, [{_, :indent, subdepth} | [_|_] = tokens]}, [d | _] = depths)
   when subdepth > d do
+    if node[:children] == nil do
+      throw {:compile_error, :unexpected_indent, hd(tokens)}
+    end
+
     # Found children, start a new subtree.
     [child | rest] = Enum.reverse(node[:children] || [])
     {child, tokens} = statement({child, tokens}, [ subdepth | depths ])

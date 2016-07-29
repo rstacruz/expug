@@ -627,4 +627,10 @@ defmodule ExpugCompilerTest do
       }]
     } == ast
   end
+
+  test "start with a space" do
+    tokens = tokenize(" div")
+    assert catch_throw(compile(tokens)) ==
+      {:compile_error, :unexpected_indent, {{1, 2}, :element_name, "div"}}
+  end
 end
