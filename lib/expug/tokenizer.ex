@@ -402,7 +402,7 @@ defmodule Expug.Tokenizer do
 
   def block_text(state) do
     state
-    |> eat(~r/\./, :block_text)
+    |> eat(~r/^\./, :block_text)
     |> subindent_block()
   end
 

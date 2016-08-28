@@ -668,6 +668,25 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "newline with dot (#5)" do
+    output = tokenize("""
+    li
+
+      img(src=x.x)
+    """)
+
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "li"},
+      {{3, 1}, :indent, 2},
+      {{3, 3}, :element_name, "img"},
+      {{3, 6}, :attribute_open, "("},
+      {{3, 7}, :attribute_key, "src"},
+      {{3, 11}, :attribute_value, "x.x"},
+      {{3, 14}, :attribute_close, ")"}
+    ]
+  end
+
   # test "comma delimited attributes"
   # test "script."
   # test "comments"

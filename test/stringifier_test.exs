@@ -230,8 +230,6 @@ defmodule StringifierTest do
     """
   end
 
-  @tag :pending
-  @tag :next
   test "newline with dot (#5)" do
     eex = build("""
     li
