@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.7.3]
+> Aug 29, 2016
+
+- [#5] - Fixes problems with some nodes rendering as text.
+
+[v0.7.3]: https://github.com/rstacruz/expug/compare/v0.7.2...v0.7.3
+
 ## [v0.7.2]
 > Aug 29, 2016
 
@@ -61,7 +68,7 @@ textarea(spellcheck)
 Unescaped text (`!=`) is now supported.
 
 ```jade
-div!= markdown_to_html(@article.body) |> sanitize()
+div!= markdown_to_html([@article].body) |> sanitize()
 ```
 
 You can now change the `raw` helper in case you're not using Phoenix. The `raw_helper` (which defaults to `"raw"` as Phoenix uses) is used on unfiltered text (such as `!= text`).
@@ -119,10 +126,10 @@ Added support for multiline code. Lines ending in `{`, `(`, `[` or `,` will assu
 
 ```jade
 = render App.FooView, "nav.html",
-  conn: @conn,
+  conn: [@conn],
   action: {
     "Create new",
-    item_path(@conn, :new) }
+    item_path([@conn], :new) }
 ```
 
 [v0.2.0]: https://github.com/rstacruz/expug/compare/v0.1.1...v0.2.0
@@ -133,7 +140,7 @@ Added support for multiline code. Lines ending in `{`, `(`, `[` or `,` will assu
 Expug now supports `if do ... end` and other blocks.
 
 ```jade
-= if @error do
+= if [@error] do
   .alert Uh oh! Check your form and try again.
 ```
 
@@ -145,4 +152,7 @@ Expug now supports `if do ... end` and other blocks.
 Initial release.
 
 [v0.0.1]: https://github.com/rstacruz/expug/tree/v0.0.1
-
+[#5]: https://github.com/rstacruz/expug/issues/5
+[@article]: https://github.com/article
+[@conn]: https://github.com/conn
+[@error]: https://github.com/error
