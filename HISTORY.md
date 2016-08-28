@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.7.2]
+> Aug 29, 2016
+
+- Fix multiline dot blocks (`script.`).
+
+[v0.7.2]: https://github.com/rstacruz/expug/compare/v0.7.1...v0.7.2
+
 ## [v0.7.1]
 > Jul 29, 2016
 
