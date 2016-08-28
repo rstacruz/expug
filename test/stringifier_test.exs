@@ -232,19 +232,17 @@ defmodule StringifierTest do
 
   @tag :pending
   @tag :next
-  test "newline with dot (!!)" do
+  test "newline with dot (#5)" do
     eex = build("""
-    = for item <- @list do
-      li
+    li
 
-        img(src=.xxx())
+      img(src=x.x)
     """)
 
     assert eex == ~S"""
-    <%= for item <- @list do %><%
-    %><li>
+    <li>
     <%
-    %><img<%= raw(Expug.Runtime.attr("src", .xxx())) %>><%= "\n" %></li><% end %>
+    %><img<%= raw(Expug.Runtime.attr("src", x.x)) %>><%= "\n" %></li>
     """
   end
 end
