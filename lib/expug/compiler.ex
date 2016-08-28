@@ -240,7 +240,7 @@ defmodule Expug.Compiler do
       [{_, :block_text, _} | rest] ->
         t = hd(rest)
         {rest, lines} = subindent_capture(rest)
-        child = %{type: :block_text, value: lines, token: t}
+        child = %{type: :block_text, value: Enum.join(lines, "\n"), token: t}
         node = add_child(node, child)
         element({node, rest}, parent, depths)
 
@@ -308,7 +308,7 @@ defmodule Expug.Compiler do
 
   def subindent_capture(tokens, lines \\ [])
   def subindent_capture([{_, :subindent, line} | rest], lines) do
-    lines = lines ++ line
+    lines = lines ++ [line]
     subindent_capture(rest, lines)
   end
 

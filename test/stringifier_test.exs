@@ -183,6 +183,22 @@ defmodule StringifierTest do
     """
   end
 
+  test "script. multiline" do
+    eex = build("""
+    script.
+      alert("hi")
+      alert("hello")
+      alert("hola")
+    """)
+
+    assert eex == ~S"""
+    <script>
+    alert("hi")
+    alert("hello")
+    alert("hola")<%= "\n" %></script>
+    """
+  end
+
   @tag :pending
   test "ul: li: button Hello"
 
