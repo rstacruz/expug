@@ -1,6 +1,6 @@
 defmodule Expug.Tokenizer do
   @moduledoc ~S"""
-  Tokenizes a Slim template into a list of tokens. The main entry point is
+  Tokenizes a Pug template into a list of tokens. The main entry point is
   `tokenize/1`.
 
       iex> Expug.Tokenizer.tokenize("title= name")
