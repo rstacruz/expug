@@ -23,7 +23,7 @@ body
 
 [![Status](https://travis-ci.org/rstacruz/expug.svg?branch=master)](https://travis-ci.org/rstacruz/expug "See test builds")
 
-[Pug]: http://www.pug-lang.com/
+[Pug]: http://pugjs.org/
 [Jade]: http://jade-lang.com/
 
 ## Installation
