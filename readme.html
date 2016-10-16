@@ -61,37 +61,77 @@
   <div id="content" class="content-inner">
 
 
-<center><img src="https://cdn.rawgit.com/pugjs/pug-logo/eec436cee8fd9d1726d7839cbe99d1f694692c0c/SVG/pug-final-logo-_-colour-128.svg" height="200"></center><h1>Expug</h1>
-<blockquote><p>Indented shorthand HTML templates for Elixir</p>
-</blockquote>
-<p><iframe src="https://ghbtns.com/github-btn.html?user=rstacruz&repo=expug&type=star&count=true&size=large" frameborder="0" scrolling="0" width="180px" height="30px"></iframe></p><p>Expug is a template language based on <a href="http://www.pug-lang.com/" title="">Pug</a> (formerly known as <a href="http://jade-lang.com/" title="">Jade</a>).
-It lets you write HTML as indented shorthand, inspired by Haml, Slim, Pug/Jade, and so on.</p>
-<iframe src='https://try-expug.herokuapp.com/try?code=doctype%20html%0Ahtml%0A%20%20head%0A%20%20%20%20meta(charset%3D%22utf-8%22)%0A%20%20%20%20title%20Hello%0A%20%20body%0A%20%20%20%20a.button(href%3D%40link)%0A%20%20%20%20%20%20%7C%20This%20is%20a%20link' height='400' width='100%' style='border: 0'></iframe><pre><code class="jade">doctype html
+<img src="https://cdn.rawgit.com/pugjs/pug-logo/eec436cee8fd9d1726d7839cbe99d1f694692c0c/SVG/pug-final-logo-_-colour-128.svg" align="right" height="200" width="250">
+
+# Expug
+
+> Indented shorthand HTML templates for Elixir
+
+<p><iframe src="https://ghbtns.com/github-btn.html?user=rstacruz&repo=expug&type=star&count=true&size=large" frameborder="0" scrolling="0" width="180px" height="30px"></iframe></p>
+
+Expug is a template language based on [Pug][] (formerly known as [Jade][]).
+It lets you write HTML as indented shorthand, inspired by Haml, Slim, Pug/Jade, and so on.
+
+<iframe src='https://try-expug.herokuapp.com/try?code=doctype%20html%0Ahtml%0A%20%20head%0A%20%20%20%20meta(charset%3D%22utf-8%22)%0A%20%20%20%20title%20Hello%0A%20%20body%0A%20%20%20%20a.button(href%3D%40link)%0A%20%20%20%20%20%20%7C%20This%20is%20a%20link' height='400' width='100%' style='border: 0'></iframe>
+
+```jade
+doctype html
 html
-  meta(charset=&quot;utf-8&quot;)
+  meta(charset="utf-8")
   title Hello, world!
 body
   a(href=@link)
-    | This is a link</code></pre>
-<p><a href="https://travis-ci.org/rstacruz/expug" title="See test builds"><img src="https://travis-ci.org/rstacruz/expug.svg?branch=master" alt="Status"/></a></p>
-<h2 id="installation"> Installation</h2><p>Add expug to your list of dependencies in <code class="inline">mix.exs</code>:</p>
-<pre><code class="elixir">def deps do
-  [{:expug, &quot;~&gt; 0.7&quot;}]
-end</code></pre>
-<p>Also see <a href="https://github.com/rstacruz/phoenix_expug">phoenix_expug</a> for Phoenix integration.</p>
-<h2 id="syntax"> Syntax</h2><p>Use CSS-like selectors for elements, and express your nesting through indentations.</p>
-<pre><code class="jade">ul.links
+    | This is a link
+```
+
+[![Status](https://travis-ci.org/rstacruz/expug.svg?branch=master)](https://travis-ci.org/rstacruz/expug "See test builds")
+
+[Pug]: http://www.pug-lang.com/
+[Jade]: http://jade-lang.com/
+
+<h2 id="installation"> Installation</h2>
+
+Add expug to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [{:expug, "~> 0.7"}]
+end
+```
+
+Also see [phoenix_expug](https://github.com/rstacruz/phoenix_expug) for Phoenix integration.
+
+<h2 id="syntax"> Syntax</h2>
+
+Use CSS-like selectors for elements, and express your nesting through indentations.
+
+```jade
+ul.links
   li
-    a(href=&quot;/&quot;) This is a link</code></pre>
-<p>Read more: <a href="https://hexdocs.pm/expug/syntax.html">Syntax</a></p>
-<h2 id="why-should-i-use-it-"> Why should I use it?</h2><p>Read on <a href="https://hexdocs.pm/expug/prior_art.html">this comparison</a> to see how Expug compares to other similar libraries.</p>
-<h2 id="thanks"> Thanks</h2><p><strong>expug</strong> © 2016+, Rico Sta. Cruz. Released under the <a href="http://mit-license.org/" title="">MIT</a> License.<br>
-Authored and maintained by Rico Sta. Cruz with help from contributors (<a href="http://github.com/rstacruz/expug/contributors" title="">list</a>).</p>
-<blockquote><p><a href="http://ricostacruz.com">ricostacruz.com</a> &nbsp;&middot;&nbsp;
-GitHub <a href="https://github.com/rstacruz">@rstacruz</a> &nbsp;&middot;&nbsp;
-Twitter <a href="https://twitter.com/rstacruz">@rstacruz</a></p>
-</blockquote>
+    a(href="/") This is a link
+```
+
+Read more: [Syntax](https://hexdocs.pm/expug/syntax.html)
+
+<h2 id="why-should-i-use-it-"> Why should I use it?</h2>
+
+Read on [this comparison](https://hexdocs.pm/expug/prior_art.html) to see how Expug compares to other similar libraries.
+
+<h2 id="thanks"> Thanks</h2>
+
+**expug** © 2016+, Rico Sta. Cruz. Released under the [MIT] License.<br>
+Authored and maintained by Rico Sta. Cruz with help from contributors ([list][contributors]).
+
+> [ricostacruz.com](http://ricostacruz.com) &nbsp;&middot;&nbsp;
+> GitHub [@rstacruz](https://github.com/rstacruz) &nbsp;&middot;&nbsp;
+> Twitter [@rstacruz](https://twitter.com/rstacruz)
+
+[MIT]: http://mit-license.org/
+[contributors]: http://github.com/rstacruz/expug/contributors
+
 <p><iframe src="https://ghbtns.com/github-btn.html?user=rstacruz&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe></p>
+
+
     <footer class="footer">
       <p>
         <span class="line">
