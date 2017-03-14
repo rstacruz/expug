@@ -265,6 +265,21 @@ defmodule BuilderTest do
     }
   end
 
+  test "if .. else ... if ... end" do
+    eex = build("= if @x do\n  div\n- else\n  div\n= if @y do\n  span\n- else\n  span")
+    assert eex == %{
+      :lines => 8,
+      1 => ["<%= if @x do %>"],
+      2 => [:collapse, "<div></div>"],
+      3 => ["<% else %>"],
+      4 => [:collapse, "<div></div><% end %>"],
+      5 => ["<%= if @y do %>"],
+      6 => [:collapse, "<span></span>"],
+      7 => ["<% else %>"],
+      8 => [:collapse, "<span></span><% end %>"]
+    }
+  end
+
   test "if .. if ... end" do
     eex = build("= if @x do\n  div\n= if @y do\n  div")
     assert eex == %{

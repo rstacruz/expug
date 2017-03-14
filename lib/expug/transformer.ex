@@ -40,12 +40,13 @@ defmodule Expug.Transformer do
   def clause_after("catch"), do: ["catch", "after"]
   def clause_after("rescue"), do: ["rescue", "after"]
   def clause_after(_), do: []
+  def clause_roots(), do: ["if", "unless", "try"]
 
   @doc """
   Closes all possible clauses in the given `children`.
   """
   def close_clauses(children) do
-    {_, children} = close_clause(children, ["if", "unless", "try"])
+    {_, children} = close_clause(children, clause_roots())
     children
   end
 
@@ -79,7 +80,7 @@ defmodule Expug.Transformer do
         end
 
       # it's a single-clause thing (eg, cond do)
-      statement?(node.type) and open?(node.value) ->
+      statement?(node.type) and open?(node.value) and !Enum.member?(clause_roots(), pre) ->
         node = node
         |> Map.put(:open, true)
         |> Map.put(:close, "end")
