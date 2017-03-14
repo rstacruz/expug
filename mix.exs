@@ -16,9 +16,9 @@ defmodule Expug.Mixfile do
      start_permanent: Mix.env == :prod,
      source_url: "https://github.com/rstacruz/expug",
      homepage_url: "https://github.com/rstacruz/expug",
-     docs: docs,
-     package: package,
-     deps: deps]
+     docs: docs(),
+     package: package(),
+     deps: deps()]
   end
 
   def application do
