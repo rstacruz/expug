@@ -1,5 +1,6 @@
 language: elixir
 elixir:
+- '1.2.6'
 - '1.5.2'
 script:
 - mix test --exclude pending
@@ -7,12 +8,9 @@ cache:
   directories:
   - _deps
   - build
-
+  - node_modules
 after_success:
   - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then mix docs; npm install git-update-ghpages; ./node_modules/.bin/git-update-ghpages -e; fi
-cache:
-  directories:
-  - node_modules
 env:
   global:
   - GIT_NAME: Travis CI
