@@ -359,6 +359,16 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test ~S[div $100] do
+    output = tokenize(~S[div $100])
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "div"},
+      {{1, 5}, :raw_text, "$100"}
+    ]
+  end
+
+
   test "with indent" do
     output = tokenize("head\n  title")
     assert reverse(output) == [
