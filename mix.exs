@@ -1,7 +1,7 @@
 defmodule Expug.Mixfile do
   use Mix.Project
 
-  @version "0.8.0"
+  @version "0.9.0"
   @description """
   Indented shorthand templates for HTML. (pre-release)
   """
@@ -27,8 +27,8 @@ defmodule Expug.Mixfile do
 
   defp deps do
     [
-      {:earmark, "~> 0.1", only: :dev},
-      {:ex_doc, "~> 0.11", only: :dev}
+      {:earmark, "~> 1.2.3", only: :dev},
+      {:ex_doc, "~> 0.18.1", only: :dev}
     ]
   end
 

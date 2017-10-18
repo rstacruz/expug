@@ -4,7 +4,8 @@
 
 > Indented shorthand HTML templates for Elixir
 
-<p><iframe src="https://ghbtns.com/github-btn.html?user=rstacruz&repo=expug&type=star&count=true&size=large" frameborder="0" scrolling="0" width="180px" height="30px"></iframe></p>
+[![](https://img.shields.io/github/stars/rstacruz/expug.svg?style=social)](https://github.com/rstacruz/expug)
+[![](https://img.shields.io/travis/rstacruz/expug.svg?branch=master)](https://travis-ci.org/rstacruz/expug "See test builds")
 
 Expug is a template language based on [Pug][] (formerly known as [Jade][]).
 It lets you write HTML as indented shorthand, inspired by Haml, Slim, Pug/Jade, and so on.
@@ -21,8 +22,6 @@ body
     | This is a link
 ```
 
-[![Status](https://travis-ci.org/rstacruz/expug.svg?branch=master)](https://travis-ci.org/rstacruz/expug "See test builds")
-
 [Pug]: http://pugjs.org/
 [Jade]: http://jade-lang.com/
 
@@ -32,7 +31,7 @@ Add expug to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:expug, "~> 0.8"}]
+  [{:expug, "~> 0.9"}]
 end
 ```
 
@@ -56,7 +55,7 @@ Read on [this comparison](https://hexdocs.pm/expug/prior_art.html) to see how Ex
 
 ## Thanks
 
-**expug** © 2016+, Rico Sta. Cruz. Released under the [MIT] License.<br>
+**expug** © 2016-2017, Rico Sta. Cruz. Released under the [MIT] License.<br>
 Authored and maintained by Rico Sta. Cruz with help from contributors ([list][contributors]).
 
 > [ricostacruz.com](http://ricostacruz.com) &nbsp;&middot;&nbsp;
@@ -66,4 +65,5 @@ Authored and maintained by Rico Sta. Cruz with help from contributors ([list][co
 [MIT]: http://mit-license.org/
 [contributors]: http://github.com/rstacruz/expug/contributors
 
-<p><iframe src="https://ghbtns.com/github-btn.html?user=rstacruz&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe></p>
+[![](https://img.shields.io/github/followers/rstacruz.svg?style=social&label=@rstacruz)](https://github.com/rstacruz) &nbsp;
+[![](https://img.shields.io/twitter/follow/rstacruz.svg?style=social&label=@rstacruz)](https://twitter.com/rstacruz)

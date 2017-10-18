@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.9.0]
+> Oct 18, 2017
+
+- [#10] - Fix Elixir 1.5.2 warnings about `String.rstrip/1`.
+- [#8] - Fix `$` not being allowed in plain texts. ([@cubeguerrero], [#7])
+
+[#10]: https://github.com/rstacruz/expug/issues/10
+[#7]: https://github.com/rstacruz/expug/issues/7
+[#8]: https://github.com/rstacruz/expug/issues/8
+[@cubeguerrero]: https://github.com/cubeguerrero
+[v0.9.0]: https://github.com/rstacruz/expug/compare/v0.8.0...v0.9.0
+
 ## [v0.8.0]
 > Mar 14, 2017
 
