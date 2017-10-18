@@ -108,7 +108,7 @@ defmodule Expug.Tokenizer do
   Returns a list of tokens. Each token is in the format `{position, token, value}`.
   """
   def tokenize(source, opts \\ []) do
-    source = String.trim_trailing(source)
+    source = trim_trailing(source)
     run(source, opts, &document/1)
   end
 
@@ -541,5 +541,17 @@ defmodule Expug.Tokenizer do
       state |> newlines() |> indent()
     if sublevel <= level, do: throw {:parse_error, pos, [:indent]}
     sublevel
+  end
+
+  # Shim for String.trim_trailing/1, which doesn't exist in Elixir 1.2.6. It
+  # falls back to String.rstrip/1 in these cases.
+  if Keyword.has_key?(String.__info__(:functions), :trim_trailing) do
+    defp trim_trailing(source) do
+      String.trim_trailing(source)
+    end
+  else
+    defp trim_trailing(source) do
+      String.rstrip(source)
+    end
   end
 end
