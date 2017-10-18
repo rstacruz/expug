@@ -55,7 +55,7 @@ Read on [this comparison](https://hexdocs.pm/expug/prior_art.html) to see how Ex
 
 ## Thanks
 
-**expug** © 2016+, Rico Sta. Cruz. Released under the [MIT] License.<br>
+**expug** © 2016-2017, Rico Sta. Cruz. Released under the [MIT] License.<br>
 Authored and maintained by Rico Sta. Cruz with help from contributors ([list][contributors]).
 
 > [ricostacruz.com](http://ricostacruz.com) &nbsp;&middot;&nbsp;
@@ -65,4 +65,5 @@ Authored and maintained by Rico Sta. Cruz with help from contributors ([list][co
 [MIT]: http://mit-license.org/
 [contributors]: http://github.com/rstacruz/expug/contributors
 
-<p><iframe src="https://ghbtns.com/github-btn.html?user=rstacruz&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe></p>
+[![](https://img.shields.io/github/followers/rstacruz.svg?style=social&label=@rstacruz)](https://github.com/rstacruz) &nbsp;
+[![](https://img.shields.io/twitter/follow/rstacruz.svg?style=social&label=@rstacruz)](https://twitter.com/rstacruz)
