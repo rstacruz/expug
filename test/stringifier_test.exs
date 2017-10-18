@@ -243,4 +243,21 @@ defmodule StringifierTest do
     %><img<%= raw(Expug.Runtime.attr("src", x.x)) %>><%= "\n" %></li>
     """
   end
+
+  test "if-else" do
+    eex = build("""
+    = if @hello
+      div
+    - else
+      div
+    """)
+
+    assert eex == ~S"""
+    <%= if @hello %><%
+    %><div></div>
+    <% else %><%
+    %><div></div><% end %>
+    """
+  end
+
 end
