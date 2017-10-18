@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.18.1">
-    <title>Misc: Line number preservation – expug v0.9.0</title>
+    <title>Search – expug v0.9.0</title>
     <link rel="stylesheet" href="dist/app-c922dbe7ef.css" />
     
     <script src="dist/sidebar_items-917de8728e.js"></script>
@@ -14,7 +14,7 @@
     
     
   </head>
-  <body data-type="extras">
+  <body data-type="search">
     <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
 
 <div class="main">
@@ -65,44 +65,9 @@
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-
-<h1>Misc: Line number preservation</h1>
-<p>Eex has no provisions for source maps, so we’ll have to emulate this by outputing EEx that matches line numbers <em>exactly</em> with the source <code class="inline">.pug</code> files.</p>
-<pre><code class="jade">div
-  | Hello,
-  = @name
-
-  button.btn
-    | Save</code></pre>
-<pre><code class="html">&lt;div&gt;
-Hello,
-&lt;%= @name %&gt;
-&lt;%
-%&gt;&lt;button class=&quot;btn&quot;&gt;
-Save&lt;%=&quot;\n&quot;%&gt;&lt;/button&gt;&lt;%=&quot;\n&quot;%&gt;&lt;/div&gt;</code></pre>
-<h2 id="internal-notes" class="section-heading">
-  <a href="#internal-notes" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
-  Internal notes
-</h2>
-
-<p><a href="Expug.Builder.html"><code class="inline">Expug.Builder</code></a> brings this output:</p>
-<pre><code class="js">lines = %{
-  :lines =&gt; 6,
-  1 =&gt; [ &quot;&lt;div&gt;&quot; ],
-  2 =&gt; [ &quot;Hello,&quot; ],
-  3 =&gt; [ &quot;&lt;%= @name %&gt;&quot; ],
-
-  5 =&gt; [ &quot;&lt;button class=&quot;btn&quot;&gt;&quot; ],
-  6 =&gt; [ &quot;Save&quot;, &quot;&lt;/button&gt;&quot;, &quot;&lt;/div&gt;&quot; ]
-}</code></pre>
-<p><a href="Expug.Stringifier.html"><code class="inline">Expug.Stringifier</code></a> will take this and yield a final EEx string. The rules it follows are:</p>
-<ul>
-<li>Multiline lines (like 6) will be joined with a fake newline (<code class="inline">&lt;%= &quot;\n&quot; %&gt;</code>).
-</li>
-<li>Empty lines (like line 4) will start with <code class="inline">&lt;%</code>, with a final <code class="inline">%&gt;</code> in the next line that has something.
-</li>
-</ul>
-
+<div id="search">
+  <h1>Search</h1>
+</div>
       <footer class="footer">
         <p>
           <span class="line">

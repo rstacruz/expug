@@ -1,43 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.11.5">
-    <title>Misc: Prior art – expug v0.8.0</title>
-    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    <meta name="generator" content="ExDoc v0.18.1">
+    <title>Misc: Prior art – expug v0.9.0</title>
+    <link rel="stylesheet" href="dist/app-c922dbe7ef.css" />
     
-    <script src="dist/sidebar_items.js"></script>
+    <script src="dist/sidebar_items-917de8728e.js"></script>
+    
+    
+    
+    
   </head>
   <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
 
 <div class="main">
 <button class="sidebar-toggle">
-  <i class="icon-menu"></i>
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
 </button>
 <section class="sidebar">
-  <button class="sidebar-toggle">
-    <i class="icon-menu"></i>
-  </button>
 
   
-  <a href="readme.html" class="sidebar-projectLink">
+  <a href="https://github.com/rstacruz/expug" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         expug
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.8.0
+        v0.9.0
       </h2>
     </div>
     
   </a>
 
-  <div class="sidebar-search">
-    <i class="icon-search"></i>
-    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
-  </div>
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
 
   <ul class="sidebar-listNav">
     <li><a id="extras-list" href="#full-list">Pages</a></li>
@@ -52,20 +57,25 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
-  <div id="content" class="content-inner">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
 
 
 <h1>Misc: Prior art</h1>
 <blockquote><p>a.k.a., “Why should I use Expug over other template engines?”</p>
 </blockquote>
 <p>There’s <a href="https://github.com/nurugger07/calliope" title="">calliope</a> and <a href="https://github.com/slime-lang/slime" title="">slime</a> that brings Haml and Slim to Elixir, respectively. Expug offers a bit more:</p>
-<h2 id="pug-jade-syntax-"> Pug/Jade syntax!</h2><p>The Pug syntax is something I personally find more sensible than Slim, and less noisy than Haml.</p>
+<h2 id="pug-jade-syntax" class="section-heading">
+  <a href="#pug-jade-syntax" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Pug/Jade syntax!
+</h2>
+
+<p>The Pug syntax is something I personally find more sensible than Slim, and less noisy than Haml.</p>
 <pre><code class="elixir"># Expug
 p.alert(align=&quot;center&quot;) Hello!
 
@@ -93,7 +103,12 @@ strong color=&quot;blue&quot; This is also valid, but confusing.
 
 # Expug
 strong(color=&quot;blue&quot;) Easier and less confusing!</code></pre>
-<h2 id="true-multilines"> True multilines</h2><p>Expug has a non-line-based tokenizer that can figure out multiline breaks.</p>
+<h2 id="true-multilines" class="section-heading">
+  <a href="#true-multilines" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  True multilines
+</h2>
+
+<p>Expug has a non-line-based tokenizer that can figure out multiline breaks.</p>
 <pre><code class="elixir"># Expug
 = render App.UserView,
   &quot;show.html&quot;,
@@ -109,28 +124,38 @@ script(
   src=static_path(
     @conn,
     &quot;/js/app.js&quot;))</code></pre>
-<h2 id="correct-line-number-errors"> Correct line number errors</h2><p>Errors in Expug will always map to the correct source line numbers.</p>
+<h2 id="correct-line-number-errors" class="section-heading">
+  <a href="#correct-line-number-errors" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Correct line number errors
+</h2>
+
+<p>Errors in Expug will always map to the correct source line numbers.</p>
 <blockquote><p>CompileError in show.html.pug (line 2):<br>
 assign @xyz not available in eex template.</p>
 </blockquote>
 
-    <footer class="footer">
-      <p>
-        <span class="line">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
-        </span>
-        <span class="line">
-          designed by
-          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.1),
           </span>
-      </p>
-      <button class="night-mode-toggle" />
-    </footer>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-918614602f.js"></script>
+  <script src="dist/app-778c9ef903.js"></script>
+  
+  
+  
+  
   </body>
 </html>
 

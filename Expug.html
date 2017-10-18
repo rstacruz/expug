@@ -1,43 +1,48 @@
     <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.11.5">
-    <title>Expug – expug v0.8.0</title>
-    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    <meta name="generator" content="ExDoc v0.18.1">
+    <title>Expug – expug v0.9.0</title>
+    <link rel="stylesheet" href="dist/app-c922dbe7ef.css" />
     
-    <script src="dist/sidebar_items.js"></script>
+    <script src="dist/sidebar_items-917de8728e.js"></script>
+    
+    
+    
+    
   </head>
   <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
 
     <div class="main">
 <button class="sidebar-toggle">
-  <i class="icon-menu"></i>
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
 </button>
 <section class="sidebar">
-  <button class="sidebar-toggle">
-    <i class="icon-menu"></i>
-  </button>
 
   
-  <a href="readme.html" class="sidebar-projectLink">
+  <a href="https://github.com/rstacruz/expug" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         expug
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.8.0
+        v0.9.0
       </h2>
     </div>
     
   </a>
 
-  <div class="sidebar-search">
-    <i class="icon-search"></i>
-    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
-  </div>
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
 
   <ul class="sidebar-listNav">
     <li><a id="extras-list" href="#full-list">Pages</a></li>
@@ -52,28 +57,28 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
-  <div id="content" class="content-inner">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
 
 
       <h1>
-        <small class="visible-xs">expug v0.8.0</small>
+        <small class="visible-xs">expug v0.9.0</small>
         Expug
         
-        
-          <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug.ex#L1" title="View Source" class="view-source" rel="help">
-            <i class="icon-code"></i>
+          <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
           </a>
         
       </h1>
 
       
-        <section id="moduledoc" class="docstring">
+        <section id="moduledoc">
           <p>Expug compiles templates to an eex template.</p>
 <p><a href="#to_eex/2"><code class="inline">to_eex/2</code></a> turns an Expug source into an EEx template.</p>
 <pre><code class="iex elixir">iex&gt; source = &quot;div\n  | Hello&quot;
@@ -84,7 +89,11 @@ iex&gt; Expug.to_eex(source)
 <pre><code class="iex elixir">iex&gt; source = &quot;div\n  | Hello&quot;
 iex&gt; Expug.to_eex!(source)
 &quot;&lt;div&gt;\nHello&lt;%= \&quot;\\n\&quot; %&gt;&lt;/div&gt;\n&quot;</code></pre>
-<h2>Errors</h2>
+<h2 id="module-errors" class="section-heading">
+  <a href="#module-errors" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Errors
+</h2>
+
 <p><a href="#to_eex/2"><code class="inline">to_eex/2</code></a> will give you this in case of an error:</p>
 <pre><code class="elixir">{:error, %{
   type: :parse_error,
@@ -93,13 +102,21 @@ iex&gt; Expug.to_eex!(source)
 }}</code></pre>
 <p>Internally, the other classes will throw <code class="inline">%{type, position, ...}</code> which will
 be caught here.</p>
-<h2>The <code class="inline">raw</code> helper</h2>
+<h2 id="module-the-raw-helper" class="section-heading">
+  <a href="#module-the-raw-helper" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  The <code class="inline">raw</code> helper
+</h2>
+
 <p>Note that it needs <code class="inline">raw/1</code>, something typically provided by
 <a href="http://devdocs.io/phoenix/phoenix_html/phoenix.html#raw/1">Phoenix.HTML</a>.
 You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1</code> would do.</p>
 <pre><code class="iex elixir">iex&gt; Expug.to_eex!(~s[div(role=&quot;alert&quot;)= @message])
 &quot;&lt;div&lt;%= raw(Expug.Runtime.attr(\&quot;role\&quot;, \&quot;alert\&quot;)) %&gt;&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;%= @message %&gt;&lt;%= \&quot;\\n\&quot; %&gt;&lt;/div&gt;\n&quot;</code></pre>
-<h2>Internal notes</h2>
+<h2 id="module-internal-notes" class="section-heading">
+  <a href="#module-internal-notes" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Internal notes
+</h2>
+
 <p><a href="Expug.html#to_eex/2"><code class="inline">Expug.to_eex/2</code></a> pieces together 4 steps into a pipeline:</p>
 <ul>
 <li><a href="#tokenize/2"><code class="inline">tokenize/2</code></a> - turns source into tokens.
@@ -111,7 +128,11 @@ You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1
 <li><a href="#stringify/2"><code class="inline">stringify/2</code></a> - turns a line map into an EEx template.
 </li>
 </ul>
-<h2>Also see</h2>
+<h2 id="module-also-see" class="section-heading">
+  <a href="#module-also-see" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Also see
+</h2>
+
 <ul>
 <li><a href="Expug.Tokenizer.html"><code class="inline">Expug.Tokenizer</code></a>
 </li>
@@ -130,7 +151,8 @@ You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1
         <section id="summary" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#summary">
-              <i class="icon-link"></i>
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
             </a>
             Summary
           </h1>
@@ -201,8 +223,6 @@ You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1
 
           
 
-          
-
         </section>
       
 
@@ -212,82 +232,109 @@ You don’t need Phoenix.HTML however; a binding with <code class="inline">raw/1
         <section id="functions" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#functions">
-              <i class="icon-link"></i>
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
             </a>
             Functions
           </h1>
           <div class="detail" id="build/2">
+  
+  
   <div class="detail-header">
     <a href="#build/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">build(ast, opts)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug.ex#L57" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug.ex#L57" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>See <a href="Expug.Builder.html#build/2"><code class="inline">Expug.Builder.build/2</code></a>.</p>
 
   </section>
 </div>
 <div class="detail" id="compile/2">
+  
+  
   <div class="detail-header">
     <a href="#compile/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">compile(tokens, opts)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug.ex#L56" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug.ex#L56" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>See <a href="Expug.Compiler.html#compile/2"><code class="inline">Expug.Compiler.compile/2</code></a>.</p>
 
   </section>
 </div>
 <div class="detail" id="stringify/2">
+  
+  
   <div class="detail-header">
     <a href="#stringify/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">stringify(lines, opts)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug.ex#L58" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug.ex#L58" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>See <a href="Expug.Stringifier.html#stringify/2"><code class="inline">Expug.Stringifier.stringify/2</code></a>.</p>
 
   </section>
 </div>
 <div class="detail" id="to_eex/2">
+  
+  
+    <span id="to_eex/1"></span>
+  
   <div class="detail-header">
     <a href="#to_eex/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">to_eex(source, opts \\ [])</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug.ex#L72" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug.ex#L72" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Compiles an Expug template to an EEx template.</p>
 <p>Returns <code class="inline">{:ok, result}</code>, where <code class="inline">result</code> is an EEx string. On error, it will
 return <code class="inline">{:error, ...}</code>.</p>
-<h2>Options</h2>
+<h2 id="to_eex/2-options" class="section-heading">
+  <a href="#to_eex/2-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Options
+</h2>
+
 <p>All options are optional.</p>
 <ul>
 <li><code class="inline">attr_helper</code> (String) - the attribute helper to use (default: <code class="inline">&quot;Expug.Runtime.attr&quot;</code>)
@@ -299,18 +346,25 @@ return <code class="inline">{:error, ...}</code>.</p>
   </section>
 </div>
 <div class="detail" id="to_eex!/2">
+  
+  
+    <span id="to_eex!/1"></span>
+  
   <div class="detail-header">
     <a href="#to_eex!/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">to_eex!(source, opts \\ [])</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug.ex#L90" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug.ex#L90" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Compiles an Expug template to an EEx template and raises errors on failure.</p>
 <p>Returns the EEx string on success. On failure, it raises <a href="Expug.Error.html"><code class="inline">Expug.Error</code></a>.</p>
@@ -318,18 +372,23 @@ return <code class="inline">{:error, ...}</code>.</p>
   </section>
 </div>
 <div class="detail" id="tokenize/2">
+  
+  
   <div class="detail-header">
     <a href="#tokenize/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">tokenize(source, opts)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug.ex#L55" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug.ex#L55" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>See <a href="Expug.Tokenizer.html#tokenize/2"><code class="inline">Expug.Tokenizer.tokenize/2</code></a>.</p>
 
@@ -340,25 +399,28 @@ return <code class="inline">{:error, ...}</code>.</p>
       
 
       
-
-      
-        <footer class="footer">
-      <p>
-        <span class="line">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
-        </span>
-        <span class="line">
-          designed by
-          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.1),
           </span>
-      </p>
-      <button class="night-mode-toggle" />
-    </footer>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-918614602f.js"></script>
+  <script src="dist/app-778c9ef903.js"></script>
+  
+  
+  
+  
   </body>
 </html>
 

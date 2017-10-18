@@ -1,43 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.11.5">
-    <title>Syntax: Compatibility with Pug – expug v0.8.0</title>
-    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    <meta name="generator" content="ExDoc v0.18.1">
+    <title>Syntax: Compatibility with Pug – expug v0.9.0</title>
+    <link rel="stylesheet" href="dist/app-c922dbe7ef.css" />
     
-    <script src="dist/sidebar_items.js"></script>
+    <script src="dist/sidebar_items-917de8728e.js"></script>
+    
+    
+    
+    
   </head>
   <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
 
 <div class="main">
 <button class="sidebar-toggle">
-  <i class="icon-menu"></i>
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
 </button>
 <section class="sidebar">
-  <button class="sidebar-toggle">
-    <i class="icon-menu"></i>
-  </button>
 
   
-  <a href="readme.html" class="sidebar-projectLink">
+  <a href="https://github.com/rstacruz/expug" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         expug
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.8.0
+        v0.9.0
       </h2>
     </div>
     
   </a>
 
-  <div class="sidebar-search">
-    <i class="icon-search"></i>
-    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
-  </div>
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
 
   <ul class="sidebar-listNav">
     <li><a id="extras-list" href="#full-list">Pages</a></li>
@@ -52,18 +57,23 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
-  <div id="content" class="content-inner">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
 
 
 <h1>Syntax: Compatibility with Pug</h1>
 <p>Expug retains most of Pug/Jade’s features, adds some Elixir’isms, and drops the features that don’t make sense.</p>
-<h2 id="added"> Added</h2><ul>
+<h2 id="added" class="section-heading">
+  <a href="#added" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Added
+</h2>
+
+<ul>
 <li><strong>Multiline attributes</strong> are supported. As long as you use balanced braces, Expug is smart enough to know when to count the next line as part of an expression.
 </li>
 </ul>
@@ -81,15 +91,25 @@
     App.MyView,
     &quot;index.html&quot;,
     conn: @conn)</code></pre>
-<h2 id="changed"> Changed</h2><ul>
+<h2 id="changed" class="section-heading">
+  <a href="#changed" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Changed
+</h2>
+
+<ul>
 <li><p><strong>Comments</strong> are done using <code class="inline">-#</code> as well as <code class="inline">-//</code>, following Elixir conventions. The old <code class="inline">-//</code> syntax is supported for increased compatibility with text editor syntax highlighting.</p>
 </li>
 <li><p><strong>Text attributes</strong> need to have double-quoted strings (<code class="inline">&quot;</code>). Single-line strings will translate to Elixir char lists, which is likely not what you want.</p>
 </li>
-<li><strong>Statements with blocks</strong> like <code class="inline">= if .. do</code> … <code class="inline">- end</code> should start with <code class="inline">=</code>, and end in <code class="inline">-</code>. This is the same as you would do in EEx.
+<li><p><strong>Statements with blocks</strong> like <code class="inline">= if .. do</code> … <code class="inline">- end</code> should start with <code class="inline">=</code>, and end in <code class="inline">-</code>. This is the same as you would do in EEx.</p>
 </li>
 </ul>
-<h2 id="removed"> Removed</h2><p>The following features are not available due to the limitations of EEx.</p>
+<h2 id="removed" class="section-heading">
+  <a href="#removed" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Removed
+</h2>
+
+<p>The following features are not available due to the limitations of EEx.</p>
 <ul>
 <li><a href="http://jade-lang.com/reference/includes">include</a> (partials)
 </li>
@@ -121,7 +141,12 @@
 <li>Doctype shorthands are limited to only <code class="inline">html</code> and <code class="inline">xml</code>. The <a href="http://jade-lang.com/reference/doctype/">XHTML shorthands</a> were not implemented to discourage their use.
 </li>
 </ul>
-<h2 id="the-same"> The same</h2><ul>
+<h2 id="the-same" class="section-heading">
+  <a href="#the-same" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  The same
+</h2>
+
+<ul>
 <li><strong>Indent sensitivity</strong> rules of Pug/Jade have been preserved. This means you can do:
 </li>
 </ul>
@@ -129,23 +154,28 @@
     head
         title This is indented with 4 spaces</code></pre>
 
-    <footer class="footer">
-      <p>
-        <span class="line">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
-        </span>
-        <span class="line">
-          designed by
-          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.1),
           </span>
-      </p>
-      <button class="night-mode-toggle" />
-    </footer>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-918614602f.js"></script>
+  <script src="dist/app-778c9ef903.js"></script>
+  
+  
+  
+  
   </body>
 </html>
 

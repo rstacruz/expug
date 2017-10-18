@@ -1,43 +1,48 @@
     <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.11.5">
-    <title>Expug.ExpressionTokenizer – expug v0.8.0</title>
-    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    <meta name="generator" content="ExDoc v0.18.1">
+    <title>Expug.ExpressionTokenizer – expug v0.9.0</title>
+    <link rel="stylesheet" href="dist/app-c922dbe7ef.css" />
     
-    <script src="dist/sidebar_items.js"></script>
+    <script src="dist/sidebar_items-917de8728e.js"></script>
+    
+    
+    
+    
   </head>
   <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
 
     <div class="main">
 <button class="sidebar-toggle">
-  <i class="icon-menu"></i>
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
 </button>
 <section class="sidebar">
-  <button class="sidebar-toggle">
-    <i class="icon-menu"></i>
-  </button>
 
   
-  <a href="readme.html" class="sidebar-projectLink">
+  <a href="https://github.com/rstacruz/expug" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         expug
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.8.0
+        v0.9.0
       </h2>
     </div>
     
   </a>
 
-  <div class="sidebar-search">
-    <i class="icon-search"></i>
-    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
-  </div>
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
 
   <ul class="sidebar-listNav">
     <li><a id="extras-list" href="#full-list">Pages</a></li>
@@ -52,34 +57,38 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
-  <div id="content" class="content-inner">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
 
 
       <h1>
-        <small class="visible-xs">expug v0.8.0</small>
+        <small class="visible-xs">expug v0.9.0</small>
         Expug.ExpressionTokenizer
         
-        
-          <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L1" title="View Source" class="view-source" rel="help">
-            <i class="icon-code"></i>
+          <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
           </a>
         
       </h1>
 
       
-        <section id="moduledoc" class="docstring">
+        <section id="moduledoc">
           <p>Tokenizes an expression.
 This is used by <a href="Expug.Tokenizer.html"><code class="inline">Expug.Tokenizer</code></a> to match attribute values and support multiline.</p>
 <p><a href="#expression/2"><code class="inline">expression/2</code></a> is used to capture an expression token.</p>
 <pre><code class="elixir">state
 |&gt; Expug.ExpressionTokenizer.expression(:attribute_value)</code></pre>
-<h2>Valid expressions</h2>
+<h2 id="module-valid-expressions" class="section-heading">
+  <a href="#module-valid-expressions" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Valid expressions
+</h2>
+
 <p>Expressions are combination of one or more of these:</p>
 <ul>
 <li>a word without spaces
@@ -91,7 +100,11 @@ This is used by <a href="Expug.Tokenizer.html"><code class="inline">Expug.Tokeni
 </ul>
 <p>A balanced pair can have balanced pairs, words, and strings inside them.
 Double-quote strings can have <code class="inline">#{...}</code> interpolation inside them.</p>
-<h2>Examples</h2>
+<h2 id="module-examples" class="section-heading">
+  <a href="#module-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+
 <p>These are valid expressions:</p>
 <pre><code class="elixir">hello
 hello(1 + 2)
@@ -109,7 +122,8 @@ hello(world[)           # pairs not balanced
         <section id="summary" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#summary">
-              <i class="icon-link"></i>
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
             </a>
             Summary
           </h1>
@@ -211,8 +225,6 @@ These can have spaces</p>
 
           
 
-          
-
         </section>
       
 
@@ -222,165 +234,211 @@ These can have spaces</p>
         <section id="functions" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#functions">
-              <i class="icon-link"></i>
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
             </a>
             Functions
           </h1>
           <div class="detail" id="balanced_braces/1">
+  
+  
   <div class="detail-header">
     <a href="#balanced_braces/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">balanced_braces(state)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L84" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L84" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Matches balanced <code class="inline">{...}</code> fragments</p>
 
   </section>
 </div>
 <div class="detail" id="balanced_brackets/1">
+  
+  
   <div class="detail-header">
     <a href="#balanced_brackets/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">balanced_brackets(state)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L92" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L92" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Matches balanced <code class="inline">[...]</code> fragments</p>
 
   </section>
 </div>
 <div class="detail" id="balanced_pairs/3">
+  
+  
   <div class="detail-header">
     <a href="#balanced_pairs/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">balanced_pairs(state, left, right)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L100" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L100" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Underlying implementation for <code class="inline">balanced_*</code> functions</p>
 
   </section>
 </div>
 <div class="detail" id="balanced_parentheses/1">
+  
+  
   <div class="detail-header">
     <a href="#balanced_parentheses/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">balanced_parentheses(state)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L76" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L76" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Matches balanced <code class="inline">(...)</code> fragments</p>
 
   </section>
 </div>
 <div class="detail" id="double_quote_string/1">
+  
+  
   <div class="detail-header">
     <a href="#double_quote_string/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">double_quote_string(state)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L117" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L117" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Matches an entire double-quoted string, taking care of interpolation and escaping</p>
 
   </section>
 </div>
 <div class="detail" id="expression/2">
+  
+  
   <div class="detail-header">
     <a href="#expression/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">expression(state, token_name)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L38" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L38" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     
   </section>
 </div>
 <div class="detail" id="expression_fragment/1">
+  
+  
   <div class="detail-header">
     <a href="#expression_fragment/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">expression_fragment(state)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L44" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L44" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     
   </section>
 </div>
 <div class="detail" id="expression_term/1">
+  
+  
   <div class="detail-header">
     <a href="#expression_term/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">expression_term(state)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L59" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L59" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Matches simple expressions like <code class="inline">xyz</code> or even <code class="inline">a+b</code>.</p>
 
   </section>
 </div>
 <div class="detail" id="expression_term_inside/1">
+  
+  
   <div class="detail-header">
     <a href="#expression_term_inside/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">expression_term_inside(state)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L68" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L68" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Matches simple expressions like <code class="inline">xyz</code>, but only for inside parentheses.
 These can have spaces.</p>
@@ -388,18 +446,23 @@ These can have spaces.</p>
   </section>
 </div>
 <div class="detail" id="single_quote_string/1">
+  
+  
   <div class="detail-header">
     <a href="#single_quote_string/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">single_quote_string(state)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/expression_tokenizer.ex#L132" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/expression_tokenizer.ex#L132" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Matches an entire double-quoted string, taking care of escaping</p>
 
@@ -410,25 +473,28 @@ These can have spaces.</p>
       
 
       
-
-      
-        <footer class="footer">
-      <p>
-        <span class="line">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
-        </span>
-        <span class="line">
-          designed by
-          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.1),
           </span>
-      </p>
-      <button class="night-mode-toggle" />
-    </footer>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-918614602f.js"></script>
+  <script src="dist/app-778c9ef903.js"></script>
+  
+  
+  
+  
   </body>
 </html>
 

@@ -1,43 +1,48 @@
     <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.11.5">
-    <title>Expug.Builder – expug v0.8.0</title>
-    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    <meta name="generator" content="ExDoc v0.18.1">
+    <title>Expug.Builder – expug v0.9.0</title>
+    <link rel="stylesheet" href="dist/app-c922dbe7ef.css" />
     
-    <script src="dist/sidebar_items.js"></script>
+    <script src="dist/sidebar_items-917de8728e.js"></script>
+    
+    
+    
+    
   </head>
   <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
 
     <div class="main">
 <button class="sidebar-toggle">
-  <i class="icon-menu"></i>
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
 </button>
 <section class="sidebar">
-  <button class="sidebar-toggle">
-    <i class="icon-menu"></i>
-  </button>
 
   
-  <a href="readme.html" class="sidebar-projectLink">
+  <a href="https://github.com/rstacruz/expug" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         expug
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.8.0
+        v0.9.0
       </h2>
     </div>
     
   </a>
 
-  <div class="sidebar-search">
-    <i class="icon-search"></i>
-    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
-  </div>
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
 
   <ul class="sidebar-listNav">
     <li><a id="extras-list" href="#full-list">Pages</a></li>
@@ -52,28 +57,28 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
-  <div id="content" class="content-inner">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
 
 
       <h1>
-        <small class="visible-xs">expug v0.8.0</small>
+        <small class="visible-xs">expug v0.9.0</small>
         Expug.Builder
         
-        
-          <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L1" title="View Source" class="view-source" rel="help">
-            <i class="icon-code"></i>
+          <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
           </a>
         
       </h1>
 
       
-        <section id="moduledoc" class="docstring">
+        <section id="moduledoc">
           <p>Builds lines from an AST.</p>
 <pre><code class="iex elixir">iex&gt; source = &quot;div\n  | Hello&quot;
 iex&gt; with tokens &lt;- Expug.Tokenizer.tokenize(source),
@@ -86,7 +91,11 @@ iex&gt; with tokens &lt;- Expug.Tokenizer.tokenize(source),
   2 =&gt; [&quot;Hello&quot;, &quot;&lt;/div&gt;&quot;]
 }</code></pre>
 <p>This gives you a map of lines that the <code class="inline">Stringifier</code> will work on.</p>
-<h2>Also see</h2>
+<h2 id="module-also-see" class="section-heading">
+  <a href="#module-also-see" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Also see
+</h2>
+
 <ul>
 <li><a href="Expug.Compiler.html"><code class="inline">Expug.Compiler</code></a> builds the AST used by this builder.
 </li>
@@ -101,7 +110,8 @@ iex&gt; with tokens &lt;- Expug.Tokenizer.tokenize(source),
         <section id="summary" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#summary">
-              <i class="icon-link"></i>
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
             </a>
             Summary
           </h1>
@@ -238,8 +248,6 @@ Used for closing <code class="inline">&lt;% end %&gt;</code></p>
 
           
 
-          
-
         </section>
       
 
@@ -249,40 +257,53 @@ Used for closing <code class="inline">&lt;% end %&gt;</code></p>
         <section id="functions" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#functions">
-              <i class="icon-link"></i>
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
             </a>
             Functions
           </h1>
           <div class="detail" id="add_closing/3">
+  
+  
+    <span id="add_closing/2"></span>
+  
   <div class="detail-header">
     <a href="#add_closing/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">add_closing(doc, node, suffix \\ &quot;&quot;)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L163" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L169" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     
   </section>
 </div>
 <div class="detail" id="attributes/2">
+  
+  
   <div class="detail-header">
     <a href="#attributes/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">attributes(doc, attributes)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L227" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L229" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Stringifies an attributes map.</p>
 <pre><code class="iex elixir">iex&gt; doc = %{options: %{}}
@@ -304,107 +325,139 @@ iex&gt; Expug.Builder.attributes(doc, %{ &quot;class&quot; =&gt; [{:eval, &quot;
   </section>
 </div>
 <div class="detail" id="build/2">
+  
+  
+    <span id="build/1"></span>
+  
   <div class="detail-header">
     <a href="#build/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">build(ast, opts \\ [])</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L34" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L34" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     
   </section>
 </div>
 <div class="detail" id="children/2">
+  
+  
   <div class="detail-header">
     <a href="#children/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">children(doc, list)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L174" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L178" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Builds a list of nodes.</p>
 
   </section>
 </div>
 <div class="detail" id="element/2">
+  
+  
   <div class="detail-header">
     <a href="#element/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">element(doc, node)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L188" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L188" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Builds an element opening tag.</p>
 
   </section>
 </div>
 <div class="detail" id="make/2">
+  
+  
   <div class="detail-header">
     <a href="#make/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">make(doc, node)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L45" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L155" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Builds text.</p>
 
   </section>
 </div>
 <div class="detail" id="put/3">
+  
+  
   <div class="detail-header">
     <a href="#put/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">put(doc, map, str)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L263" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L263" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Adds a line based on a token’s location.</p>
 
   </section>
 </div>
 <div class="detail" id="put_collapse/2">
+  
+  
   <div class="detail-header">
     <a href="#put_collapse/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">put_collapse(doc, map)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L282" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L282" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Puts a collapser on the lane after the given token.
 Used for if…end statements.</p>
@@ -412,18 +465,23 @@ Used for if…end statements.</p>
   </section>
 </div>
 <div class="detail" id="put_last/2">
+  
+  
   <div class="detail-header">
     <a href="#put_last/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">put_last(doc, str)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L273" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L273" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Adds a line to the end of a document.
 Used for closing tags.</p>
@@ -431,18 +489,23 @@ Used for closing tags.</p>
   </section>
 </div>
 <div class="detail" id="put_last_no_space/2">
+  
+  
   <div class="detail-header">
     <a href="#put_last_no_space/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">put_last_no_space(doc, str)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L292" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L292" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Adds a line to the end of a document, but without a newline before it.
 Used for closing <code class="inline">&lt;% end %&gt;</code>.</p>
@@ -450,87 +513,114 @@ Used for closing <code class="inline">&lt;% end %&gt;</code>.</p>
   </section>
 </div>
 <div class="detail" id="self_closable?/1">
+  
+  
   <div class="detail-header">
     <a href="#self_closable?/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">self_closable?(node)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L204" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L204" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     
   </section>
 </div>
 <div class="detail" id="self_closing_element/2">
+  
+  
   <div class="detail-header">
     <a href="#self_closing_element/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">self_closing_element(doc, node)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L192" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L192" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     
   </section>
 </div>
 <div class="detail" id="str_join/3">
+  
+  
+    <span id="str_join/2"></span>
+  
   <div class="detail-header">
     <a href="#str_join/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">str_join(left, str, sep \\ &quot; &quot;)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L256" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L258" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     
   </section>
 </div>
 <div class="detail" id="update_line_count/3">
+  
+  
   <div class="detail-header">
     <a href="#update_line_count/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">update_line_count(doc, line, max)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L302" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L306" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Updates the <code class="inline">:lines</code> count if the latest line is beyond the current max.</p>
 
   </section>
 </div>
 <div class="detail" id="valueify/3">
+  
+  
   <div class="detail-header">
     <a href="#valueify/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">valueify(doc, key, values)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/builder.ex#L235" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/builder.ex#L244" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     
   </section>
@@ -540,25 +630,28 @@ Used for closing <code class="inline">&lt;% end %&gt;</code>.</p>
       
 
       
-
-      
-        <footer class="footer">
-      <p>
-        <span class="line">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
-        </span>
-        <span class="line">
-          designed by
-          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.1),
           </span>
-      </p>
-      <button class="night-mode-toggle" />
-    </footer>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-918614602f.js"></script>
+  <script src="dist/app-778c9ef903.js"></script>
+  
+  
+  
+  
   </body>
 </html>
 

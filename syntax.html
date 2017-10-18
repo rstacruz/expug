@@ -1,43 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.11.5">
-    <title>Syntax – expug v0.8.0</title>
-    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    <meta name="generator" content="ExDoc v0.18.1">
+    <title>Syntax – expug v0.9.0</title>
+    <link rel="stylesheet" href="dist/app-c922dbe7ef.css" />
     
-    <script src="dist/sidebar_items.js"></script>
+    <script src="dist/sidebar_items-917de8728e.js"></script>
+    
+    
+    
+    
   </head>
   <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
 
 <div class="main">
 <button class="sidebar-toggle">
-  <i class="icon-menu"></i>
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
 </button>
 <section class="sidebar">
-  <button class="sidebar-toggle">
-    <i class="icon-menu"></i>
-  </button>
 
   
-  <a href="readme.html" class="sidebar-projectLink">
+  <a href="https://github.com/rstacruz/expug" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         expug
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.8.0
+        v0.9.0
       </h2>
     </div>
     
   </a>
 
-  <div class="sidebar-search">
-    <i class="icon-search"></i>
-    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
-  </div>
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
 
   <ul class="sidebar-listNav">
     <li><a id="extras-list" href="#full-list">Pages</a></li>
@@ -52,64 +57,93 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
-  <div id="content" class="content-inner">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
 
 
 <h1>Syntax</h1>
 <p>The syntax is based on Pug (formerly known as Jade). Most of Pug’s syntax is supported.</p>
-<h2>Elements</h2>
+<h2 id="elements" class="section-heading">
+  <a href="#elements" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Elements
+</h2>
+
 <p>Write elements in short CSS-like syntax. Express nesting through indentation.</p>
 <pre><code class="jade">.alert.alert-danger#error
   a(href=&quot;google.com&quot;) Google</code></pre>
 <p>See: <a href="elements.html">Elements</a></p>
-<h2>Code</h2>
+<h2 id="code" class="section-heading">
+  <a href="#code" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Code
+</h2>
+
 <p>Use <code class="inline">=</code> and <code class="inline">-</code> to run Elixir code.</p>
 <pre><code class="jade">= if @user do
   = &quot;Welcome, #{@user.name}&quot;
 - else
   | You&#39;re not signed in.</code></pre>
 <p>See: <a href="code.html">Code</a></p>
-<h2>Text</h2>
+<h2 id="text" class="section-heading">
+  <a href="#text" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Text
+</h2>
+
 <p>Text nodes begin with <code class="inline">|</code>.</p>
 <pre><code class="jade">a(href=&quot;/signup&quot;)
   | Register now</code></pre>
 <p>See: <a href="text.html">Text</a></p>
-<h2>Comments</h2>
+<h2 id="comments" class="section-heading">
+  <a href="#comments" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Comments
+</h2>
+
 <pre><code class="jade">//- This is a comment
 -# this, too
 
 // this is an HTML comment</code></pre>
 <p>See: <a href="comments.html">Comments</a></p>
-<h2>Doctype</h2>
+<h2 id="doctype" class="section-heading">
+  <a href="#doctype" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Doctype
+</h2>
+
 <pre><code class="jade">doctype html</code></pre>
 <p>See: <a href="doctype.html">Doctype</a></p>
-<h2>Compatibility with Pug</h2>
+<h2 id="compatibility-with-pug" class="section-heading">
+  <a href="#compatibility-with-pug" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Compatibility with Pug
+</h2>
+
 <p>Most of Pug’s syntax is supported, with a few differences.
 See: <a href="compatibility_with_pug.html">Compatibility with Pug</a></p>
 
-    <footer class="footer">
-      <p>
-        <span class="line">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
-        </span>
-        <span class="line">
-          designed by
-          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.1),
           </span>
-      </p>
-      <button class="night-mode-toggle" />
-    </footer>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-918614602f.js"></script>
+  <script src="dist/app-778c9ef903.js"></script>
+  
+  
+  
+  
   </body>
 </html>
 

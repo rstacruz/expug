@@ -1,43 +1,48 @@
     <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.11.5">
-    <title>Expug.TokenizerTools – expug v0.8.0</title>
-    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    <meta name="generator" content="ExDoc v0.18.1">
+    <title>Expug.TokenizerTools – expug v0.9.0</title>
+    <link rel="stylesheet" href="dist/app-c922dbe7ef.css" />
     
-    <script src="dist/sidebar_items.js"></script>
+    <script src="dist/sidebar_items-917de8728e.js"></script>
+    
+    
+    
+    
   </head>
   <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
 
     <div class="main">
 <button class="sidebar-toggle">
-  <i class="icon-menu"></i>
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
 </button>
 <section class="sidebar">
-  <button class="sidebar-toggle">
-    <i class="icon-menu"></i>
-  </button>
 
   
-  <a href="readme.html" class="sidebar-projectLink">
+  <a href="https://github.com/rstacruz/expug" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         expug
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.8.0
+        v0.9.0
       </h2>
     </div>
     
   </a>
 
-  <div class="sidebar-search">
-    <i class="icon-search"></i>
-    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
-  </div>
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
 
   <ul class="sidebar-listNav">
     <li><a id="extras-list" href="#full-list">Pages</a></li>
@@ -52,28 +57,28 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
-  <div id="content" class="content-inner">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
 
 
       <h1>
-        <small class="visible-xs">expug v0.8.0</small>
+        <small class="visible-xs">expug v0.9.0</small>
         Expug.TokenizerTools
         
-        
-          <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L1" title="View Source" class="view-source" rel="help">
-            <i class="icon-code"></i>
+          <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
           </a>
         
       </h1>
 
       
-        <section id="moduledoc" class="docstring">
+        <section id="moduledoc">
           <p>Builds tokenizers.</p>
 <pre><code class="elixir">defmodule MyTokenizer do
   import Expug.TokenizerTools
@@ -88,7 +93,11 @@
     |&gt; eat(%r/^[a-z0-9]+/, :doctype_value)
   end
 end</code></pre>
-<h2>The state</h2>
+<h2 id="module-the-state" class="section-heading">
+  <a href="#module-the-state" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  The state
+</h2>
+
 <p><a href="Expug.TokenizerTools.State.html"><code class="inline">Expug.TokenizerTools.State</code></a> is a struct from the <code class="inline">source</code> and <code class="inline">opts</code> given to <a href="#run/3"><code class="inline">run/3</code></a>.</p>
 <pre><code class="elixir">%{ tokens: [], source: &quot;...&quot;, position: 0, options: ... }</code></pre>
 <p><a href="#run/3"><code class="inline">run/3</code></a> creates the state and invokes a function you give it.</p>
@@ -101,7 +110,11 @@ this case), and the position <code class="inline">pos</code> is advanced.</p>
 <p>If it fails to match, it’ll throw a <code class="inline">{:parse_error, pos, [:open_quote]}</code>.
 Roughly this translates to “parse error in position <em>pos</em>, expected to find
 <em>:open_quote</em>”.</p>
-<h2>Mixing and matching</h2>
+<h2 id="module-mixing-and-matching" class="section-heading">
+  <a href="#module-mixing-and-matching" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Mixing and matching
+</h2>
+
 <p><a href="#eat/3"><code class="inline">eat/3</code></a> will normally be wrapped into functions for most token types.</p>
 <pre><code class="elixir">def doctype(state)
   state
@@ -127,7 +140,8 @@ end</code></pre>
         <section id="summary" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#summary">
-              <i class="icon-link"></i>
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
             </a>
             Summary
           </h1>
@@ -288,8 +302,6 @@ end</code></pre>
 
           
 
-          
-
         </section>
       
 
@@ -299,23 +311,29 @@ end</code></pre>
         <section id="functions" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#functions">
-              <i class="icon-link"></i>
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
             </a>
             Functions
           </h1>
           <div class="detail" id="append/2">
+  
+  
   <div class="detail-header">
     <a href="#append/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">append(state, expr)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L295" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L295" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Like <a href="#eat/4"><code class="inline">eat/4</code></a>, but instead of creating a token, it appends to the last token.</p>
 <p>Useful alongside <code class="inline">start_empty()</code>.</p>
@@ -328,18 +346,23 @@ end</code></pre>
   </section>
 </div>
 <div class="detail" id="convert_positions/2">
+  
+  
   <div class="detail-header">
     <a href="#convert_positions/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">convert_positions(doc, source)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L322" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L322" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Converts numeric positions into <code class="inline">{line, col}</code> tuples.</p>
 <pre><code class="iex elixir">iex&gt; source = &quot;div\n  body&quot;
@@ -360,18 +383,23 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
   </section>
 </div>
 <div class="detail" id="discard/3">
+  
+  
   <div class="detail-header">
     <a href="#discard/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">discard(state, expr, token_name)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L220" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L220" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Consumes a token, but doesn’t push it to the State.</p>
 <pre><code class="elixir">state
@@ -382,18 +410,23 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
   </section>
 </div>
 <div class="detail" id="eat/2">
+  
+  
   <div class="detail-header">
     <a href="#eat/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">eat(state, expr)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L196" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L196" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Consumes a token.</p>
 <p>See <a href="#eat/4"><code class="inline">eat/4</code></a>.</p>
@@ -401,18 +434,23 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
   </section>
 </div>
 <div class="detail" id="eat/3">
+  
+  
   <div class="detail-header">
     <a href="#eat/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">eat(state, expr, token_name)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L208" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L208" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Consumes a token.</p>
 <pre><code class="elixir">state
@@ -423,18 +461,23 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
   </section>
 </div>
 <div class="detail" id="eat/4">
+  
+  
   <div class="detail-header">
     <a href="#eat/4" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">eat(state, expr, token_name, fun)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L253" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L253" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Consumes a token.</p>
 <pre><code class="elixir">eat state, ~r/.../, :document</code></pre>
@@ -449,14 +492,22 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
 <li><code class="inline">reducer</code> (function, optional) - a function.
 </li>
 </ul>
-<h2>Reducers</h2>
+<h2 id="eat/4-reducers" class="section-heading">
+  <a href="#eat/4-reducers" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Reducers
+</h2>
+
 <p>If <code class="inline">reducer</code> is a function, <code class="inline">tokens</code> is transformed using that function.</p>
 <pre><code class="elixir">eat state, ~r/.../, :document, &amp;[{&amp;3, :document, &amp;2} | &amp;1]
 
 # &amp;1 == tokens in current State
 # &amp;2 == matched String
 # &amp;3 == position</code></pre>
-<h2>Also see</h2>
+<h2 id="eat/4-also-see" class="section-heading">
+  <a href="#eat/4-also-see" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Also see
+</h2>
+
 <p><a href="#discard/3"><code class="inline">discard/3</code></a> will consume a token, but not push it to the State.</p>
 <pre><code class="elixir">state
 |&gt; discard(~r/ +/, :whitespace)  # discard it</code></pre>
@@ -464,18 +515,23 @@ iex&gt; Expug.TokenizerTools.convert_positions(doc, source)
   </section>
 </div>
 <div class="detail" id="finalize/1">
+  
+  
   <div class="detail-header">
     <a href="#finalize/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">finalize(state)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L72" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L72" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Turns a State into a final result.</p>
 <p>Returns either <code class="inline">{:ok, doc}</code> or <code class="inline">{:parse_error, %{type, position, expected}}</code>.
@@ -484,18 +540,23 @@ Guards against unexpected end-of-file.</p>
   </section>
 </div>
 <div class="detail" id="get_parse_errors/1">
+  
+  
   <div class="detail-header">
     <a href="#get_parse_errors/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">get_parse_errors(arg1)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L103" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L107" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Extracts the last parse errors that happened.</p>
 <p>In case of failure, <a href="#run/3"><code class="inline">run/3</code></a> will check the last parse errors
@@ -504,54 +565,71 @@ that happened. Returns a list of atoms of the expected tokens.</p>
   </section>
 </div>
 <div class="detail" id="many_of/2">
+  
+  
   <div class="detail-header">
     <a href="#many_of/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">many_of(state, head)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L162" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L162" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Checks many of a certain token.</p>
 
   </section>
 </div>
 <div class="detail" id="many_of/3">
+  
+  
   <div class="detail-header">
     <a href="#many_of/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">many_of(state, head, tail)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L169" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L169" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Checks many of a certain token, and lets you provide a different <code class="inline">tail</code>.</p>
 
   </section>
 </div>
 <div class="detail" id="one_of/3">
+  
+  
+    <span id="one_of/2"></span>
+  
   <div class="detail-header">
     <a href="#one_of/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">one_of(state, funs, expected \\ [])</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L125" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L134" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Finds any one of the given token-eater functions.</p>
 <pre><code class="elixir">state |&gt; one_of([ &amp;brackets/1, &amp;braces/1, &amp;parens/1 ])</code></pre>
@@ -559,18 +637,23 @@ that happened. Returns a list of atoms of the expected tokens.</p>
   </section>
 </div>
 <div class="detail" id="optional/2">
+  
+  
   <div class="detail-header">
     <a href="#optional/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">optional(state, fun)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L143" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L143" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>An optional argument.</p>
 <pre><code class="elixir">state |&gt; optional(&amp;text/1)</code></pre>
@@ -578,18 +661,23 @@ that happened. Returns a list of atoms of the expected tokens.</p>
   </section>
 </div>
 <div class="detail" id="optional_many_of/2">
+  
+  
   <div class="detail-header">
     <a href="#optional_many_of/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">optional_many_of(state, head)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L186" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L186" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Checks many of a certain token.</p>
 <p>Syntactic sugar for <code class="inline">optional(s, many_of(s, ...))</code>.</p>
@@ -597,54 +685,69 @@ that happened. Returns a list of atoms of the expected tokens.</p>
   </section>
 </div>
 <div class="detail" id="run/3">
+  
+  
   <div class="detail-header">
     <a href="#run/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">run(source, opts, fun)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L86" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L86" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Runs; catches parse errors and throws them properly.</p>
 
   </section>
 </div>
 <div class="detail" id="scrub_parse_errors/1">
+  
+  
   <div class="detail-header">
     <a href="#scrub_parse_errors/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">scrub_parse_errors(doc)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L114" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L114" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Gets rid of the <code class="inline">:parse_error</code> hints in the document.</p>
 
   </section>
 </div>
 <div class="detail" id="start_empty/2">
+  
+  
   <div class="detail-header">
     <a href="#start_empty/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
     </a>
     <span class="signature">start_empty(state, token_name)</span>
-      
-      <a href="https://github.com/rstacruz/expug/blob/v0.8.0/lib/expug/tokenizer_tools.ex#L278" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
+    
+      <a href="https://github.com/rstacruz/expug/blob/v0.9.0/lib/expug/tokenizer_tools.ex#L278" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
      </a>
     
+    
+    
   </div>
-  
   <section class="docstring">
     <p>Creates an token with a given <code class="inline">token_name</code>.</p>
 <p>This is functionally the same as <code class="inline">|&gt; eat(~r//, :token_name)</code>, but using
@@ -662,25 +765,28 @@ that happened. Returns a list of atoms of the expected tokens.</p>
       
 
       
-
-      
-        <footer class="footer">
-      <p>
-        <span class="line">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.5),
-        </span>
-        <span class="line">
-          designed by
-          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.1),
           </span>
-      </p>
-      <button class="night-mode-toggle" />
-    </footer>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
   </div>
 </section>
 </div>
-  <script src="dist/app-918614602f.js"></script>
+  <script src="dist/app-778c9ef903.js"></script>
+  
+  
+  
+  
   </body>
 </html>
 
