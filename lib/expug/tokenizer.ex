@@ -108,7 +108,7 @@ defmodule Expug.Tokenizer do
   Returns a list of tokens. Each token is in the format `{position, token, value}`.
   """
   def tokenize(source, opts \\ []) do
-    source = String.rstrip(source)
+    source = String.trim_trailing(source)
     run(source, opts, &document/1)
   end
 
