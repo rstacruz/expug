@@ -1,6 +1,6 @@
 language: elixir
 elixir:
-- '1.2.6'
+- '1.5.2'
 script:
 - mix test --exclude pending
 cache:
