@@ -697,6 +697,51 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "boolean attributes" do
+    output = tokenize("""
+    a(required)
+    """)
+
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "a"},
+      {{1, 2}, :attribute_open, "("},
+      {{1, 3}, :attribute_key, "required"},
+      {{1, 11}, :attribute_close, ")"}
+    ]
+  end
+
+  test "multiple boolean attributes" do
+    output = tokenize("""
+    a(required checked)
+    """)
+
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "a"},
+      {{1, 2}, :attribute_open, "("},
+      {{1, 3}, :attribute_key, "required"},
+      {{1, 12}, :attribute_key, "checked"},
+      {{1, 19}, :attribute_close, ")"}
+    ]
+  end
+
+  test "data attributes mixed with others" do
+    output = tokenize("""
+    a(required a=b)
+    """)
+
+    assert reverse(output) == [
+      {{1, 1}, :indent, 0},
+      {{1, 1}, :element_name, "a"},
+      {{1, 2}, :attribute_open, "("},
+      {{1, 3}, :attribute_key, "required"},
+      {{1, 12}, :attribute_key, "a"},
+      {{1, 14}, :attribute_value, "b"},
+      {{1, 15}, :attribute_close, ")"}
+    ]
+  end
+
   # test "comma delimited attributes"
   # test "script."
   # test "comments"

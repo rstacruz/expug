@@ -337,7 +337,7 @@ defmodule Expug.Tokenizer do
 
   def attribute_equal(state) do
     state
-    |> discard(~r/=/, :eq)
+    |> discard(~r/^=/, :eq)
   end
 
   @doc "Matches whitespace; no tokens emitted"

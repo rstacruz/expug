@@ -260,4 +260,13 @@ defmodule StringifierTest do
     """
   end
 
+  test "data attributes" do
+    eex = build("""
+    a(required a=b)
+    """)
+
+    assert eex == ~S"""
+    <a<%= raw(Expug.Runtime.attr("a", b)) %><%= raw(Expug.Runtime.attr("required", true)) %>></a>
+    """
+  end
 end
