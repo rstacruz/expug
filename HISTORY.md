@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.9.1]
+> Oct 19, 2017
+
+- Fix problem with value-less attributes (eg, `input(required type="text")`.
+
+[v0.9.1]: https://github.com/rstacruz/expug/compare/v0.9.0...v0.9.1
+
 ## [v0.9.0]
 > Oct 18, 2017
 
