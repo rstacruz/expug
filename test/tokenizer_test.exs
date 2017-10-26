@@ -742,6 +742,17 @@ defmodule ExpugTokenizerTest do
     ]
   end
 
+  test "an element with text and then without" do
+    output = tokenize("a hi\nlink")
+    assert reverse(output) == [
+     {{1, 1}, :indent, 0},
+     {{1, 1}, :element_name, "a"},
+     {{1, 3}, :raw_text, "hi"},
+     {{2, 1}, :indent, 0},
+     {{2, 1}, :element_name, "link"}
+    ]
+  end
+
   # test "comma delimited attributes"
   # test "script."
   # test "comments"

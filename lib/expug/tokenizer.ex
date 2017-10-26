@@ -380,7 +380,7 @@ defmodule Expug.Tokenizer do
   def sole_raw_text(state) do
     state
     |> whitespace()
-    |> eat(~r/^[^\n]+$/, :raw_text)
+    |> eat(~r/^[^\n]+/, :raw_text)
   end
 
   @doc "Matches `title` in `title= hello`"
