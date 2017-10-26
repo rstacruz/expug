@@ -1,9 +1,16 @@
 # Changelog
 
+## [v0.9.2]
+> Oct 26, 2017
+
+- Fix issue where elements with text (eg, `title Hello`) produce errors.
+
+[v0.9.2]: https://github.com/rstacruz/expug/compare/v0.9.1...v0.9.2
+
 ## [v0.9.1]
 > Oct 19, 2017
 
-- Fix problem with value-less attributes (eg, `input(required type="text")`.
+- Fix problem with value-less attributes (eg, `input(required type="text")`).
 
 [v0.9.1]: https://github.com/rstacruz/expug/compare/v0.9.0...v0.9.1
 
